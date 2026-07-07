@@ -1,0 +1,11 @@
+/public/
+/resources/
+.hugo_build.lock
+
+# 忽略 Emacs 备份文件
+*~
+
+# 忽略 Emacs 正在编辑时生成的临时自动锁文件
+.#*
+
+.DS_Store

@@ -1,0 +1,74 @@
+# 点击 https://github.com/adityatelange/hugo-PaperMod/wiki/Installation 查看完整的模版
+
+baseURL: "https://lcp.netlify.app/"
+title: 云卷云舒
+paginate: 5
+theme: PaperMod
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # 必须加上这一行，生成 search.json 供前端搜索使用
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: 云卷云舒
+  # description: "ExampleSite description"
+  # keywords: [Blog, Portfolio, PaperMod]
+  author: zbliang
+  # author: ["Me", "You"] # multiple authors
+  # images: ["<link or path of image for opengraph, twitter-cards>"]
+  # DateFormat: "January 2, 2006"
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+  math: true
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: ture
+
+# for search
+# https://fusejs.io/api/options.html
+fuseOpts:
+  isCaseSensitive: false
+  shouldSort: true
+  location: 0
+  distance: 1000
+  threshold: 0.4
+  minMatchCharLength: 0
+  limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+  keys: ["title", "permalink", "summary", "content"]
+
+menu:
+  main:
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 20
+    - name: "🔍 search"    # 显示在右上角的文字
+      url: "/search/"     # 对应的页面路径
+      weight: 30           # 权重，数字越小越靠左
+
+# 渲染引擎设置 (即上面的方案A，解决 HTML 标签被吞的问题)
+markup:
+  goldmark:
+    renderer:
+      # 允许在 Markdown 中直接渲染原生 HTML 标签
+      unsafe: true
