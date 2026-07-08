@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-07-08 Wed 07:42 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hugo + Netlify 的 Org-mode 博客方案</title>
+<meta name="author" content="zbliang" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Hugo + Netlify 的 Org-mode 博客方案</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgcb57b4c">1. 安装 <code>Hugo</code></a></li>
+<li><a href="#org72224da">2. 本地初始化 <code>Hugo</code> 项目</a></li>
+<li><a href="#orgff2d702">3. <code>hugo.yaml</code> 配置文件</a></li>
+<li><a href="#orge524e89">4. 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</a></li>
+<li><a href="#org1fe4081">5. 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</a></li>
+<li><a href="#org646205e">6. <code>Org</code> 文章的文件头的设置</a></li>
+<li><a href="#org417e465">7. 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</a></li>
+<li><a href="#orgd051227">8. 增加 <code>search</code> 页面</a></li>
+<li><a href="#org6178f75">9. 推送至 GitHub</a></li>
+<li><a href="#orgfe8034d">10. 部署到 Netlify</a></li>
+</ul>
+</div>
+</div>
+<p>
+<code>Org-mode</code> 是写技术文章的神器，而 <code>GitHub</code> + <code>Netlify</code> 是目前完美且免费的静态托管组合。
+将他们组合起来建立个人博客，是十分高效和优雅。
+这个方案的核心逻辑是：
+</p>
+
+<ul class="org-ul">
+<li>本地（ <code>Emacs</code> ）： 用 <code>Org-mode</code> 写文章，通过 <code>ox-hugo</code> 一键将 <code>.org</code> 导出为 <code>Hugo</code> 认识的 <code>.md</code> （ <code>Markdown</code> ）文件。</li>
+<li>代码仓库（ <code>GitHub</code> ）： 项目里同时包含 <code>Org</code> 源码和生成的 <code>Markdown</code> ，通过 <code>git push</code> 推送到 <code>GitHub</code> 。</li>
+<li>云端（ <code>Netlify</code> ）： <code>Netlify</code> 检测到代码更新，自动运行 <code>Hugo</code> 命令，将 <code>Markdown</code> 编译成极速的静态网页并发布。</li>
+</ul>
+<div id="outline-container-orgcb57b4c" class="outline-2">
+<h2 id="orgcb57b4c"><span class="section-number-2">1.</span> 安装 <code>Hugo</code></h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<code>macOS</code> 可以通过 <code>MacPorts</code> 安装 <code>Hugo</code> 。
+</p>
+
+<p>
+更新 <code>port</code> 索引后查看可用 <code>hugo</code> 包：
+</p>
+
+<pre class="example" id="org2a7c679">
+$ sudo port selfupdate
+$ port search hugo
+hugo @0.163.3 (www)
+    A Fast and Flexible Static Site Generator built with love in GoLang
+
+wp2hugo @1.11.0 (www, devel)
+    The best WordPress to Hugo migrator (written in Go)
+
+Found 2 ports.
+</pre>
+
+<p>
+其中 <code>hugo</code> （而不是 <code>wp2hugo</code> ）正是我们需要的。
+安装并验证：
+</p>
+
+<pre class="example" id="org96b5096">
+$ sudo port install hugo
+$ hugo version
+hugo v0.163.3+extended darwin/amd64 BuildDate=unknown VendorInfo=macports
+</pre>
+
+<p>
+结果说明通过 <code>MacPorts</code> 装的 <code>hugo @0.163.3</code> 本身已经内置 <code>extended</code> 特性，输出里带 <code>+extended</code> ，完全支持 <code>SCSS</code> 、 <code>Tailwind</code> 、资源处理等功能，不用额外装 <code>hugo-extended</code> 。
+</p>
+</div>
+</div>
+<div id="outline-container-org72224da" class="outline-2">
+<h2 id="org72224da"><span class="section-number-2">2.</span> 本地初始化 <code>Hugo</code> 项目</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+选择一个本地目录，进入后运行以下命令创建一个新的博客项目：
+</p>
+
+<pre class="example" id="org0199933">
+$ hugo new site my-tech-blog
+$ cd my-tech-blog
+$ git init
+</pre>
+
+<p>
+这样 <code>hugo</code> 就创建了一个名为 <code>my-tech-blog</code> 文件夹，并且里面包含了博客框架。
+然后通过 <code>git init</code> 对 <code>my-tech-blog</code> 进行版本管理。
+</p>
+
+<p>
+在 <code>my-tech-blog</code> 文件夹下创建 <code>.gitignore</code> 文件，内容是：
+</p>
+
+<pre class="example" id="orge674cfb">
+/public/
+/resources/
+.hugo_build.lock
+
+# 忽略 Emacs 备份文件
+*~
+
+# 忽略 Emacs 正在编辑时生成的临时自动锁文件
+.#*
+
+.DS_Store
+</pre>
+
+<p>
+其中
+</p>
+
+<ul class="org-ul">
+<li><code>/public/</code> 是 <code>Hugo</code> 在本地运行 <code>hugo</code> 命令进行编译时，自动生成的最终网站文件夹（里面全是纯 <code>HTML</code> 、=CSS= 和 <code>JS</code> 静态文件）。
+将来我们会让 <code>Netlify</code> 在云端生成这个 <code>public/</code> 目录并发布，所以不需要把自己本地生成的 <code>public/</code> 塞给 <code>GitHub</code> 。</li>
+<li><code>/resources/</code> 是 <code>Hugo</code> 的资源缓存目录。
+当在 <code>Hugo</code> 中使用了一些高级功能（比如自动裁剪/缩放图片、编译 <code>SCSS/SASS</code> 样式表、压缩 <code>JavaScript</code> 脚本）时， <code>Hugo</code> 为了提升下一次本地预览的速度，会把处理到一半的中间产物缓存在这个目录下。
+所以纯粹是本地构建的临时缓存，属于「衍生品」。
+每个人的电脑或者云端服务器在编译时都能自己生成这些缓存，完全不需要通过 <code>Git</code> 进行跨平台同步。</li>
+<li><code>.hugo_build.lock</code> 是一个进程锁文件（ <code>Lock File</code> ）。
+当运行 <code>hugo server</code> 在本地一边写文章一边预览时， <code>Hugo</code> 会创建这个文件，用来告诉系统：「我正在运行构建进程，其他并发的 <code>Hugo</code> 任务请排队，不要同时修改同一个文件。」
+只要关闭了本地的 <code>Hugo</code> 预览服务，这个文件就失去作用了。
+它不包含任何博客内容，所以不需要把它提交到 <code>Git</code> 。</li>
+</ul>
+
+
+<p>
+下一步去 <a href="https://themes.gohugo.io/">Hugo Themes</a> 挑一个你喜欢的技术类主题。
+我们计划安装经典的 <a href="https://github.com/adityatelange/hugo-PaperMod">PaperMod</a> 主题。
+根据该主题的官方 <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Installation">安装说明</a>，在 <code>my-tech-blog</code> 目录下执行：
+</p>
+
+<pre class="example" id="org15734c2">
+$ git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
+</pre>
+
+<p>
+其中参数 <code>--depth=1</code> 表示只下载 <code>PaperMo</code> 最新的一次提交 （ <code>Commit</code> ）。
+如果没有这个参数，那么会把这个开源项目从诞生第一天起到今天为止的所有修改历史（ <code>Git History</code> ）全部下载下来。
+</p>
+
+<p>
+成功执行命令后， <code>my-tech-blog/themes</code> 下会出现 <code>PaperMod</code> 子目录，这是存放 <code>PaperMod</code> 主题的地方。
+</p>
+
+<p>
+要注意的是，当在另一台电脑上，或者以后重装系统，重新 <code>git clone</code> 你自己的博客仓库时， <code>Git</code> 默认不会去下载 <code>themes/PaperMod</code> 里面的内容（那个文件夹会是空的）。
+这时候必须运行命令
+</p>
+
+<pre class="example" id="org3fe34f2">
+$ git submodule update --init --recursive
+</pre>
+
+<p>
+告诉 Git：「去把我依赖的第三方主题也一起下载初始化下来」。
+</p>
+</div>
+</div>
+<div id="outline-container-orgff2d702" class="outline-2">
+<h2 id="orgff2d702"><span class="section-number-2">3.</span> <code>hugo.yaml</code> 配置文件</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+把 <code>my-tech-blog</code> 目录下的文件 <code>hugo.toml</code> 删去，然后新建文件 <code>hugo.yaml</code> 。
+我们将在 <code>hugo.yaml</code> 中配置 <code>Hugo</code> 项目。
+<code>hugo.yaml</code> 中的配置在 <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Installation">官网</a> 中有详细说明。
+我们采用以下的配置：
+</p>
+
+<pre class="example" id="org046b9da">
+# 点击 https://github.com/adityatelange/hugo-PaperMod/wiki/Installation 查看完整的模版
+
+baseURL: "https://your-domain.netlify.app/" # 可以先写个大概，后续在 Netlify 拿到了再改
+title: 我的博客
+paginate: 5
+theme: PaperMod
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # 必须加上这一行，生成 search.json 供前端搜索使用
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: 我的博客
+  # description: "ExampleSite description"
+  # keywords: [Blog, Portfolio, PaperMod]
+  author: John
+  # author: ["Me", "You"] # multiple authors
+  # images: ["&lt;link or path of image for opengraph, twitter-cards&gt;"]
+  # DateFormat: "January 2, 2006"
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+  math: true
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: ture
+
+# for search
+# https://fusejs.io/api/options.html
+fuseOpts:
+  isCaseSensitive: false
+  shouldSort: true
+  location: 0
+  distance: 1000
+  threshold: 0.4
+  minMatchCharLength: 0
+  limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+  keys: ["title", "permalink", "summary", "content"]
+
+menu:
+  main:
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 20
+    - name: "🔍 search"    # 显示在右上角的文字
+      url: "/search/"     # 对应的页面路径
+      weight: 30           # 权重，数字越小越靠左
+
+# 渲染引擎设置 (即上面的方案A，解决 HTML 标签被吞的问题)
+markup:
+  goldmark:
+    renderer:
+      # 允许在 Markdown 中直接渲染原生 HTML 标签
+      unsafe: true
+</pre>
+</div>
+</div>
+<div id="outline-container-orge524e89" class="outline-2">
+<h2 id="orge524e89"><span class="section-number-2">4.</span> 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+虽然在 <code>hugo.yaml</code> 中设置了 <code>math: true</code> ，数学公式依然无法渲染，原因在于 <code>PaperMod</code> 并没有原生内置加载 <code>MathJax/KaTeX</code> 脚本的逻辑。
+解决办法是在 Hugo 项目根目录 <code>my-tech-blog</code> 下，创建以下路径的文件夹（如果没有就新建）： <code>layouts/partials/</code> ，并在该目录下新建一个名为 <code>extend_head.html</code> 的文件： <code>my-tech-blog/layouts/partials/extend_head.html</code> ，然后将以下 KaTeX 自动渲染脚本 复制并粘贴进去：
+</p>
+
+<pre class="example" id="orgd937904">
+{{ if or .Params.math .Site.Params.math }}
+&lt;!-- 引入 KaTeX 核心 CSS --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"&gt;
+
+&lt;!-- 引入 KaTeX 核心 JS 以及自动渲染插件 --&gt;
+&lt;script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"&gt;&lt;/script&gt;
+&lt;script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" 
+        onload="renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '$', right: '$', display: false}
+          ]
+        });"&gt;&lt;/script&gt;
+{{ end }}
+</pre>
+</div>
+</div>
+<div id="outline-container-org1fe4081" class="outline-2">
+<h2 id="org1fe4081"><span class="section-number-2">5.</span> 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+在 <code>Hugo</code> 项目根目录 <code>my-tech-blog</code> 下，新建一个叫 <code>content-org</code> 的文件夹来存放 <code>Org</code> 原稿。
+</p>
+
+<pre class="example" id="org8682f34">
+$ mkdir content-org
+</pre>
+
+<p>
+千万不要把 <code>Org</code> 放进 <code>Hugo</code> 默认的 <code>content/</code> 目录，因为那个目录是留给 <code>ox-hugo</code> 导出 <code>Markdown</code> 用的。
+</p>
+
+<p>
+在 <code>content-org</code> 中可以新建 <code>images/</code> 目录，用于存放 <code>.org</code> 文件的图片。
+</p>
+
+<pre class="example" id="org3eaa0e6">
+my-tech-blog/
+├── content-org/
+│   ├── hello-world.org
+│   └── images/
+│       └── gc-architecture.png   &lt;-- 你的本地原图
+</pre>
+</div>
+</div>
+<div id="outline-container-org646205e" class="outline-2">
+<h2 id="org646205e"><span class="section-number-2">6.</span> <code>Org</code> 文章的文件头的设置</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+在 <code>content-org/</code> 下新建一个文件，比如 <code>hello-world.org</code> 。
+举例来说，这个 <code>org</code> 文档的文件头可以是：
+</p>
+
+<pre class="example" id="org132d1f9">
+#+title: Hello World
+#+author: John
+#+DATE: 2026-07-07
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: posts
+#+HUGO_PAIRED_OUT_DIR: ../static
+#+HUGO_TAGS: R
+#+HUGO_CATEGORIES: tech
+#+HUGO_DRAFT: false
+
+#+STARTUP: show2levels
+#+PROPERTY: header-args:R :eval no-export :results output :exports both :cache yes
+
+#+BEGIN_EXPORT html
+&lt;style&gt;
+  /* 仅在这篇文章中生效的临时样式 */
+  .question {
+      border: 2px solid #666;
+      background-color: #f5f5f5;
+      padding: 1em;
+      margin: 1em 0;
+      border-radius: 8px;
+  }
+  .solution {
+      border-left: 5px solid green;
+      padding-left: 1em;
+      margin: 1em 0;
+  }
+&lt;/style&gt;
+#+END_EXPORT
+</pre>
+
+<p>
+<code>ox-hugo</code> 需要在文件头部通过 <code>#+HUGO_</code> 前缀的关键字来得知这篇文章应该导出到哪里、标签是什么、在哪个分类下。
+例如
+</p>
+<ul class="org-ul">
+<li><code>#+HUGO_BASE_DIR</code> 告诉插件 <code>Hugo</code> 项目的根目录在哪里（这里写 <code>../</code> 意思是当前目录的上一级）。</li>
+<li><code>#+HUGO_SECTION</code> 导出的 <code>Markdown</code> 会被自动放到 <code>content/posts/</code> 目录下。</li>
+<li><code>#+HUGO_PAIRED_OUT_DIR: ../static</code> 告诉 <code>ox-hugo</code> ，当前 <code>Org</code> 文件上一级目录下的 <code>static</code> 文件夹就是 <code>Hugo</code> 存放静态资源的地方。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org417e465" class="outline-2">
+<h2 id="org417e465"><span class="section-number-2">7.</span> 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+首先安装 <code>ox-hugo</code> 插件。
+在 <code>Emacs</code> 中执行 <code>M-x package-refresh-contents RET</code> 刷新包索引。
+然后执行 <code>M-x package-install RET ox-hugo RET</code> 安装 <code>ox-hugo</code> 。
+</p>
+
+<p>
+在 <code>init.el</code> 中添加并启用 <code>xo-hugo</code> ：
+</p>
+
+<pre class="example" id="orge054b60">
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+</pre>
+
+<p>
+其中 <code>:after ox</code> 是一个非常关键的性能优化与依赖声明。
+简单来说，它的意思是：等 <code>Emacs</code> 加载了自带的 <code>Org</code> 导出引擎 <code>ox</code> （ <code>Org Export</code> ）之后，再开始加载 <code>ox-hugo</code> 。
+</p>
+
+<p>
+在 <code>Emacs</code> 中打开刚才写的 <code>hello-world.org</code> ，按下快捷键 <code>C-c C-e</code> (进入导出菜单)，然后依次按下 <code>H</code> (选择 <code>Hugo</code> 选项) 和 <code>h</code> (导出当前文件)。
+</p>
+
+<p>
+此时， <code>Hugo</code> 项目的 <code>content/posts/</code> 目录下，自动生成了一个 <code>hello-world.md</code> 。
+假设 <code>hello-world.org</code> 文件中有插入图片 <code>[[file:./images/gc-architecture.png]]</code> ，那么 <code>Hugo</code> 会自动把该图片复制到项目目录 <code>my-tech-blog</code> 下的 <code>static/ox-hugo/gc-architecture.png</code> ，并且在 <code>hello-world.md</code> 文件中把图片路径改为
+</p>
+
+<pre class="example" id="org8465589">
+![img](/ox-hugo/gc-architecture.png)
+</pre>
+
+<p>
+回忆我们的 <code>hello-world.org</code> 文件的开头设置了 <code>CSS</code> 样式
+</p>
+
+<pre class="example" id="orgff1143a">
+#+BEGIN_EXPORT html
+&lt;style&gt;
+  /* 仅在这篇文章中生效的临时样式 */
+  .question {
+      border: 2px solid #666;
+      background-color: #f5f5f5;
+      padding: 1em;
+      margin: 1em 0;
+      border-radius: 8px;
+  }
+  .solution {
+      border-left: 5px solid green;
+      padding-left: 1em;
+      margin: 1em 0;
+  }
+&lt;/style&gt;
+#+END_EXPORT
+</pre>
+
+<p>
+在导出为 <code>.md</code> 文件时， <code>Hugo</code> 的渲染引擎（ <code>goldmark</code> ）出于安全考虑，默认是严格禁止在 <code>Markdown</code> 中直接内嵌原生 <code>HTML</code> 标签默认。
+结果是 <code>Markdown</code> 文件丢失了该有的 <code>CSS</code> 样式。
+解决的办法是在的 <code>hugo.yaml</code> 文件中添加以下内容：
+</p>
+
+<pre class="example" id="orgbf0db9b">
+markup:
+  goldmark:
+    renderer:
+      # 允许在 Markdown 中直接渲染原生 HTML 标签
+      unsafe: true
+</pre>
+</div>
+</div>
+<div id="outline-container-orgd051227" class="outline-2">
+<h2 id="orgd051227"><span class="section-number-2">8.</span> 增加 <code>search</code> 页面</h2>
+</div>
+
+<div id="outline-container-org6178f75" class="outline-2">
+<h2 id="org6178f75"><span class="section-number-2">9.</span> 推送至 GitHub</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+现在可以将 <code>Hugo</code> 项目目录 <code>my-tech-blog</code> 推送到 GitHub 的私有或公共仓库：
+</p>
+
+<pre class="example" id="orgc207b40">
+$ git add .
+$ git commit -m "feat: initial commit with my first org post"
+$ git branch -M main
+$ git remote add origin https://github.com/yourusername/your-repo.git
+$ git push -u origin main
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfe8034d" class="outline-2">
+<h2 id="orgfe8034d"><span class="section-number-2">10.</span> 部署到 Netlify</h2>
+<div class="outline-text-2" id="text-10">
+<ol class="org-ol">
+<li>登录 <code>Netlify</code> （直接用 <code>GitHub</code> 账号登录最方便）。</li>
+<li>点击 <code>Add new project -&gt; Import a git repository</code> 。</li>
+<li>选择 GitHub 并授权，找到你刚才创建的博客仓库。</li>
+<li><p>
+Site configuration（核心配置）：
+Netlify 非常聪明，它如果识别到这是 Hugo 项目，通常会自动填好配置。
+请确保配置如下：
+</p>
+<ul class="org-ul">
+<li><code>Build command</code> （构建命令）:  <code>hugo --gc --minify</code></li>
+<li><code>Publish directory</code> （发布目录）: <code>public</code></li>
+<li>在 <code>Environment variables</code> （环境变量）区域，点击 <code>Add a variable -&gt; Create a single variable</code> ，填写以下内容：
+<ul class="org-ul">
+<li><code>Key</code> : <code>HUGO_VERSION</code></li>
+<li><code>value</code> : <code>0.163.3</code> （在本地终端执行 <code>hugo version</code> 查询所安装的 <code>Hugo</code> 的版本号，填写到这里。）</li>
+</ul></li>
+</ul>
+
+<p>
+点击页面最下方的 Deploy [你的项目名]。
+</p></li>
+</ol>
+
+<p>
+稍微等待几十秒，Netlify 就会分配给你一个形如 [<a href="https://xxx-xxxx.netlify.app">https://xxx-xxxx.netlify.app</a>](<a href="https://xxx-xxxx.netlify.app">https://xxx-xxxx.netlify.app</a>) 的二级域名。点开它，你的技术博客就已经全球可见了！
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2026-07-07</p>
+<p class="author">Author: zbliang</p>
+<p class="date">Created: 2026-07-08 Wed 07:42</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

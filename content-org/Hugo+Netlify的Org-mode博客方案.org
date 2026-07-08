@@ -1,0 +1,495 @@
+#+title: Hugo + Netlify 的 Org-mode 博客方案
+#+author: zbliang
+#+DATE: 2026-07-07
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: posts
+#+HUGO_PAIRED_OUT_DIR: ../static
+#+HUGO_TAGS: R
+#+HUGO_CATEGORIES: tech
+#+HUGO_DRAFT: false
+
+#+STARTUP: show2levels
+
+=Org-mode= 是写技术文章的神器，而 =GitHub= + =Netlify= 是目前完美且免费的静态托管组合。
+将他们组合起来建立个人博客，是十分高效和优雅。
+这个方案的核心逻辑是：
+
++ 本地（ =Emacs= ）： 用 =Org-mode= 写文章，通过 =ox-hugo= 一键将 =.org= 导出为 =Hugo= 认识的 =.md= （ =Markdown= ）文件。
++ 代码仓库（ =GitHub= ）： 项目里同时包含 =Org= 源码和生成的 =Markdown= ，通过 =git push= 推送到 =GitHub= 。
++ 云端（ =Netlify= ）： =Netlify= 检测到代码更新，自动运行 =Hugo= 命令，将 =Markdown= 编译成极速的静态网页并发布。
+
+下面记录在 AI 的帮助下，搭建博客的过程。
+
+* 安装 =Hugo=
+
+=macOS= 可以通过 =MacPorts= 安装 =Hugo= 。
+
+更新 =port= 索引后查看可用 =hugo= 包：
+
+#+begin_example
+$ sudo port selfupdate
+$ port search hugo
+hugo @0.163.3 (www)
+    A Fast and Flexible Static Site Generator built with love in GoLang
+
+wp2hugo @1.11.0 (www, devel)
+    The best WordPress to Hugo migrator (written in Go)
+
+Found 2 ports.
+#+end_example
+
+其中 =hugo= （而不是 =wp2hugo= ）正是我们需要的。
+安装并验证：
+
+#+begin_example
+$ sudo port install hugo
+$ hugo version
+hugo v0.163.3+extended darwin/amd64 BuildDate=unknown VendorInfo=macports
+#+end_example
+
+结果说明通过 =MacPorts= 装的 =hugo @0.163.3= 本身已经内置 =extended= 特性，输出里带 =+extended= ，完全支持 =SCSS= 、 =Tailwind= 、资源处理等功能，不用额外装 =hugo-extended= 。
+
+* 本地初始化 =Hugo= 项目
+
+选择一个本地目录，进入后运行以下命令创建一个新的博客项目：
+
+#+begin_example
+$ hugo new site my-tech-blog
+$ cd my-tech-blog
+$ git init
+#+end_example
+
+这样 =hugo= 就创建了一个名为 =my-tech-blog= 文件夹，并且里面包含了博客框架。
+然后通过 =git init= 对 =my-tech-blog= 进行版本管理。
+
+在 =my-tech-blog= 文件夹下创建 =.gitignore= 文件，内容是：
+
+#+begin_example
+/public/
+/resources/
+.hugo_build.lock
+
+# 忽略 Emacs 备份文件
+*~
+
+# 忽略 Emacs 正在编辑时生成的临时自动锁文件
+.#*
+
+.DS_Store
+#+end_example
+
+其中
+
++ =/public/= 是 =Hugo= 在本地运行 =hugo= 命令进行编译时，自动生成的最终网站文件夹（里面全是纯 =HTML= 、=CSS= 和 =JS= 静态文件）。
+  将来我们会让 =Netlify= 在云端生成这个 =public/= 目录并发布，所以不需要把自己本地生成的 =public/= 塞给 =GitHub= 。
++ =/resources/= 是 =Hugo= 的资源缓存目录。
+  当在 =Hugo= 中使用了一些高级功能（比如自动裁剪/缩放图片、编译 =SCSS/SASS= 样式表、压缩 =JavaScript= 脚本）时， =Hugo= 为了提升下一次本地预览的速度，会把处理到一半的中间产物缓存在这个目录下。
+  所以纯粹是本地构建的临时缓存，属于「衍生品」。
+  每个人的电脑或者云端服务器在编译时都能自己生成这些缓存，完全不需要通过 =Git= 进行跨平台同步。
++ =.hugo_build.lock= 是一个进程锁文件（ =Lock File= ）。
+  当运行 =hugo server= 在本地一边写文章一边预览时， =Hugo= 会创建这个文件，用来告诉系统：「我正在运行构建进程，其他并发的 =Hugo= 任务请排队，不要同时修改同一个文件。」
+  只要关闭了本地的 =Hugo= 预览服务，这个文件就失去作用了。
+  它不包含任何博客内容，所以不需要把它提交到 =Git= 。
+
+
+下一步去 [[https://themes.gohugo.io/][Hugo Themes]] 挑一个你喜欢的技术类主题。
+我们计划安装经典的 [[https://github.com/adityatelange/hugo-PaperMod][PaperMod]] 主题。
+根据该主题的官方 [[https://github.com/adityatelange/hugo-PaperMod/wiki/Installation][安装说明]]，在 =my-tech-blog= 目录下执行：
+
+#+begin_example
+$ git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
+#+end_example
+
+其中参数 =--depth=1= 表示只下载 =PaperMo= 最新的一次提交 （ =Commit= ）。
+如果没有这个参数，那么会把这个开源项目从诞生第一天起到今天为止的所有修改历史（ =Git History= ）全部下载下来。
+
+成功执行命令后， =my-tech-blog/themes= 下会出现 =PaperMod= 子目录，这是存放 =PaperMod= 主题的地方。
+
+要注意的是，当在另一台电脑上，或者以后重装系统，重新 =git clone= 你自己的博客仓库时， =Git= 默认不会去下载 =themes/PaperMod= 里面的内容（那个文件夹会是空的）。
+这时候必须运行命令
+
+#+begin_example
+$ git submodule update --init --recursive
+#+end_example
+
+告诉 Git：「去把我依赖的第三方主题也一起下载初始化下来」。
+
+* =hugo.yaml= 配置文件
+
+把 =my-tech-blog= 目录下的文件 =hugo.toml= 删去，然后新建文件 =hugo.yaml= 。
+我们将在 =hugo.yaml= 中配置 =Hugo= 项目。
+=hugo.yaml= 中的配置在 [[https://github.com/adityatelange/hugo-PaperMod/wiki/Installation][官网]] 中有详细说明。
+我们采用以下的配置：
+
+#+begin_example
+# 点击 https://github.com/adityatelange/hugo-PaperMod/wiki/Installation 查看完整的模版
+
+baseURL: "https://your-domain.netlify.app/" # 可以先写个大概，后续在 Netlify 拿到了再改
+title: 我的博客
+paginate: 5
+theme: PaperMod
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # 必须加上这一行，生成 search.json 供前端搜索使用
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: 我的博客
+  # description: "ExampleSite description"
+  # keywords: [Blog, Portfolio, PaperMod]
+  author: John
+  # author: ["Me", "You"] # multiple authors
+  # images: ["<link or path of image for opengraph, twitter-cards>"]
+  # DateFormat: "January 2, 2006"
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+  math: true
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: ture
+
+# for search
+# https://fusejs.io/api/options.html
+fuseOpts:
+  isCaseSensitive: false
+  shouldSort: true
+  location: 0
+  distance: 1000
+  threshold: 0.4
+  minMatchCharLength: 0
+  limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+  keys: ["title", "permalink", "summary", "content"]
+
+menu:
+  main:
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 20
+    - name: "archives"
+      url: "archives/"     # 注意：PaperMod 默认的归档页面路径通常是 archives/
+      weight: 25
+    - name: "🔍 search"    # 显示在右上角的文字
+      url: "/search/"     # 对应的页面路径
+      weight: 30           # 权重，数字越小越靠左
+
+# 渲染引擎设置 (即上面的方案A，解决 HTML 标签被吞的问题)
+markup:
+  goldmark:
+    renderer:
+      # 允许在 Markdown 中直接渲染原生 HTML 标签
+      unsafe: true
+#+end_example
+
+有些配置为什么要设置，下面会有解答。
+
+* 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本
+
+虽然在 =hugo.yaml= 中设置了 =math: true= ，数学公式依然无法渲染，原因在于 =PaperMod= 并没有原生内置加载 =MathJax/KaTeX= 脚本的逻辑。
+解决办法是在 Hugo 项目根目录 =my-tech-blog= 下，创建以下路径的文件夹（如果没有就新建）： =layouts/partials/= ，并在该目录下新建一个名为 =extend_head.html= 的文件： =my-tech-blog/layouts/partials/extend_head.html= ，然后将以下 KaTeX 自动渲染脚本 复制并粘贴进去：
+
+#+begin_example
+{{ if or .Params.math .Site.Params.math }}
+<!-- 引入 KaTeX 核心 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+
+<!-- 引入 KaTeX 核心 JS 以及自动渲染插件 -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" 
+        onload="renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '\\[', right: '\\]', display: true},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '$', right: '$', display: false}
+          ]
+        });"></script>
+{{ end }}
+#+end_example
+
+* 在 =Hugo= 项目中组织 =Org= 文件
+
+在 =Hugo= 项目根目录 =my-tech-blog= 下，新建一个叫 =content-org= 的文件夹来存放 =Org= 原稿。
+
+#+begin_example
+$ mkdir content-org
+#+end_example
+
+千万不要把 =Org= 放进 =Hugo= 默认的 =content/= 目录，因为那个目录是留给 =ox-hugo= 导出 =Markdown= 用的。
+
+在 =content-org= 中可以新建 =images/= 目录，用于存放 =.org= 文件的图片。
+
+#+begin_example
+my-tech-blog/
+├── content-org/
+│   ├── hello-world.org
+│   └── images/
+│       └── gc-architecture.png   <-- 你的本地原图
+#+end_example
+
+* =Org= 文章的文件头的设置
+
+在 =content-org/= 下新建一个文件，比如 =hello-world.org= 。
+举例来说，这个 =org= 文档的文件头可以是：
+
+#+begin_example
+#+title: Hello World
+#+author: John
+#+DATE: 2026-07-07
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: posts
+#+HUGO_PAIRED_OUT_DIR: ../static
+#+HUGO_TAGS: R
+#+HUGO_CATEGORIES: tech
+#+HUGO_DRAFT: false
+
+#+STARTUP: show2levels
+#+PROPERTY: header-args:R :eval no-export :results output :exports both :cache yes
+
+#+BEGIN_EXPORT html
+<style>
+  /* 仅在这篇文章中生效的临时样式 */
+  .question {
+      border: 2px solid #666;
+      background-color: #f5f5f5;
+      padding: 1em;
+      margin: 1em 0;
+      border-radius: 8px;
+  }
+  .solution {
+      border-left: 5px solid green;
+      padding-left: 1em;
+      margin: 1em 0;
+  }
+</style>
+#+END_EXPORT
+#+end_example
+
+=ox-hugo= 需要在文件头部通过 =#+HUGO_= 前缀的关键字来得知这篇文章应该导出到哪里、标签是什么、在哪个分类下。
+例如
++ =#+HUGO_BASE_DIR= 告诉插件 =Hugo= 项目的根目录在哪里（这里写 =../= 意思是当前目录的上一级）。
++ =#+HUGO_SECTION= 导出的 =Markdown= 会被自动放到 =content/posts/= 目录下。
++ =#+HUGO_PAIRED_OUT_DIR: ../static= 告诉 =ox-hugo= ，当前 =Org= 文件上一级目录下的 =static= 文件夹就是 =Hugo= 存放静态资源的地方。
+
+* 利用 =ox-hugo= 将 =.org= 文件导出
+
+首先安装 =ox-hugo= 插件。
+在 =Emacs= 中执行 =M-x package-refresh-contents RET= 刷新包索引。
+然后执行 =M-x package-install RET ox-hugo RET= 安装 =ox-hugo= 。
+
+在 =init.el= 中添加并启用 =xo-hugo= ：
+
+#+begin_example
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+#+end_example
+
+其中 =:after ox= 是一个非常关键的性能优化与依赖声明。
+简单来说，它的意思是：等 =Emacs= 加载了自带的 =Org= 导出引擎 =ox= （ =Org Export= ）之后，再开始加载 =ox-hugo= 。
+
+在 =Emacs= 中打开刚才写的 =hello-world.org= ，按下快捷键 =C-c C-e= (进入导出菜单)，然后依次按下 =H= (选择 =Hugo= 选项) 和 =h= (导出当前文件)。
+
+此时， =Hugo= 项目的 =content/posts/= 目录下，自动生成了一个 =hello-world.md= 。
+假设 =hello-world.org= 文件中有插入图片 =[[file:./images/gc-architecture.png]]= ，那么 =Hugo= 会自动把该图片复制到项目目录 =my-tech-blog= 下的 =static/ox-hugo/gc-architecture.png= ，并且在 =hello-world.md= 文件中把图片路径改为
+
+#+begin_example
+![img](/ox-hugo/gc-architecture.png)
+#+end_example
+
+回忆我们的 =hello-world.org= 文件的开头设置了 =CSS= 样式
+
+#+begin_example
+#+BEGIN_EXPORT html
+<style>
+  /* 仅在这篇文章中生效的临时样式 */
+  .question {
+      border: 2px solid #666;
+      background-color: #f5f5f5;
+      padding: 1em;
+      margin: 1em 0;
+      border-radius: 8px;
+  }
+  .solution {
+      border-left: 5px solid green;
+      padding-left: 1em;
+      margin: 1em 0;
+  }
+</style>
+#+END_EXPORT
+#+end_example
+
+在导出为 =.md= 文件时， =Hugo= 的渲染引擎（ =goldmark= ）出于安全考虑，默认是严格禁止在 =Markdown= 中直接内嵌原生 =HTML= 标签默认。
+结果是 =Markdown= 文件丢失了该有的 =CSS= 样式。
+解决的办法是在的 =hugo.yaml= 文件中添加以下内容：
+
+#+begin_example
+markup:
+  goldmark:
+    renderer:
+      # 允许在 Markdown 中直接渲染原生 HTML 标签
+      unsafe: true
+#+end_example
+
+* 增加 =search= 页面
+
+=PaperMod= 原生就内置了非常漂亮的全站动态搜索功能，所以可以比较容易地在网页右上角增加「搜索（Search）」功能。
+需要做两件事：在 =hugo.yaml= 中开启搜索配置，以及创建一个搜索页面。
+
+首先打开的 =hugo.yaml= ，在最顶层（和 =theme= 、 =title= 平级的地方）添加以下配置，告诉 =Hugo= 在编译时生成一个用于搜索的 =JSON= 索引文件：
+
+#+begin_example
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # 必须加上这一行，生成 search.json 供前端搜索使用
+#+end_example
+
+然后在 =hugo.yaml= 的 =params:= 模块下，找到（或添加） =menu:= 配置，将 =Search= 页面挂到右上角。
+同时，确保 =params:= 下开启了 =ShowCodeCopyButtons= 等：
+
+#+begin_example
+menu:
+  main:
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 20
+    - name: "🔍 search"    # 显示在右上角的文字
+      url: "/search/"     # 对应的页面路径
+      weight: 30           # 权重，数字越小越靠左
+
+#+end_example
+
+光在菜单里加了链接还不够，我们还需要为 =Hugo= 创建一个专门用来承载搜索功能的「空页面」。
+在 =content-org/= 目录下新建一个名为 =search.org= 的文件，写入以下内容：
+
+#+begin_example
+#+TITLE: Search
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: /
+#+HUGO_LAYOUT: search
+#+HUGO_DRAFT: false
+#+end_example
+
+其中
+
++ =#+HUGO_SECTION: /= 意思是这个页面不属于 =posts= （文章），而是生成在网站的根目录下（即 =content/search.md= ）。
++ =#+HUGO_LAYOUT: search= 这是它告诉 =PaperMod= 主题：这个页面不要渲染成普通文章，请使用你内置的搜索布局（ =Layout= ）。
+
+写完后，按下 =C-c C-e H h= 导出它。
+
+* 增加 =archives= 页面
+
+=Archive= （归档）页面就像一本杂志的「总目录」，它通常只保留「发布日期」 + 「文章标题」，按年份和月份聚合，方便读者看到博客中博文的产出和更新频率。
+在 =PaperMod= 主题中增加 =Archive= 页面的步骤和之前的 =Search= 页面几乎一模一样。
+
+首先打开 =hugo.yaml= ，在 =menu.main= 下方增加一行归档页面的路由：
+
+#+begin_example
+menu:
+  main:
+    - name: "归档"
+      url: "archives/"     # 注意：PaperMod 默认的归档页面路径通常是 archives/
+      weight: 20          # 权重比搜索稍大，排在搜索的右侧
+    - name: "🔍 搜索"
+      url: "search/"
+      weight: 10
+#+end_example
+
+然后在 =content-org/= 目录下新建一个名为 =archives.org= 的文件，写入以下内容：
+
+#+begin_example
+#+TITLE: Archives
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: /
+#+HUGO_LAYOUT: archives
+#+HUGO_DRAFT: false
+#+end_example
+
+其中
+
++ =#+HUGO_SECTION: /= 生成在网站根目录下（即 =content/archives.md= ）。
++ =#+HUGO_LAYOUT: archives= 告诉主题使用内置的归档时光轴布局。
+
+写完后，按下 =C-c C-e H h= 导出它。
+
+* 本地预览服务 =hugo server=
+
+终端 =cd= 项目目录 =my-tech-blog= 下，执行 =hugo server= ，即可打开本地预览服务。
+在浏览器中打开网页 =http://localhost:1313/= ，就能在本地看到博客实时的样子。
+
+要运行一个清除缓存并强制渲染的组合命令重新启动，执行：
+
+#+begin_example
+$ hugo server --disableFastRender --gc
+#+end_example
+
+* 推送至 GitHub
+
+现在可以将 =Hugo= 项目目录 =my-tech-blog= 推送到 GitHub 的私有或公共仓库：
+
+#+begin_example
+$ git add .
+$ git commit -m "feat: initial commit with my first org post"
+$ git branch -M main
+$ git remote add origin https://github.com/yourusername/your-repo.git
+$ git push -u origin main
+#+end_example
+
+* 部署到 Netlify
+
+1. 登录 =Netlify= （直接用 =GitHub= 账号登录最方便）。
+2. 点击 =Add new project -> Import a git repository= 。
+3. 选择 GitHub 并授权，找到你刚才创建的博客仓库。
+4. Site configuration（核心配置）：
+    =Netlify= 非常聪明，它如果识别到这是 Hugo 项目，通常会自动填好配置。
+    请确保配置如下：
+    + =Build command= （构建命令）:  =hugo --gc --minify=
+    + =Publish directory= （发布目录）: =public=
+    + 在 =Environment variables= （环境变量）区域，点击 =Add a variable -> Create a single variable= ，填写以下内容：
+      - =Key= : =HUGO_VERSION=
+      - =value= : =0.163.3= （这里改成你的本地 =Hugo= 版本号，可以在本地终端执行 =hugo version= 查询到。）
+5. 点击页面最下方的 =Deploy= [你的项目名]。
+
+稍等片刻， =Netlify= 就会分配给你一个形如 =https://xxx-xxxx.netlify.app= 的二级域名。
+点开它，就可以在互联网上看到你的博客。
+
+上述 Site configuration 的过程，需要在 =Netlify= 网页上点来点去。
+如果不像这样做，或者希望以后把这个博客仓库迁移到别的平台时配置也能跟着代码走，可以在 =Hugo= 项目根目录（也就是 =my-tech-blog= ）下新建一个名为 =netlify.toml= 的文件，把配置直接写在代码里：
+
+#+begin_example
+[build]
+  command = "hugo --gc --minify"
+  publish = "public"
+
+[build.environment]
+  HUGO_VERSION = "0.163.3" # 这里改成你的本地 Hugo 版本
+#+end_example
+
+
