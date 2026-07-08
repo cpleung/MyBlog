@@ -62,6 +62,9 @@ menu:
       name: tags
       url: /tags/
       weight: 20
+    - name: "archives"
+      url: "archives/"     # 注意：PaperMod 默认的归档页面路径通常是 archives/
+      weight: 25
     - name: "🔍 search"    # 显示在右上角的文字
       url: "/search/"     # 对应的页面路径
       weight: 30           # 权重，数字越小越靠左

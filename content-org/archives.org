@@ -1,0 +1,5 @@
+#+TITLE: Archives
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: /
+#+HUGO_LAYOUT: archives
+#+HUGO_DRAFT: false
