@@ -4,7 +4,7 @@
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: posts
 #+HUGO_PAIRED_OUT_DIR: ../static
-#+HUGO_TAGS: R
+#+HUGO_TAGS: Hugo Netlift Emacs Org
 #+HUGO_CATEGORIES: tech
 #+HUGO_DRAFT: false
 
@@ -493,3 +493,140 @@ $ git push -u origin main
 #+end_example
 
 
+* 日常写作工作流
+
+当完成了上述的「一次性配置」后，以后的日常写作和更新流程会变得异常简单：
+
+1. 打开 =Emacs= ，在 =content-org/= 下新建或修改 =.org= 文件。
+2. 写完后，在 =Emacs= 里按 =C-c C-e H h= 导出。
+3. 打开终端（或在 =Emacs= 内使用 =Magit= ）：
+   #+begin_example
+   $ git add .
+   $ git commit -m "Publish new post about Org-mode"
+   $ git push
+   #+end_example
+4. =Netlify= 会在后台自动帮你搞定剩下的事情，2分钟内新文章就会出现在你的网站上。
+
+* 使用 =Umami= 统计博客浏览量
+
+=Umami= 是开源圈和独立博客圈中流行的轻量级统计分析工具，是 =Google Analytics= 的替代品。
+=Umami= 官方提的供免费云端托管额度足够个人博客的使用。
+此外， =Umami= 不收集任何个人隐私（不使用 =Cookie= ），脚本只有 2KB。
+你可以配置用你自己的博客子域名来加载它， =AdBlock= 完全无法拦截。
+
+首先获取 =Umami= 的统计代码：
+
+1. 注册并登录 [[https://umami.is/][Umami Cloud]] 。
+2. 在后台点击 =Add website= ，填入你的博客域名（如 =your-domain.netlify.app= ，不需要写 =http://= ）。
+3. 创建完成后，点击该网站旁边的 =Edit -> Tracking code= ，获得一段类似这样的 =HTML= 脚本：
+   #+begin_example
+   <script defer src="https://cloud.umami.is/script.js" data-website-id="你的唯一ID"></script>
+   #+end_example
+
+然后将代码注入到 =PaperMod= 主题中：
+
+1. 打开之前创建的 =layouts/partials/extend_head.html= 文件。
+2. 将从 =Umami= 拿到的那一行 =<script>= 代码直接粘贴到该文件的最末尾。
+3. 保存文件。
+
+再使用 =Git= 将修改推送到 =GitHub= ：
+
+#+begin_example
+$ git add layouts/partials/extend_head.html
+$ git commit -m "chore: add umami analytics script"
+$ git push
+#+end_example
+
+当 =Netlify= 构建部署完成后，只要有人访问你的博客，你就可以在 =Umami= 后台看到实时动态了（包含浏览量 PV= 、访客数 UV、热门文章排行、读者来自哪个国家或哪个操作系统）。
+
+* 搭建评论系统 =Giscus=
+
+我们选用目前最纯粹、最适合技术博客的方案 =Giscus= 搭建评论系统。
+它完全免费、无广告，利用 =GitHub= 的 =Discussions= 功能来存放评论，读者可以直接用 =GitHub= 账号登录和点赞。
+搭建评论系统的步骤主要是：准备 =GitHub= 仓库、安装并授权 =giscus app= 、获取 =Giscus= 配置代码、将代码注入 =PaperMod= 主题。
+
+首先准备 =GitHub= 仓库。
+
+=Giscus= 需要一个公开的 =GitHub= 仓库来存放评论数据，所以仓库必须是公开的 =Public= 。
+如果博客仓库目前是 =Private= （私有），请去仓库的 =Settings= ， 拉到最底部 =Danger Zone= =->= =Change repository visibility= 改为 =Public= 。
+
+再启用仓库的 =Discussions= 功能：
+
++ 进入你的 =GitHub= 博客仓库页面。
++ 点击右上角的 =Settings= （设置）。
++ 在左侧菜单点击 =General= ，在右侧向下滚动找到 =Features= 这一栏，勾选 =Discussions= 选项。
+
+下面安装并授权 =giscus app= 。
+
+1. 在浏览器中直接打开 =GitHub= 官方应用商店的 Giscus 页面 [[https://github.com/apps/giscus]] 。
+2. 点击页面右上角醒目的绿色按钮： =Install= （如果之前点过，这里可能会显示 =Configure= ）。
+3. 选择账户： 在弹出的页面中，点击选择你的个人 =GitHub= 账户。
+4. 配置权限（关键步）：
+   + 页面会问你：你想把 =Giscus= 安装到哪里？
+   + 建议勾选 =Only select repositories= （仅选择特定的仓库）。
+   +  在下方的下拉搜索框中，选择你当前的博客仓库（例如 =你的GitHub用户名/你的博客仓库名= ）。
+   + 点击最下方的绿色 =Install= （或 =Save= ）按钮，输入你的 =GitHub= 密码或邮件验证码确认。
+
+授权完成后，开始配置 =Giscus= 并获取你的专属代码。
+
+1. 在浏览器中打开 Giscus 官网：[[https://giscus.app/zh-CN]] 。
+2. 往下滚动到 仓库 =Repository= 输入框，按照格式填入你的用户名和仓库名，例如： =你的GitHub用户名/你的博客仓库名= 。
+3. 接着往下滚动，配置以下推荐选项：
+   + 页面与讨论的映射关系： 选择 =讨论标题包含页面的 pathname= （最稳定，能精准匹配每一篇文章）。
+   + 讨论分类 =Discussion Category= ： 选择 =Announcements= （公告）或 =General= 。
+   + 特性： 建议勾选 =在评论上方加载评论表单= ，其他保持默认。
+   + 主题 =Theme= ： 选择 =preferred_color_scheme= （这样评论区会自动跟随读者电脑系统的黑夜/白天模式切换，和 =PaperMod= 完美契合）。
+4. 完成后，页面最下方的激活 =giscus= 区域会自动生成一段完整的 =HTML= 代码，它看起来像这样（请复制你自己的那段代码）：
+   #+begin_example
+   <script src="https://giscus.app/client.js"
+        data-repo="你的用户名/你的仓库名"
+        data-repo-id="R_kgDO..."
+        data-category="Announcements"
+        data-category-id="DIC_..."
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="preferred_color_scheme"
+        data-lang="zh-CN"
+        crossorigin="anonymous"
+        async>
+   </script>
+   #+end_example
+
+=PaperMod= 主题内置了完美的评论配置接口。
+我们只需要把这段代码放进对应的扩展槽，并且在 =hugo.yaml= 里开启它。
+
+先创建评论模板文件
+
+1.  在你的 =Hugo= 项目根目录下，进入 =layouts/partials/= 文件夹。
+2. 在该目录下新建一个名为 =comments.html= 的文件。
+3. 将上述从 =Giscus= 官网复制的整段 =<script> ... </script>= 代码直接粘贴进去，然后保存。
+
+然后在全局配置中开启评论。
+打开项目根目录下的 =hugo.yaml= ，在 =params: = 下找到 =comments:= ，把参数改为 =true= 。
+修改后的局部结构应该如下所示：
+
+#+begin_example
+title: "我的技术日志"
+theme: "PaperMod"
+
+params:
+  math: true
+  # 💡 核心：开启全局评论支持
+  comments: true
+#+end_example
+
+主要步骤都完成了，现在开始测试与上线。
+
+1. 本地预览： 在本地终端运行 =hugo server= ，打开浏览器进入任意一篇写好的技术文章详情页，拉到最底部。
+   此时应该能看到一个精美的 =Giscus= 评论框正在加载。
+2. 推送上线： 确认无误后，用 =Git= 将新文件提交并推送到 =GitHub= ：
+   #+begin_example
+   $ git add layouts/partials/comments.html hugo.yaml
+   $ git commit -m "feat: setup giscus comments system"
+   $ git push
+   #+end_example
+
+当 =Netlify= 自动部署完成后，你的线上技术博客就拥有一个完全属于你的互动评论区了！

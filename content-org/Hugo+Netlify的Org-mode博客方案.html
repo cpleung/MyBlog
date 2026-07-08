@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-07-08 Wed 07:42 -->
+<!-- 2026-07-08 Wed 12:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hugo + Netlify 的 Org-mode 博客方案</title>
@@ -201,16 +201,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcb57b4c">1. 安装 <code>Hugo</code></a></li>
-<li><a href="#org72224da">2. 本地初始化 <code>Hugo</code> 项目</a></li>
-<li><a href="#orgff2d702">3. <code>hugo.yaml</code> 配置文件</a></li>
-<li><a href="#orge524e89">4. 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</a></li>
-<li><a href="#org1fe4081">5. 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</a></li>
-<li><a href="#org646205e">6. <code>Org</code> 文章的文件头的设置</a></li>
-<li><a href="#org417e465">7. 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</a></li>
-<li><a href="#orgd051227">8. 增加 <code>search</code> 页面</a></li>
-<li><a href="#org6178f75">9. 推送至 GitHub</a></li>
-<li><a href="#orgfe8034d">10. 部署到 Netlify</a></li>
+<li><a href="#org3c77563">1. 安装 <code>Hugo</code></a></li>
+<li><a href="#org6dca6b2">2. 本地初始化 <code>Hugo</code> 项目</a></li>
+<li><a href="#orgeac2259">3. <code>hugo.yaml</code> 配置文件</a></li>
+<li><a href="#org923610a">4. 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</a></li>
+<li><a href="#org16c4a0c">5. 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</a></li>
+<li><a href="#orgee3563c">6. <code>Org</code> 文章的文件头的设置</a></li>
+<li><a href="#org9f1d37c">7. 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</a></li>
+<li><a href="#org3b4138f">8. 增加 <code>search</code> 页面</a></li>
+<li><a href="#orgfda9a29">9. 增加 <code>archives</code> 页面</a></li>
+<li><a href="#orgfa3a955">10. 本地预览服务 <code>hugo server</code></a></li>
+<li><a href="#orgf233e29">11. 推送至 GitHub</a></li>
+<li><a href="#org90a2c56">12. 部署到 Netlify</a></li>
+<li><a href="#org3ff735e">13. 日常写作工作流</a></li>
+<li><a href="#org6696214">14. 使用 <code>Umami</code> 统计博客浏览量</a></li>
+<li><a href="#orgf9c048a">15. 搭建评论系统 <code>Giscus</code></a></li>
 </ul>
 </div>
 </div>
@@ -225,8 +230,12 @@
 <li>代码仓库（ <code>GitHub</code> ）： 项目里同时包含 <code>Org</code> 源码和生成的 <code>Markdown</code> ，通过 <code>git push</code> 推送到 <code>GitHub</code> 。</li>
 <li>云端（ <code>Netlify</code> ）： <code>Netlify</code> 检测到代码更新，自动运行 <code>Hugo</code> 命令，将 <code>Markdown</code> 编译成极速的静态网页并发布。</li>
 </ul>
-<div id="outline-container-orgcb57b4c" class="outline-2">
-<h2 id="orgcb57b4c"><span class="section-number-2">1.</span> 安装 <code>Hugo</code></h2>
+
+<p>
+下面记录在 AI 的帮助下，搭建博客的过程。
+</p>
+<div id="outline-container-org3c77563" class="outline-2">
+<h2 id="org3c77563"><span class="section-number-2">1.</span> 安装 <code>Hugo</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>macOS</code> 可以通过 <code>MacPorts</code> 安装 <code>Hugo</code> 。
@@ -236,7 +245,7 @@
 更新 <code>port</code> 索引后查看可用 <code>hugo</code> 包：
 </p>
 
-<pre class="example" id="org2a7c679">
+<pre class="example" id="org1a4d4bd">
 $ sudo port selfupdate
 $ port search hugo
 hugo @0.163.3 (www)
@@ -253,7 +262,7 @@ Found 2 ports.
 安装并验证：
 </p>
 
-<pre class="example" id="org96b5096">
+<pre class="example" id="org70fff5b">
 $ sudo port install hugo
 $ hugo version
 hugo v0.163.3+extended darwin/amd64 BuildDate=unknown VendorInfo=macports
@@ -264,14 +273,14 @@ hugo v0.163.3+extended darwin/amd64 BuildDate=unknown VendorInfo=macports
 </p>
 </div>
 </div>
-<div id="outline-container-org72224da" class="outline-2">
-<h2 id="org72224da"><span class="section-number-2">2.</span> 本地初始化 <code>Hugo</code> 项目</h2>
+<div id="outline-container-org6dca6b2" class="outline-2">
+<h2 id="org6dca6b2"><span class="section-number-2">2.</span> 本地初始化 <code>Hugo</code> 项目</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 选择一个本地目录，进入后运行以下命令创建一个新的博客项目：
 </p>
 
-<pre class="example" id="org0199933">
+<pre class="example" id="org361efaa">
 $ hugo new site my-tech-blog
 $ cd my-tech-blog
 $ git init
@@ -286,7 +295,7 @@ $ git init
 在 <code>my-tech-blog</code> 文件夹下创建 <code>.gitignore</code> 文件，内容是：
 </p>
 
-<pre class="example" id="orge674cfb">
+<pre class="example" id="org04a3654">
 /public/
 /resources/
 .hugo_build.lock
@@ -324,7 +333,7 @@ $ git init
 根据该主题的官方 <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Installation">安装说明</a>，在 <code>my-tech-blog</code> 目录下执行：
 </p>
 
-<pre class="example" id="org15734c2">
+<pre class="example" id="orgfff2ef9">
 $ git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
 </pre>
 
@@ -342,7 +351,7 @@ $ git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git
 这时候必须运行命令
 </p>
 
-<pre class="example" id="org3fe34f2">
+<pre class="example" id="orgc5c9d41">
 $ git submodule update --init --recursive
 </pre>
 
@@ -351,8 +360,8 @@ $ git submodule update --init --recursive
 </p>
 </div>
 </div>
-<div id="outline-container-orgff2d702" class="outline-2">
-<h2 id="orgff2d702"><span class="section-number-2">3.</span> <code>hugo.yaml</code> 配置文件</h2>
+<div id="outline-container-orgeac2259" class="outline-2">
+<h2 id="orgeac2259"><span class="section-number-2">3.</span> <code>hugo.yaml</code> 配置文件</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 把 <code>my-tech-blog</code> 目录下的文件 <code>hugo.toml</code> 删去，然后新建文件 <code>hugo.yaml</code> 。
@@ -361,7 +370,7 @@ $ git submodule update --init --recursive
 我们采用以下的配置：
 </p>
 
-<pre class="example" id="org046b9da">
+<pre class="example" id="org3010e27">
 # 点击 https://github.com/adityatelange/hugo-PaperMod/wiki/Installation 查看完整的模版
 
 baseURL: "https://your-domain.netlify.app/" # 可以先写个大概，后续在 Netlify 拿到了再改
@@ -426,6 +435,9 @@ menu:
       name: tags
       url: /tags/
       weight: 20
+    - name: "archives"
+      url: "archives/"     # 注意：PaperMod 默认的归档页面路径通常是 archives/
+      weight: 25
     - name: "🔍 search"    # 显示在右上角的文字
       url: "/search/"     # 对应的页面路径
       weight: 30           # 权重，数字越小越靠左
@@ -437,17 +449,21 @@ markup:
       # 允许在 Markdown 中直接渲染原生 HTML 标签
       unsafe: true
 </pre>
+
+<p>
+有些配置为什么要设置，下面会有解答。
+</p>
 </div>
 </div>
-<div id="outline-container-orge524e89" class="outline-2">
-<h2 id="orge524e89"><span class="section-number-2">4.</span> 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</h2>
+<div id="outline-container-org923610a" class="outline-2">
+<h2 id="org923610a"><span class="section-number-2">4.</span> 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 虽然在 <code>hugo.yaml</code> 中设置了 <code>math: true</code> ，数学公式依然无法渲染，原因在于 <code>PaperMod</code> 并没有原生内置加载 <code>MathJax/KaTeX</code> 脚本的逻辑。
 解决办法是在 Hugo 项目根目录 <code>my-tech-blog</code> 下，创建以下路径的文件夹（如果没有就新建）： <code>layouts/partials/</code> ，并在该目录下新建一个名为 <code>extend_head.html</code> 的文件： <code>my-tech-blog/layouts/partials/extend_head.html</code> ，然后将以下 KaTeX 自动渲染脚本 复制并粘贴进去：
 </p>
 
-<pre class="example" id="orgd937904">
+<pre class="example" id="org266c0e6">
 {{ if or .Params.math .Site.Params.math }}
 &lt;!-- 引入 KaTeX 核心 CSS --&gt;
 &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"&gt;
@@ -467,14 +483,14 @@ markup:
 </pre>
 </div>
 </div>
-<div id="outline-container-org1fe4081" class="outline-2">
-<h2 id="org1fe4081"><span class="section-number-2">5.</span> 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</h2>
+<div id="outline-container-org16c4a0c" class="outline-2">
+<h2 id="org16c4a0c"><span class="section-number-2">5.</span> 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 在 <code>Hugo</code> 项目根目录 <code>my-tech-blog</code> 下，新建一个叫 <code>content-org</code> 的文件夹来存放 <code>Org</code> 原稿。
 </p>
 
-<pre class="example" id="org8682f34">
+<pre class="example" id="orgfe09b1f">
 $ mkdir content-org
 </pre>
 
@@ -486,7 +502,7 @@ $ mkdir content-org
 在 <code>content-org</code> 中可以新建 <code>images/</code> 目录，用于存放 <code>.org</code> 文件的图片。
 </p>
 
-<pre class="example" id="org3eaa0e6">
+<pre class="example" id="org58e59d8">
 my-tech-blog/
 ├── content-org/
 │   ├── hello-world.org
@@ -495,15 +511,15 @@ my-tech-blog/
 </pre>
 </div>
 </div>
-<div id="outline-container-org646205e" class="outline-2">
-<h2 id="org646205e"><span class="section-number-2">6.</span> <code>Org</code> 文章的文件头的设置</h2>
+<div id="outline-container-orgee3563c" class="outline-2">
+<h2 id="orgee3563c"><span class="section-number-2">6.</span> <code>Org</code> 文章的文件头的设置</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 在 <code>content-org/</code> 下新建一个文件，比如 <code>hello-world.org</code> 。
 举例来说，这个 <code>org</code> 文档的文件头可以是：
 </p>
 
-<pre class="example" id="org132d1f9">
+<pre class="example" id="orgeb5ec4d">
 #+title: Hello World
 #+author: John
 #+DATE: 2026-07-07
@@ -547,8 +563,8 @@ my-tech-blog/
 </ul>
 </div>
 </div>
-<div id="outline-container-org417e465" class="outline-2">
-<h2 id="org417e465"><span class="section-number-2">7.</span> 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</h2>
+<div id="outline-container-org9f1d37c" class="outline-2">
+<h2 id="org9f1d37c"><span class="section-number-2">7.</span> 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 首先安装 <code>ox-hugo</code> 插件。
@@ -560,7 +576,7 @@ my-tech-blog/
 在 <code>init.el</code> 中添加并启用 <code>xo-hugo</code> ：
 </p>
 
-<pre class="example" id="orge054b60">
+<pre class="example" id="org9767bf0">
 (use-package ox-hugo
   :ensure t
   :after ox)
@@ -580,7 +596,7 @@ my-tech-blog/
 假设 <code>hello-world.org</code> 文件中有插入图片 <code>[[file:./images/gc-architecture.png]]</code> ，那么 <code>Hugo</code> 会自动把该图片复制到项目目录 <code>my-tech-blog</code> 下的 <code>static/ox-hugo/gc-architecture.png</code> ，并且在 <code>hello-world.md</code> 文件中把图片路径改为
 </p>
 
-<pre class="example" id="org8465589">
+<pre class="example" id="orgd120820">
 ![img](/ox-hugo/gc-architecture.png)
 </pre>
 
@@ -588,7 +604,7 @@ my-tech-blog/
 回忆我们的 <code>hello-world.org</code> 文件的开头设置了 <code>CSS</code> 样式
 </p>
 
-<pre class="example" id="orgff1143a">
+<pre class="example" id="orgc9f5e0d">
 #+BEGIN_EXPORT html
 &lt;style&gt;
   /* 仅在这篇文章中生效的临时样式 */
@@ -614,7 +630,7 @@ my-tech-blog/
 解决的办法是在的 <code>hugo.yaml</code> 文件中添加以下内容：
 </p>
 
-<pre class="example" id="orgbf0db9b">
+<pre class="example" id="org3506f04">
 markup:
   goldmark:
     renderer:
@@ -623,18 +639,149 @@ markup:
 </pre>
 </div>
 </div>
-<div id="outline-container-orgd051227" class="outline-2">
-<h2 id="orgd051227"><span class="section-number-2">8.</span> 增加 <code>search</code> 页面</h2>
-</div>
+<div id="outline-container-org3b4138f" class="outline-2">
+<h2 id="org3b4138f"><span class="section-number-2">8.</span> 增加 <code>search</code> 页面</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+<code>PaperMod</code> 原生就内置了非常漂亮的全站动态搜索功能，所以可以比较容易地在网页右上角增加「搜索（Search）」功能。
+需要做两件事：在 <code>hugo.yaml</code> 中开启搜索配置，以及创建一个搜索页面。
+</p>
 
-<div id="outline-container-org6178f75" class="outline-2">
-<h2 id="org6178f75"><span class="section-number-2">9.</span> 推送至 GitHub</h2>
+<p>
+首先打开的 <code>hugo.yaml</code> ，在最顶层（和 <code>theme</code> 、 <code>title</code> 平级的地方）添加以下配置，告诉 <code>Hugo</code> 在编译时生成一个用于搜索的 <code>JSON</code> 索引文件：
+</p>
+
+<pre class="example" id="org3c8fc85">
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # 必须加上这一行，生成 search.json 供前端搜索使用
+</pre>
+
+<p>
+然后在 <code>hugo.yaml</code> 的 <code>params:</code> 模块下，找到（或添加） <code>menu:</code> 配置，将 <code>Search</code> 页面挂到右上角。
+同时，确保 <code>params:</code> 下开启了 <code>ShowCodeCopyButtons</code> 等：
+</p>
+
+<pre class="example" id="org27bdd9c">
+menu:
+  main:
+    - identifier: categories
+      name: categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: tags
+      url: /tags/
+      weight: 20
+    - name: "🔍 search"    # 显示在右上角的文字
+      url: "/search/"     # 对应的页面路径
+      weight: 30           # 权重，数字越小越靠左
+
+</pre>
+
+<p>
+光在菜单里加了链接还不够，我们还需要为 <code>Hugo</code> 创建一个专门用来承载搜索功能的「空页面」。
+在 <code>content-org/</code> 目录下新建一个名为 <code>search.org</code> 的文件，写入以下内容：
+</p>
+
+<pre class="example" id="org2a747dd">
+#+TITLE: Search
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: /
+#+HUGO_LAYOUT: search
+#+HUGO_DRAFT: false
+</pre>
+
+<p>
+其中
+</p>
+
+<ul class="org-ul">
+<li><code>#+HUGO_SECTION: /</code> 意思是这个页面不属于 <code>posts</code> （文章），而是生成在网站的根目录下（即 <code>content/search.md</code> ）。</li>
+<li><code>#+HUGO_LAYOUT: search</code> 这是它告诉 <code>PaperMod</code> 主题：这个页面不要渲染成普通文章，请使用你内置的搜索布局（ <code>Layout</code> ）。</li>
+</ul>
+
+<p>
+写完后，按下 <code>C-c C-e H h</code> 导出它。
+</p>
+</div>
+</div>
+<div id="outline-container-orgfda9a29" class="outline-2">
+<h2 id="orgfda9a29"><span class="section-number-2">9.</span> 增加 <code>archives</code> 页面</h2>
 <div class="outline-text-2" id="text-9">
+<p>
+<code>Archive</code> （归档）页面就像一本杂志的「总目录」，它通常只保留「发布日期」 + 「文章标题」，按年份和月份聚合，方便读者看到博客中博文的产出和更新频率。
+在 <code>PaperMod</code> 主题中增加 <code>Archive</code> 页面的步骤和之前的 <code>Search</code> 页面几乎一模一样。
+</p>
+
+<p>
+首先打开 <code>hugo.yaml</code> ，在 <code>menu.main</code> 下方增加一行归档页面的路由：
+</p>
+
+<pre class="example" id="orgcc9f4f1">
+menu:
+  main:
+    - name: "归档"
+      url: "archives/"     # 注意：PaperMod 默认的归档页面路径通常是 archives/
+      weight: 20          # 权重比搜索稍大，排在搜索的右侧
+    - name: "🔍 搜索"
+      url: "search/"
+      weight: 10
+</pre>
+
+<p>
+然后在 <code>content-org/</code> 目录下新建一个名为 <code>archives.org</code> 的文件，写入以下内容：
+</p>
+
+<pre class="example" id="orgca3ee99">
+#+TITLE: Archives
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: /
+#+HUGO_LAYOUT: archives
+#+HUGO_DRAFT: false
+</pre>
+
+<p>
+其中
+</p>
+
+<ul class="org-ul">
+<li><code>#+HUGO_SECTION: /</code> 生成在网站根目录下（即 <code>content/archives.md</code> ）。</li>
+<li><code>#+HUGO_LAYOUT: archives</code> 告诉主题使用内置的归档时光轴布局。</li>
+</ul>
+
+<p>
+写完后，按下 <code>C-c C-e H h</code> 导出它。
+</p>
+</div>
+</div>
+<div id="outline-container-orgfa3a955" class="outline-2">
+<h2 id="orgfa3a955"><span class="section-number-2">10.</span> 本地预览服务 <code>hugo server</code></h2>
+<div class="outline-text-2" id="text-10">
+<p>
+终端 <code>cd</code> 项目目录 <code>my-tech-blog</code> 下，执行 <code>hugo server</code> ，即可打开本地预览服务。
+在浏览器中打开网页 <code>http://localhost:1313/</code> ，就能在本地看到博客实时的样子。
+</p>
+
+<p>
+要运行一个清除缓存并强制渲染的组合命令重新启动，执行：
+</p>
+
+<pre class="example" id="org9de0749">
+$ hugo server --disableFastRender --gc
+</pre>
+</div>
+</div>
+<div id="outline-container-orgf233e29" class="outline-2">
+<h2 id="orgf233e29"><span class="section-number-2">11.</span> 推送至 GitHub</h2>
+<div class="outline-text-2" id="text-11">
 <p>
 现在可以将 <code>Hugo</code> 项目目录 <code>my-tech-blog</code> 推送到 GitHub 的私有或公共仓库：
 </p>
 
-<pre class="example" id="orgc207b40">
+<pre class="example" id="orga77366c">
 $ git add .
 $ git commit -m "feat: initial commit with my first org post"
 $ git branch -M main
@@ -643,35 +790,251 @@ $ git push -u origin main
 </pre>
 </div>
 </div>
-<div id="outline-container-orgfe8034d" class="outline-2">
-<h2 id="orgfe8034d"><span class="section-number-2">10.</span> 部署到 Netlify</h2>
-<div class="outline-text-2" id="text-10">
+<div id="outline-container-org90a2c56" class="outline-2">
+<h2 id="org90a2c56"><span class="section-number-2">12.</span> 部署到 Netlify</h2>
+<div class="outline-text-2" id="text-12">
 <ol class="org-ol">
 <li>登录 <code>Netlify</code> （直接用 <code>GitHub</code> 账号登录最方便）。</li>
 <li>点击 <code>Add new project -&gt; Import a git repository</code> 。</li>
 <li>选择 GitHub 并授权，找到你刚才创建的博客仓库。</li>
-<li><p>
-Site configuration（核心配置）：
-Netlify 非常聪明，它如果识别到这是 Hugo 项目，通常会自动填好配置。
+<li>Site configuration（核心配置）：
+<code>Netlify</code> 非常聪明，它如果识别到这是 Hugo 项目，通常会自动填好配置。
 请确保配置如下：
-</p>
 <ul class="org-ul">
 <li><code>Build command</code> （构建命令）:  <code>hugo --gc --minify</code></li>
 <li><code>Publish directory</code> （发布目录）: <code>public</code></li>
 <li>在 <code>Environment variables</code> （环境变量）区域，点击 <code>Add a variable -&gt; Create a single variable</code> ，填写以下内容：
 <ul class="org-ul">
 <li><code>Key</code> : <code>HUGO_VERSION</code></li>
-<li><code>value</code> : <code>0.163.3</code> （在本地终端执行 <code>hugo version</code> 查询所安装的 <code>Hugo</code> 的版本号，填写到这里。）</li>
+<li><code>value</code> : <code>0.163.3</code> （这里改成你的本地 <code>Hugo</code> 版本号，可以在本地终端执行 <code>hugo version</code> 查询到。）</li>
 </ul></li>
-</ul>
-
-<p>
-点击页面最下方的 Deploy [你的项目名]。
-</p></li>
+</ul></li>
+<li>点击页面最下方的 <code>Deploy</code> [你的项目名]。</li>
 </ol>
 
 <p>
-稍微等待几十秒，Netlify 就会分配给你一个形如 [<a href="https://xxx-xxxx.netlify.app">https://xxx-xxxx.netlify.app</a>](<a href="https://xxx-xxxx.netlify.app">https://xxx-xxxx.netlify.app</a>) 的二级域名。点开它，你的技术博客就已经全球可见了！
+稍等片刻， <code>Netlify</code> 就会分配给你一个形如 <code>https://xxx-xxxx.netlify.app</code> 的二级域名。
+点开它，就可以在互联网上看到你的博客。
+</p>
+
+<p>
+上述 Site configuration 的过程，需要在 <code>Netlify</code> 网页上点来点去。
+如果不像这样做，或者希望以后把这个博客仓库迁移到别的平台时配置也能跟着代码走，可以在 <code>Hugo</code> 项目根目录（也就是 <code>my-tech-blog</code> ）下新建一个名为 <code>netlify.toml</code> 的文件，把配置直接写在代码里：
+</p>
+
+<pre class="example" id="org23d61c3">
+[build]
+  command = "hugo --gc --minify"
+  publish = "public"
+
+[build.environment]
+  HUGO_VERSION = "0.163.3" # 这里改成你的本地 Hugo 版本
+</pre>
+</div>
+</div>
+<div id="outline-container-org3ff735e" class="outline-2">
+<h2 id="org3ff735e"><span class="section-number-2">13.</span> 日常写作工作流</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+当完成了上述的「一次性配置」后，以后的日常写作和更新流程会变得异常简单：
+</p>
+
+<ol class="org-ol">
+<li>打开 <code>Emacs</code> ，在 <code>content-org/</code> 下新建或修改 <code>.org</code> 文件。</li>
+<li>写完后，在 <code>Emacs</code> 里按 <code>C-c C-e H h</code> 导出。</li>
+<li><p>
+打开终端（或在 <code>Emacs</code> 内使用 <code>Magit</code> ）：
+</p>
+<pre class="example" id="org4d56ce5">
+$ git add .
+$ git commit -m "Publish new post about Org-mode"
+$ git push
+</pre></li>
+<li><code>Netlify</code> 会在后台自动帮你搞定剩下的事情，2分钟内新文章就会出现在你的网站上。</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org6696214" class="outline-2">
+<h2 id="org6696214"><span class="section-number-2">14.</span> 使用 <code>Umami</code> 统计博客浏览量</h2>
+<div class="outline-text-2" id="text-14">
+<p>
+<code>Umami</code> 是开源圈和独立博客圈中流行的轻量级统计分析工具，是 <code>Google Analytics</code> 的替代品。
+<code>Umami</code> 官方提的供免费云端托管额度足够个人博客的使用。
+此外， <code>Umami</code> 不收集任何个人隐私（不使用 <code>Cookie</code> ），脚本只有 2KB。
+你可以配置用你自己的博客子域名来加载它， <code>AdBlock</code> 完全无法拦截。
+</p>
+
+<p>
+首先获取 <code>Umami</code> 的统计代码：
+</p>
+
+<ol class="org-ol">
+<li>注册并登录 <a href="https://umami.is/">Umami Cloud</a> 。</li>
+<li>在后台点击 <code>Add website</code> ，填入你的博客域名（如 <code>your-domain.netlify.app</code> ，不需要写 <code>http://</code> ）。</li>
+<li><p>
+创建完成后，点击该网站旁边的 <code>Edit -&gt; Tracking code</code> ，获得一段类似这样的 <code>HTML</code> 脚本：
+</p>
+<pre class="example" id="org6a66f1c">
+&lt;script defer src="https://cloud.umami.is/script.js" data-website-id="你的唯一ID"&gt;&lt;/script&gt;
+</pre></li>
+</ol>
+
+<p>
+然后将代码注入到 <code>PaperMod</code> 主题中：
+</p>
+
+<ol class="org-ol">
+<li>打开之前创建的 <code>layouts/partials/extend_head.html</code> 文件。</li>
+<li>将从 <code>Umami</code> 拿到的那一行 <code>&lt;script&gt;</code> 代码直接粘贴到该文件的最末尾。</li>
+<li>保存文件。</li>
+</ol>
+
+<p>
+再使用 <code>Git</code> 将修改推送到 <code>GitHub</code> ：
+</p>
+
+<pre class="example" id="org811a09d">
+$ git add layouts/partials/extend_head.html
+$ git commit -m "chore: add umami analytics script"
+$ git push
+</pre>
+
+<p>
+当 <code>Netlify</code> 构建部署完成后，只要有人访问你的博客，你就可以在 <code>Umami</code> 后台看到实时动态了（包含浏览量 PV= 、访客数 UV、热门文章排行、读者来自哪个国家或哪个操作系统）。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf9c048a" class="outline-2">
+<h2 id="orgf9c048a"><span class="section-number-2">15.</span> 搭建评论系统 <code>Giscus</code></h2>
+<div class="outline-text-2" id="text-15">
+<p>
+我们选用目前最纯粹、最适合技术博客的方案 <code>Giscus</code> 搭建评论系统。
+它完全免费、无广告，利用 <code>GitHub</code> 的 <code>Discussions</code> 功能来存放评论，读者可以直接用 <code>GitHub</code> 账号登录和点赞。
+搭建评论系统的步骤主要是：准备 <code>GitHub</code> 仓库、安装并授权 <code>giscus app</code> 、获取 <code>Giscus</code> 配置代码、将代码注入 <code>PaperMod</code> 主题。
+</p>
+
+<p>
+首先准备 <code>GitHub</code> 仓库。
+</p>
+
+<p>
+<code>Giscus</code> 需要一个公开的 <code>GitHub</code> 仓库来存放评论数据，所以仓库必须是公开的 <code>Public</code> 。
+如果博客仓库目前是 <code>Private</code> （私有），请去仓库的 <code>Settings</code> ， 拉到最底部 <code>Danger Zone</code> <code>-&gt;</code> <code>Change repository visibility</code> 改为 <code>Public</code> 。
+</p>
+
+<p>
+再启用仓库的 <code>Discussions</code> 功能：
+</p>
+
+<ul class="org-ul">
+<li>进入你的 <code>GitHub</code> 博客仓库页面。</li>
+<li>点击右上角的 <code>Settings</code> （设置）。</li>
+<li>在左侧菜单点击 <code>General</code> ，在右侧向下滚动找到 <code>Features</code> 这一栏，勾选 <code>Discussions</code> 选项。</li>
+</ul>
+
+<p>
+下面安装并授权 <code>giscus app</code> 。
+</p>
+
+<ol class="org-ol">
+<li>在浏览器中直接打开 <code>GitHub</code> 官方应用商店的 Giscus 页面 <a href="https://github.com/apps/giscus">https://github.com/apps/giscus</a> 。</li>
+<li>点击页面右上角醒目的绿色按钮： <code>Install</code> （如果之前点过，这里可能会显示 <code>Configure</code> ）。</li>
+<li>选择账户： 在弹出的页面中，点击选择你的个人 <code>GitHub</code> 账户。</li>
+<li>配置权限（关键步）：
+<ul class="org-ul">
+<li>页面会问你：你想把 <code>Giscus</code> 安装到哪里？</li>
+<li>建议勾选 <code>Only select repositories</code> （仅选择特定的仓库）。</li>
+<li>在下方的下拉搜索框中，选择你当前的博客仓库（例如 <code>你的GitHub用户名/你的博客仓库名</code> ）。</li>
+<li>点击最下方的绿色 <code>Install</code> （或 <code>Save</code> ）按钮，输入你的 <code>GitHub</code> 密码或邮件验证码确认。</li>
+</ul></li>
+</ol>
+
+<p>
+授权完成后，开始配置 <code>Giscus</code> 并获取你的专属代码。
+</p>
+
+<ol class="org-ol">
+<li>在浏览器中打开 Giscus 官网：<a href="https://giscus.app/zh-CN">https://giscus.app/zh-CN</a> 。</li>
+<li>往下滚动到 仓库 <code>Repository</code> 输入框，按照格式填入你的用户名和仓库名，例如： <code>你的GitHub用户名/你的博客仓库名</code> 。</li>
+<li>接着往下滚动，配置以下推荐选项：
+<ul class="org-ul">
+<li>页面与讨论的映射关系： 选择 <code>讨论标题包含页面的 pathname</code> （最稳定，能精准匹配每一篇文章）。</li>
+<li>讨论分类 <code>Discussion Category</code> ： 选择 <code>Announcements</code> （公告）或 <code>General</code> 。</li>
+<li>特性： 建议勾选 <code>在评论上方加载评论表单</code> ，其他保持默认。</li>
+<li>主题 <code>Theme</code> ： 选择 <code>preferred_color_scheme</code> （这样评论区会自动跟随读者电脑系统的黑夜/白天模式切换，和 <code>PaperMod</code> 完美契合）。</li>
+</ul></li>
+<li><p>
+完成后，页面最下方的激活 <code>giscus</code> 区域会自动生成一段完整的 <code>HTML</code> 代码，它看起来像这样（请复制你自己的那段代码）：
+</p>
+<pre class="example" id="org05eecf5">
+&lt;script src="https://giscus.app/client.js"
+     data-repo="你的用户名/你的仓库名"
+     data-repo-id="R_kgDO..."
+     data-category="Announcements"
+     data-category-id="DIC_..."
+     data-mapping="pathname"
+     data-strict="0"
+     data-reactions-enabled="1"
+     data-emit-metadata="0"
+     data-input-position="top"
+     data-theme="preferred_color_scheme"
+     data-lang="zh-CN"
+     crossorigin="anonymous"
+     async&gt;
+&lt;/script&gt;
+</pre></li>
+</ol>
+
+<p>
+<code>PaperMod</code> 主题内置了完美的评论配置接口。
+我们只需要把这段代码放进对应的扩展槽，并且在 <code>hugo.yaml</code> 里开启它。
+</p>
+
+<p>
+先创建评论模板文件
+</p>
+
+<ol class="org-ol">
+<li>在你的 <code>Hugo</code> 项目根目录下，进入 <code>layouts/partials/</code> 文件夹。</li>
+<li>在该目录下新建一个名为 <code>comments.html</code> 的文件。</li>
+<li>将上述从 <code>Giscus</code> 官网复制的整段 <code>&lt;script&gt; ... &lt;/script&gt;</code> 代码直接粘贴进去，然后保存。</li>
+</ol>
+
+<p>
+然后在全局配置中开启评论。
+打开项目根目录下的 <code>hugo.yaml</code> ，在 <code>params: = 下找到 =comments:</code> ，把参数改为 <code>true</code> 。
+修改后的局部结构应该如下所示：
+</p>
+
+<pre class="example" id="orgfdfaf90">
+title: "我的技术日志"
+theme: "PaperMod"
+
+params:
+  math: true
+  # 💡 核心：开启全局评论支持
+  comments: true
+</pre>
+
+<p>
+主要步骤都完成了，现在开始测试与上线。
+</p>
+
+<ol class="org-ol">
+<li>本地预览： 在本地终端运行 <code>hugo server</code> ，打开浏览器进入任意一篇写好的技术文章详情页，拉到最底部。
+此时应该能看到一个精美的 <code>Giscus</code> 评论框正在加载。</li>
+<li><p>
+推送上线： 确认无误后，用 <code>Git</code> 将新文件提交并推送到 <code>GitHub</code> ：
+</p>
+<pre class="example" id="org5d7d800">
+$ git add layouts/partials/comments.html hugo.yaml
+$ git commit -m "feat: setup giscus comments system"
+$ git push
+</pre></li>
+</ol>
+
+<p>
+当 <code>Netlify</code> 自动部署完成后，你的线上技术博客就拥有一个完全属于你的互动评论区了！
 </p>
 </div>
 </div>
@@ -679,7 +1042,7 @@ Netlify 非常聪明，它如果识别到这是 Hugo 项目，通常会自动填
 <div id="postamble" class="status">
 <p class="date">Date: 2026-07-07</p>
 <p class="author">Author: zbliang</p>
-<p class="date">Created: 2026-07-08 Wed 07:42</p>
+<p class="date">Created: 2026-07-08 Wed 12:45</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
