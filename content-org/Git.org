@@ -2461,9 +2461,9 @@ $ git merge experiment
   git config --list
 #+end_src
 
-** =.gitignor= 文件
+** =.gitignore= 文件
 
-通过 =touch .gitignor= 文件，声明不同步的文件的格式，例如
+通过 =touch .gitignore= 文件，声明不同步的文件的格式，例如
 
 #+begin_example
   # Ignore LyX backup and autosave files
@@ -2476,7 +2476,7 @@ $ git merge experiment
   ,*~
 #+end_example
 
-再看一个 =.gitignor= 文件的例子：
+再看一个 =.gitignore= 文件的例子：
 
 #+begin_example
   # no .a files
@@ -2510,7 +2510,6 @@ $ git merge experiment
   # 比如，要想获得 config 命令的手册，可以执行
   git help config
 #+end_example
-
 
 
 ** 更改 git 的默认编辑器

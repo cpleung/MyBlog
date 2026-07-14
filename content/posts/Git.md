@@ -1896,9 +1896,9 @@ git config --list
 ```
 
 
-### `.gitignor` 文件 {#dot-gitignor-文件}
+### `.gitignore` 文件 {#dot-gitignore-文件}
 
-通过 `touch .gitignor` 文件，声明不同步的文件的格式，例如
+通过 `touch .gitignore` 文件，声明不同步的文件的格式，例如
 
 ```text
 # Ignore LyX backup and autosave files
@@ -1911,7 +1911,7 @@ git config --list
 *~
 ```
 
-再看一个 `.gitignor` 文件的例子：
+再看一个 `.gitignore` 文件的例子：
 
 ```text
 # no .a files
