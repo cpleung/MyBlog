@@ -2466,15 +2466,74 @@ $ git merge experiment
 通过 =touch .gitignore= 文件，声明不同步的文件的格式，例如
 
 #+begin_example
-  # Ignore LyX backup and autosave files
-  # http://www.lyx.org/
-  ,*.lyx~
-  ,*.lyx#
-  ,*.pdf
+# ========== LaTeX 编译中间文件（核心）
+,*.aux
+,*.log
+,*.out
+,*.toc
+,*.lof
+,*.lot
+,*.fls
+,*.fdb_latexmk
+,*.synctex.gz
+,*.synctex(busy)
+,*.nav
+,*.snm
+,*.vrb
+,*.dvi
+,*.ps
+,*.bbl
+,*.blg
+,*.brf
+,*.run.xml
+*-converted-to.*
+,*.xdw
+,*.pdfpc
+# nomencl / glossaries
+,*.nlg
+,*.nlo
+,*.glg
+,*.glo
+,*.gls
+,*.glsdefs
+,*.acn
+,*.acr
+,*.alg
+,*.loa
 
-  # 忽略所有以 ~ 结尾的文件
-  ,*~
+# ========== LyX 相关临时文件
+,*.lyx~
+,*.lyx#
+*.lyx.autosave
+lyxtmp*
+# LyX 导出产物（如果你想把pdf纳入版本控制，删掉下面一行）
+,*.pdf
+
+# ========== 编辑器临时文件
+# TeXstudio
+,*.txs
+,*.txs.backup
+# Emacs / Vim
+,*~
+\#*\#
+.\#*
+# VSCode
+.vs/
+.vscode/*.log
+.vscode/.cache
+# Windows / Mac 系统垃圾
+.DS_Store
+Thumbs.db
+__MACOSX
+
+# ========== 其他杂项
+,*.bak
+,*.backup
+,*.tmp
+,*.temp
 #+end_example
+
+以上适配 =pdflatex/lualatex/xelatex= 、 =LyX= 生成文件、 =VSCode= 、 =TeXstudio= 、 =Overleaf= 本地导出产物；只保留源码 =.tex= 、 =.lyx= 、 =.sty= 、 =.bib= 、 =.cls= 。
 
 再看一个 =.gitignore= 文件的例子：
 
