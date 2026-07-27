@@ -2434,6 +2434,141 @@ $ git merge experiment
 如果你或你的同事在某些情形下决意要这么做，请一定要通知每个人执行 =git pull --rebase= 命令，这样尽管不能避免伤痛，但能有所缓解。
 
 
+* 通过 SSH 密钥连接 GitHub
+
+从 2021 年开始， =GitHub= 已经彻底停止了使用「账号密码」直接拉取或推送代码的验证方式。
+现在推荐通过 =SSH= 密钥连接 =GitHub= ，不仅更加安全，而且设置一次后再也不用每次都输入密码。
+
+配置 =SSH= 连接只需简单 4 个步骤。
+
+** 第一步：生成本地 SSH 密钥对
+
+打开终端运行以下命令生成现代且安全的 =Ed25519= 类型的 =SSH= 密钥
+
+#+begin_example
+ssh-keygen -t ed25519 -C "your_email@example.com"
+#+end_example
+
+其中将邮箱部分替换为你注册 =GitHub= 的邮箱。
+其实这个邮箱只是一个本地注释，哪怕随便填一个虚构的标签（例如 =ssh-keygen -C "fedora-workstation"= ）也完全不影响 =SSH= 密钥的功能。
+
+回车后会提示输入保存路径 =Enter file in which to save the key (~/home/user/.ssh/id_ed25519~)= 。
+这时可以输入文件名，如 ~/home/user/.ssh/id_ed25519_github~ 。
+如果是直接按回车（Enter） ，那么使用默认路径，密钥的名称将是简单的 ~id_ed25519~ 。
+
+接下来提示 =Enter passphrase...=  。
+如果想完全免密，直接连续按两次回车留空。
+如果想多一层安全性，可以输入一个短密码。
+
+这时就成功生成了密钥 ~id_ed25519_github~ 和公钥 ~id_ed25519_github.pub~ 。
+终端还会返回 =Fingerprint= （密钥指纹）和 =Randomart Image= （随机艺术图）。
+这两个东西不需要保存。
+如果以后突然需要查看指纹，随时可以在终端运行命令重新计算出它的指纹和 ASCII 图案：
+
+#+begin_example
+# 查看本地公钥的指纹与 ASCII 画
+ssh-keygen -l -f ~/.ssh/id_ed25519.pub
+#+end_example
+
+** 第二步：查看并复制公钥
+
+公钥（以 =.pub= 结尾的文件）是可以公开上传到 =GitHub= 的，私钥请妥善保存在本地。
+在这个例子中，公钥是文件 =id_ed25519_github.pub= ，和密钥 =id_ed25519_github= 一样，保存在 ~/home/user/.ssh/~ 中。
+
+在终端运行以下命令，直接打印并复制显示的公钥内容：
+
+#+begin_example
+cat ~/.ssh/id_ed25519.pub
+#+end_example
+
+终端会输出一行类似于下面的文本：
+
+#+begin_example
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... your_email@example.com
+#+end_example
+
+选中并完整复制这一整行内容。
+
+** 第三步：把公钥添加到 =GitHub= 账号
+
++ 打开浏览器登录 =GitHub= ，点击右上角个人头像，点进 =Settings= 。
++ 在左侧边栏找到并点击 =SSH and GPG keys= ，点击右上角的绿色按钮 =New SSH key= 。
++ 在 =Title= 栏里填一个方便你识别的名字（例如 =Fedora-Laptop= ）。
++  =Key type= 保持默认的 =Authentication Key= 即可。  
++ 在 =Key= 一栏中，把刚才复制的那一行公钥完整粘贴进去，然后点击 =Add SSH key= 保存。
+
+** 第四步：测试 SSH 连接
+
+返回终端，运行以下测试命令：
+
+#+begin_example
+ssh -T git@github.com
+#+end_example
+
+第一次连接时，系统会提示确认 =GitHub= 宿主的主机指纹，输入 =yes= 并按回车。
+如果看到以下欢迎语，
+
+#+begin_example
+Hi Username! You've successfully authenticated, but GitHub does not provide shell access.
+#+end_example
+
+说明配置大功告成！
+
+上述命令 =ssh -T git@github.com= 中的 =git= 不是你的 =GitHub= 账号名，而是 =GitHub= 服务器上统一用于接收 =Git= 操作的系统 =Linux= 用户名。
+当你运行 =ssh -T git@github.com= 时， =GitHub= 的服务器会问你的电脑：「你是谁？」。
+你的电脑会用本地隐藏的私钥进行密码学签名并回应。
+
+=GitHub= 接收到你的签名后，在其数据库里比对你之前上传的公钥（ =Public Key= ）。
+公钥在 =Github= 中是唯一的：一方面从公钥的产生方式来说，产生出两个一样的公钥的概率是 0 ；另一方面，GitHub 后台禁止同一个公钥被多个账号添加。
+一旦比对成功， =GitHub= 就会知道这个私钥对应的是哪一个（唯一的）账号。
+
+所以，你不需要（也不能）写 =ssh -T your_username@github.com= 。
+=GitHub= 服务器上也没有为你个人单独创建 =Linux= 系统账户，大家一律使用 =git= 这个公共通道。
+
+** 管理密钥（SSH Config 机制）
+
+在绝大多数情况下，不建议所有场合都使用同一个密钥对。
+最佳的安全实践是：「一机一匙，一域一匙」（不同的设备、不同的用途/服务，使用不同的密钥对）。
+
+这样做的核心原因非常简单——隔离风险。
+如果你的笔记本电脑丢了，或者某个服务的私钥泄漏了，你只需要废弃（撤销）这一个公钥即可，不至于导致你其他的服务器、 =GitHub= 或公司内部系统全部陷于危险之中。
+
+所以一般情况下你有多个密钥，那么如何让系统自动在不同场合匹配正确的密钥？
+其实只需要配置好 =~/.ssh/config= 文件。
+这部分也可以参考我的另一篇文章 [[file:巩固服务器安全.org][巩固服务器安全]] 。
+
+打开或创建该配置文件
+
+#+begin_example
+nano ~/.ssh/config
+#+end_example
+
+在里面写入不同场合的规则（非常直观）：
+
+#+begin_example
+# 场合一：连接 GitHub 个人账号
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github   # 明确指定使用 GitHub 的密钥
+
+# 场合二：连接公司内部的 Gitlab
+Host gitlab.company.com
+    HostName gitlab.company.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_work     # 明确指定使用工作的密钥
+
+# 场合三：连接你的个人 Linux 云服务器
+Host myserver
+    HostName 123.45.67.89                   # 服务器 IP
+    User root                               # 登录用户名
+    IdentityFile ~/.ssh/id_ed25519_server   # 专用的服务器密钥
+#+end_example
+
+以后你提交代码到 =GitHub= ， =SSH= 会自动识别并调用 =id_ed25519_github= 。
+
+以后想远程登录你的云服务器，在终端直接输入 =ssh myserver= 就能一键连接，不需要再记 =IP= 地址，也不用手动选密钥！
+
 * 杂项
 
 ** =git config= 设置
@@ -2557,6 +2692,27 @@ __MACOSX
   doc/**/*.pdf
 #+end_example
 
+** 设置 =git status= 显示原样文件中文名
+
+有时 =git status= 会看到类似 =\347\263\273\347\211\210.tex= 的文件名。
+这不是乱码，而是 =Git= 默认把非 =ASCII= 文件名转成八进制转义序列输出。
+这个只是显示问题，文件本身、提交、远程仓库都不受影响。
+
+要让原样输出中文文件名，可以执行命令
+
+#+begin_example
+git config core.quotepath false
+#+end_example
+
+上述命令只作用与当前仓库，要选作用与全局，可以加参数 =--global= 。
+完整的命令是
+
+#+begin_example
+git config --global core.quotepath false
+#+end_example
+
+如果以后想改回默认值，执行 =git config core.quotepath true= 即可。
+
 ** 查找 git 的使用手册
 
 有三种方法可以找到 Git 命令的使用手册：
@@ -2569,7 +2725,6 @@ __MACOSX
   # 比如，要想获得 config 命令的手册，可以执行
   git help config
 #+end_example
-
 
 ** 更改 git 的默认编辑器
 
