@@ -103,8 +103,9 @@ $ git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git
 
 成功执行命令后， `my-tech-blog/themes` 下会出现 `PaperMod` 子目录，这是存放 `PaperMod` 主题的地方。
 
-要注意的是，当在另一台电脑上，或者以后重装系统，重新 `git clone` 你自己的博客仓库时， `Git` 默认不会去下载 `themes/PaperMod` 里面的内容（那个文件夹会是空的）。
-这时候必须运行命令
+要注意的是， `Hugo` 主题（ `Theme` ）通常是以 `git submodule` （ `Git` 子模块）的形式引入的，而默认的 `git clone` 不会去下载子模块里的文件。
+所以当在另一台电脑上，或者以后重装系统，重新 `git clone` 博客仓库时， `Git` 默认不会去下载 `themes/PaperMod` 里面的内容（那个文件夹会是空的）。
+解决的办法是在 `git clone` 后，进入项目根目录运行命令
 
 ```text
 $ git submodule update --init --recursive
