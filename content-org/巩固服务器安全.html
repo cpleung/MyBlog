@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-07-27 Mon 14:13 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>巩固服务器安全</title>
+<meta name="author" content="zbliang" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">巩固服务器安全</h1>
+<p>
+在本地生成密钥和公钥
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">ssh-keygen -t ed25519 -f ~/.ssh/id_aliyun
+</pre>
+</div>
+
+<p>
+生成密钥 <code>id_aliyun</code> 和公钥 <code>id_aliyun.pub</code> 。
+</p>
+
+<p>
+把 <b>公钥</b> ，即 <code>id_aliyun.pub</code> ，上传到服务器
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">ssh-copy-id -i ~/.ssh/id_aliyun.pub root@1.2.3.4
+</pre>
+</div>
+
+<p>
+检查是否可以通过密钥登陆
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">ssh -i ~/.ssh/id_aliyun root@1.2.3.4
+</pre>
+</div>
+
+<p>
+为了避免每次登陆要输入这么长的命令，可以在 <code>~/.ssh/config</code> 末尾增加
+</p>
+<pre class="example" id="org191e1e3">
+Host alicloud
+	HostName 1.2.3.4
+	User root
+	IdentityFile ~/.ssh/id_aliyun
+	IdentitiesOnly yes
+</pre>
+<p>
+保存后要执行 <code>chmod 600 ~/.ssh/config</code> ，保证新设置生效。
+</p>
+
+<p>
+以后执行 <code>ssh alicloud</code> 就可以登陆服务器了。
+</p>
+
+<p>
+确保可通过公钥登陆服务器后，就可以关闭服务器的密码登陆功能。
+</p>
+
+<p>
+在服务器里执行 <code>sudo nano /etc/ssh/sshd_config</code> ，把 <code>PasswordAuthentication yes</code> 改为 <code>PasswordAuthentication no</code> 。
+也可以把后者直接粘贴到最后，就能覆盖前面的设置。
+同时增加 <code>PubkeyAuthentication yes</code> 。
+修改配置后必须重启服务才会生效：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #989898;"># </span><span style="color: #989898;">Ubuntu/Debian &#31995;&#32479;
+</span>sudo systemctl restart sshd
+</pre>
+</div>
+
+<p>
+创建普通用户并赋予 sudo 权限
+</p>
+
+<p>
+不要长期使用 root 。所以要新建一个新用户，例如 apple ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo adduser apple
+</pre>
+</div>
+
+<p>
+设置密码（可适中复杂度）。
+因为已经关闭了服务器密码登录，只允许密钥登录，所以即便 apple 密码设简单一点，不会被外部暴力破解。
+apple 用户的密码只有一种场景会用到，就是 <code>sudo 命令</code> 。
+但是也不应该太简单：
+</p>
+
+<ol class="org-ol">
+<li>防止本地机器被入侵后，攻击者轻松提权。</li>
+<li>有些漏洞（权限提升类）可以让攻击者在拿到普通用户后，尝试弱密码爆破 sudo，从而拿到 root。</li>
+</ol>
+
+<p>
+然后赋予新用户 sudo 权限：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo usermod -aG sudo apple
+</pre>
+</div>
+
+<p>
+测试：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">su - apple
+sudo whoami
+</pre>
+</div>
+
+<p>
+输出 root 表示成功。
+</p>
+
+<p>
+禁用 root 直接登录，改为用普通用户（apple）登录，需要时再 sudo 提权。
+</p>
+
+<p>
+首先，必须把 SSH 密钥放在 apple 这个用户的目录里。
+这个需要手动操作。
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #989898;"># </span><span style="color: #989898;">&#20999;&#25442;&#21040; apple &#29992;&#25143;&#30340;&#29615;&#22659;&#65288;&#30830;&#20445;&#30446;&#24405;&#24402;&#23646;&#27491;&#30830;&#65289;
+</span>su - apple -c <span style="color: #79a8ff;">"mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh"</span>
+
+<span style="color: #989898;"># </span><span style="color: #989898;">&#25226;&#22797;&#21046;&#30340;&#20844;&#38053;&#20889;&#20837; authorized_keys&#65288;&#26367;&#25442;&#12304;&#20320;&#30340;&#20844;&#38053;&#20869;&#23481;&#12305;&#65289;
+</span>su - apple -c <span style="color: #79a8ff;">"echo '&#12304;&#20320;&#30340;&#20844;&#38053;&#20869;&#23481;&#12305;' &gt;&gt; ~/.ssh/authorized_keys"</span>
+
+<span style="color: #989898;"># </span><span style="color: #989898;">&#35774;&#32622;&#27491;&#30830;&#30340;&#26435;&#38480;&#65288;&#24517;&#39035;&#65281;&#65289;
+</span>su - apple -c <span style="color: #79a8ff;">"chmod 600 ~/.ssh/authorized_keys"</span>
+</pre>
+</div>
+
+<p>
+apple 用户的 <code>.ssh</code> 目录必须是 700， <code>authorized_keys</code> 必须是 600，否则 SSH 会拒绝使用公钥。
+</p>
+
+<p>
+假设公钥是 <code>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIxxx apple@local</code> ，那么
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">su - apple -c <span style="color: #79a8ff;">"echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIxxx apple@local' &gt;&gt; ~/.ssh/authorized_keys"</span>
+</pre>
+</div>
+
+<p>
+修改本地的 <code>~/.ssh/config</code> 文件，把 <code>User root</code> 改为 <code>User apple</code> 。
+保存后执行 <code>chmod 600 ~/.ssh/config</code> 。
+确保 <code>ssh alicloud</code> 可以成功登陆上服务器的 apple 用户。
+</p>
+
+<p>
+这时可以关闭 root 直接登录了。
+在服务器里执行 <code>sudo nano /etc/ssh/sshd_config</code> ，把 <code>PermitRootLogin yes</code> 改为 <code>PermitRootLogin no</code> 。
+然后重启 SSH：
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">sudo systemctl restart ssh
+</pre>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2026-07-13</p>
+<p class="author">Author: zbliang</p>
+<p class="date">Created: 2026-07-27 Mon 14:13</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
