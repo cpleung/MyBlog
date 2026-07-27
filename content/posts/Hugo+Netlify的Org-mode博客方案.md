@@ -113,6 +113,14 @@ $ git submodule update --init --recursive
 
 告诉 Git：「去把我依赖的第三方主题也一起下载初始化下来」。
 
+其实，克隆带主题的 `Hugo` 项目时，有一个简单的方法可以避免执行两次命令 `git clone` 和 `submodule update`
+
+```text
+git clone --recursive git@github.com:你的用户名/你的博客仓库.git
+```
+
+这样 Git 会在克隆项目的同时，一步到位把主题子模块的代码全部拉取下来！
+
 
 ## `hugo.yaml` 配置文件 {#hugo-dot-yaml-配置文件}
 

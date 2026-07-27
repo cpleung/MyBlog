@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-07-27 Mon 12:47 -->
+<!-- 2026-07-27 Mon 13:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Hugo + Netlify 的 Org-mode 博客方案</title>
@@ -201,21 +201,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org93ee5be">1. 安装 <code>Hugo</code></a></li>
-<li><a href="#org37472c6">2. 本地初始化 <code>Hugo</code> 项目</a></li>
-<li><a href="#org933d03f">3. <code>hugo.yaml</code> 配置文件</a></li>
-<li><a href="#org1b2eca7">4. 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</a></li>
-<li><a href="#orgee54b53">5. 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</a></li>
-<li><a href="#org09cdf3c">6. <code>Org</code> 文章的文件头的设置</a></li>
-<li><a href="#org5bae0c4">7. 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</a></li>
-<li><a href="#org29957c7">8. 增加 <code>search</code> 页面</a></li>
-<li><a href="#org50f5b9d">9. 增加 <code>archives</code> 页面</a></li>
-<li><a href="#org784799c">10. 本地预览服务 <code>hugo server</code></a></li>
-<li><a href="#orgb5ec94a">11. 推送至 GitHub</a></li>
-<li><a href="#org0ee1dda">12. 部署到 Netlify</a></li>
-<li><a href="#orgeeec6e6">13. 日常写作工作流</a></li>
-<li><a href="#orge5ac0ad">14. 使用 <code>Umami</code> 统计博客浏览量</a></li>
-<li><a href="#org64890f3">15. 搭建评论系统 <code>Giscus</code></a></li>
+<li><a href="#orge5f595d">1. 安装 <code>Hugo</code></a></li>
+<li><a href="#orgd709c11">2. 本地初始化 <code>Hugo</code> 项目</a></li>
+<li><a href="#orgaa41247">3. <code>hugo.yaml</code> 配置文件</a></li>
+<li><a href="#org0a5f4b3">4. 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</a></li>
+<li><a href="#org56a00a7">5. 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</a></li>
+<li><a href="#org3333022">6. <code>Org</code> 文章的文件头的设置</a></li>
+<li><a href="#org2bb11d7">7. 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</a></li>
+<li><a href="#orga27ded8">8. 增加 <code>search</code> 页面</a></li>
+<li><a href="#orgfab024e">9. 增加 <code>archives</code> 页面</a></li>
+<li><a href="#orgb5d44ee">10. 本地预览服务 <code>hugo server</code></a></li>
+<li><a href="#org9c4c374">11. 推送至 GitHub</a></li>
+<li><a href="#orgd00a918">12. 部署到 Netlify</a></li>
+<li><a href="#orgd935afd">13. 日常写作工作流</a></li>
+<li><a href="#org889e6d5">14. 使用 <code>Umami</code> 统计博客浏览量</a></li>
+<li><a href="#orgb91a4ef">15. 搭建评论系统 <code>Giscus</code></a></li>
 </ul>
 </div>
 </div>
@@ -234,8 +234,8 @@
 <p>
 下面记录在 AI 的帮助下，搭建博客的过程。
 </p>
-<div id="outline-container-org93ee5be" class="outline-2">
-<h2 id="org93ee5be"><span class="section-number-2">1.</span> 安装 <code>Hugo</code></h2>
+<div id="outline-container-orge5f595d" class="outline-2">
+<h2 id="orge5f595d"><span class="section-number-2">1.</span> 安装 <code>Hugo</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>macOS</code> 可以通过 <code>MacPorts</code> 安装 <code>Hugo</code> 。
@@ -245,7 +245,7 @@
 更新 <code>port</code> 索引后查看可用 <code>hugo</code> 包：
 </p>
 
-<pre class="example" id="org1881159">
+<pre class="example" id="orgdf5fc23">
 $ sudo port selfupdate
 $ port search hugo
 hugo @0.163.3 (www)
@@ -262,7 +262,7 @@ Found 2 ports.
 安装并验证：
 </p>
 
-<pre class="example" id="org905721f">
+<pre class="example" id="org0591279">
 $ sudo port install hugo
 $ hugo version
 hugo v0.163.3+extended darwin/amd64 BuildDate=unknown VendorInfo=macports
@@ -273,14 +273,14 @@ hugo v0.163.3+extended darwin/amd64 BuildDate=unknown VendorInfo=macports
 </p>
 </div>
 </div>
-<div id="outline-container-org37472c6" class="outline-2">
-<h2 id="org37472c6"><span class="section-number-2">2.</span> 本地初始化 <code>Hugo</code> 项目</h2>
+<div id="outline-container-orgd709c11" class="outline-2">
+<h2 id="orgd709c11"><span class="section-number-2">2.</span> 本地初始化 <code>Hugo</code> 项目</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 选择一个本地目录，进入后运行以下命令创建一个新的博客项目：
 </p>
 
-<pre class="example" id="org4a14369">
+<pre class="example" id="orgf4adef3">
 $ hugo new site my-tech-blog
 $ cd my-tech-blog
 $ git init
@@ -295,7 +295,7 @@ $ git init
 在 <code>my-tech-blog</code> 文件夹下创建 <code>.gitignore</code> 文件，内容是：
 </p>
 
-<pre class="example" id="org0ecbc6e">
+<pre class="example" id="org312444a">
 /public/
 /resources/
 .hugo_build.lock
@@ -333,7 +333,7 @@ $ git init
 根据该主题的官方 <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Installation">安装说明</a>，在 <code>my-tech-blog</code> 目录下执行：
 </p>
 
-<pre class="example" id="org11a3a34">
+<pre class="example" id="orga4b814f">
 $ git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
 </pre>
 
@@ -352,17 +352,29 @@ $ git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git
 解决的办法是在 <code>git clone</code> 后，进入项目根目录运行命令
 </p>
 
-<pre class="example" id="orgc826d86">
+<pre class="example" id="orgcd2c778">
 $ git submodule update --init --recursive
 </pre>
 
 <p>
 告诉 Git：「去把我依赖的第三方主题也一起下载初始化下来」。
 </p>
+
+<p>
+其实，克隆带主题的 <code>Hugo</code> 项目时，有一个简单的方法可以避免执行两次命令 <code>git clone</code> 和 <code>submodule update</code> 
+</p>
+
+<pre class="example" id="orgb8d480d">
+git clone --recursive git@github.com:你的用户名/你的博客仓库.git
+</pre>
+
+<p>
+这样 Git 会在克隆项目的同时，一步到位把主题子模块的代码全部拉取下来！
+</p>
 </div>
 </div>
-<div id="outline-container-org933d03f" class="outline-2">
-<h2 id="org933d03f"><span class="section-number-2">3.</span> <code>hugo.yaml</code> 配置文件</h2>
+<div id="outline-container-orgaa41247" class="outline-2">
+<h2 id="orgaa41247"><span class="section-number-2">3.</span> <code>hugo.yaml</code> 配置文件</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 把 <code>my-tech-blog</code> 目录下的文件 <code>hugo.toml</code> 删去，然后新建文件 <code>hugo.yaml</code> 。
@@ -371,7 +383,7 @@ $ git submodule update --init --recursive
 我们采用以下的配置：
 </p>
 
-<pre class="example" id="orge0b14f8">
+<pre class="example" id="org9d7c943">
 # 点击 https://github.com/adityatelange/hugo-PaperMod/wiki/Installation 查看完整的模版
 
 baseURL: "https://your-domain.netlify.app/" # 可以先写个大概，后续在 Netlify 拿到了再改
@@ -456,15 +468,15 @@ markup:
 </p>
 </div>
 </div>
-<div id="outline-container-org1b2eca7" class="outline-2">
-<h2 id="org1b2eca7"><span class="section-number-2">4.</span> 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</h2>
+<div id="outline-container-org0a5f4b3" class="outline-2">
+<h2 id="org0a5f4b3"><span class="section-number-2">4.</span> 在 PaperMod 主题中加载 MathJax/KaTeX 渲染脚本</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 虽然在 <code>hugo.yaml</code> 中设置了 <code>math: true</code> ，数学公式依然无法渲染，原因在于 <code>PaperMod</code> 并没有原生内置加载 <code>MathJax/KaTeX</code> 脚本的逻辑。
 解决办法是在 Hugo 项目根目录 <code>my-tech-blog</code> 下，创建以下路径的文件夹（如果没有就新建）： <code>layouts/partials/</code> ，并在该目录下新建一个名为 <code>extend_head.html</code> 的文件： <code>my-tech-blog/layouts/partials/extend_head.html</code> ，然后将以下 KaTeX 自动渲染脚本 复制并粘贴进去：
 </p>
 
-<pre class="example" id="orgae7fe72">
+<pre class="example" id="orga77caa8">
 {{ if or .Params.math .Site.Params.math }}
 &lt;!-- 引入 KaTeX 核心 CSS --&gt;
 &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"&gt;
@@ -484,14 +496,14 @@ markup:
 </pre>
 </div>
 </div>
-<div id="outline-container-orgee54b53" class="outline-2">
-<h2 id="orgee54b53"><span class="section-number-2">5.</span> 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</h2>
+<div id="outline-container-org56a00a7" class="outline-2">
+<h2 id="org56a00a7"><span class="section-number-2">5.</span> 在 <code>Hugo</code> 项目中组织 <code>Org</code> 文件</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 在 <code>Hugo</code> 项目根目录 <code>my-tech-blog</code> 下，新建一个叫 <code>content-org</code> 的文件夹来存放 <code>Org</code> 原稿。
 </p>
 
-<pre class="example" id="org263257a">
+<pre class="example" id="org5f8cb8f">
 $ mkdir content-org
 </pre>
 
@@ -503,7 +515,7 @@ $ mkdir content-org
 在 <code>content-org</code> 中可以新建 <code>images/</code> 目录，用于存放 <code>.org</code> 文件的图片。
 </p>
 
-<pre class="example" id="orgc8bf9cd">
+<pre class="example" id="org4063ddc">
 my-tech-blog/
 ├── content-org/
 │   ├── hello-world.org
@@ -512,15 +524,15 @@ my-tech-blog/
 </pre>
 </div>
 </div>
-<div id="outline-container-org09cdf3c" class="outline-2">
-<h2 id="org09cdf3c"><span class="section-number-2">6.</span> <code>Org</code> 文章的文件头的设置</h2>
+<div id="outline-container-org3333022" class="outline-2">
+<h2 id="org3333022"><span class="section-number-2">6.</span> <code>Org</code> 文章的文件头的设置</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 在 <code>content-org/</code> 下新建一个文件，比如 <code>hello-world.org</code> 。
 举例来说，这个 <code>org</code> 文档的文件头可以是：
 </p>
 
-<pre class="example" id="org884243b">
+<pre class="example" id="org3c31077">
 #+title: Hello World
 #+author: John
 #+DATE: 2026-07-07
@@ -564,8 +576,8 @@ my-tech-blog/
 </ul>
 </div>
 </div>
-<div id="outline-container-org5bae0c4" class="outline-2">
-<h2 id="org5bae0c4"><span class="section-number-2">7.</span> 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</h2>
+<div id="outline-container-org2bb11d7" class="outline-2">
+<h2 id="org2bb11d7"><span class="section-number-2">7.</span> 利用 <code>ox-hugo</code> 将 <code>.org</code> 文件导出</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 首先安装 <code>ox-hugo</code> 插件。
@@ -577,7 +589,7 @@ my-tech-blog/
 在 <code>init.el</code> 中添加并启用 <code>xo-hugo</code> ：
 </p>
 
-<pre class="example" id="orgdfcb987">
+<pre class="example" id="orgb2a2f9c">
 (use-package ox-hugo
   :ensure t
   :after ox)
@@ -597,7 +609,7 @@ my-tech-blog/
 假设 <code>hello-world.org</code> 文件中有插入图片 <code>[[file:./images/gc-architecture.png]]</code> ，那么 <code>Hugo</code> 会自动把该图片复制到项目目录 <code>my-tech-blog</code> 下的 <code>static/ox-hugo/gc-architecture.png</code> ，并且在 <code>hello-world.md</code> 文件中把图片路径改为
 </p>
 
-<pre class="example" id="org4b7eb9f">
+<pre class="example" id="orgbae73d9">
 ![img](/ox-hugo/gc-architecture.png)
 </pre>
 
@@ -605,7 +617,7 @@ my-tech-blog/
 回忆我们的 <code>hello-world.org</code> 文件的开头设置了 <code>CSS</code> 样式
 </p>
 
-<pre class="example" id="org1a3b5f6">
+<pre class="example" id="orgbe060d7">
 #+BEGIN_EXPORT html
 &lt;style&gt;
   /* 仅在这篇文章中生效的临时样式 */
@@ -631,7 +643,7 @@ my-tech-blog/
 解决的办法是在的 <code>hugo.yaml</code> 文件中添加以下内容：
 </p>
 
-<pre class="example" id="org9c5ad53">
+<pre class="example" id="orgdb26fd6">
 markup:
   goldmark:
     renderer:
@@ -640,8 +652,8 @@ markup:
 </pre>
 </div>
 </div>
-<div id="outline-container-org29957c7" class="outline-2">
-<h2 id="org29957c7"><span class="section-number-2">8.</span> 增加 <code>search</code> 页面</h2>
+<div id="outline-container-orga27ded8" class="outline-2">
+<h2 id="orga27ded8"><span class="section-number-2">8.</span> 增加 <code>search</code> 页面</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 <code>PaperMod</code> 原生就内置了非常漂亮的全站动态搜索功能，所以可以比较容易地在网页右上角增加「搜索（Search）」功能。
@@ -652,7 +664,7 @@ markup:
 首先打开的 <code>hugo.yaml</code> ，在最顶层（和 <code>theme</code> 、 <code>title</code> 平级的地方）添加以下配置，告诉 <code>Hugo</code> 在编译时生成一个用于搜索的 <code>JSON</code> 索引文件：
 </p>
 
-<pre class="example" id="org75f8893">
+<pre class="example" id="org5acb82c">
 outputs:
   home:
     - HTML
@@ -665,7 +677,7 @@ outputs:
 同时，确保 <code>params:</code> 下开启了 <code>ShowCodeCopyButtons</code> 等：
 </p>
 
-<pre class="example" id="org17e8d0c">
+<pre class="example" id="org0d0536b">
 menu:
   main:
     - identifier: categories
@@ -687,7 +699,7 @@ menu:
 在 <code>content-org/</code> 目录下新建一个名为 <code>search.org</code> 的文件，写入以下内容：
 </p>
 
-<pre class="example" id="org9c7eed0">
+<pre class="example" id="org63ce95f">
 #+TITLE: Search
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: /
@@ -709,8 +721,8 @@ menu:
 </p>
 </div>
 </div>
-<div id="outline-container-org50f5b9d" class="outline-2">
-<h2 id="org50f5b9d"><span class="section-number-2">9.</span> 增加 <code>archives</code> 页面</h2>
+<div id="outline-container-orgfab024e" class="outline-2">
+<h2 id="orgfab024e"><span class="section-number-2">9.</span> 增加 <code>archives</code> 页面</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 <code>Archive</code> （归档）页面就像一本杂志的「总目录」，它通常只保留「发布日期」 + 「文章标题」，按年份和月份聚合，方便读者看到博客中博文的产出和更新频率。
@@ -721,7 +733,7 @@ menu:
 首先打开 <code>hugo.yaml</code> ，在 <code>menu.main</code> 下方增加一行归档页面的路由：
 </p>
 
-<pre class="example" id="org8e154c9">
+<pre class="example" id="org432a6b5">
 menu:
   main:
     - name: "归档"
@@ -736,7 +748,7 @@ menu:
 然后在 <code>content-org/</code> 目录下新建一个名为 <code>archives.org</code> 的文件，写入以下内容：
 </p>
 
-<pre class="example" id="org94006bb">
+<pre class="example" id="org7ddc972">
 #+TITLE: Archives
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: /
@@ -758,8 +770,8 @@ menu:
 </p>
 </div>
 </div>
-<div id="outline-container-org784799c" class="outline-2">
-<h2 id="org784799c"><span class="section-number-2">10.</span> 本地预览服务 <code>hugo server</code></h2>
+<div id="outline-container-orgb5d44ee" class="outline-2">
+<h2 id="orgb5d44ee"><span class="section-number-2">10.</span> 本地预览服务 <code>hugo server</code></h2>
 <div class="outline-text-2" id="text-10">
 <p>
 终端 <code>cd</code> 项目目录 <code>my-tech-blog</code> 下，执行 <code>hugo server</code> ，即可打开本地预览服务。
@@ -770,19 +782,19 @@ menu:
 要运行一个清除缓存并强制渲染的组合命令重新启动，执行：
 </p>
 
-<pre class="example" id="org131d358">
+<pre class="example" id="orgb943ac5">
 $ hugo server --disableFastRender --gc
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb5ec94a" class="outline-2">
-<h2 id="orgb5ec94a"><span class="section-number-2">11.</span> 推送至 GitHub</h2>
+<div id="outline-container-org9c4c374" class="outline-2">
+<h2 id="org9c4c374"><span class="section-number-2">11.</span> 推送至 GitHub</h2>
 <div class="outline-text-2" id="text-11">
 <p>
 现在可以将 <code>Hugo</code> 项目目录 <code>my-tech-blog</code> 推送到 GitHub 的私有或公共仓库：
 </p>
 
-<pre class="example" id="org654cc1b">
+<pre class="example" id="orgec6159e">
 $ git add .
 $ git commit -m "feat: initial commit with my first org post"
 $ git branch -M main
@@ -791,8 +803,8 @@ $ git push -u origin main
 </pre>
 </div>
 </div>
-<div id="outline-container-org0ee1dda" class="outline-2">
-<h2 id="org0ee1dda"><span class="section-number-2">12.</span> 部署到 Netlify</h2>
+<div id="outline-container-orgd00a918" class="outline-2">
+<h2 id="orgd00a918"><span class="section-number-2">12.</span> 部署到 Netlify</h2>
 <div class="outline-text-2" id="text-12">
 <ol class="org-ol">
 <li>登录 <code>Netlify</code> （直接用 <code>GitHub</code> 账号登录最方便）。</li>
@@ -823,7 +835,7 @@ $ git push -u origin main
 如果不像这样做，或者希望以后把这个博客仓库迁移到别的平台时配置也能跟着代码走，可以在 <code>Hugo</code> 项目根目录（也就是 <code>my-tech-blog</code> ）下新建一个名为 <code>netlify.toml</code> 的文件，把配置直接写在代码里：
 </p>
 
-<pre class="example" id="org473359b">
+<pre class="example" id="orga244f80">
 [build]
   command = "hugo --gc --minify"
   publish = "public"
@@ -833,8 +845,8 @@ $ git push -u origin main
 </pre>
 </div>
 </div>
-<div id="outline-container-orgeeec6e6" class="outline-2">
-<h2 id="orgeeec6e6"><span class="section-number-2">13.</span> 日常写作工作流</h2>
+<div id="outline-container-orgd935afd" class="outline-2">
+<h2 id="orgd935afd"><span class="section-number-2">13.</span> 日常写作工作流</h2>
 <div class="outline-text-2" id="text-13">
 <p>
 当完成了上述的「一次性配置」后，以后的日常写作和更新流程会变得异常简单：
@@ -846,7 +858,7 @@ $ git push -u origin main
 <li><p>
 打开终端（或在 <code>Emacs</code> 内使用 <code>Magit</code> ）：
 </p>
-<pre class="example" id="org29992c5">
+<pre class="example" id="orge40ae07">
 $ git add .
 $ git commit -m "Publish new post about Org-mode"
 $ git push
@@ -855,8 +867,8 @@ $ git push
 </ol>
 </div>
 </div>
-<div id="outline-container-orge5ac0ad" class="outline-2">
-<h2 id="orge5ac0ad"><span class="section-number-2">14.</span> 使用 <code>Umami</code> 统计博客浏览量</h2>
+<div id="outline-container-org889e6d5" class="outline-2">
+<h2 id="org889e6d5"><span class="section-number-2">14.</span> 使用 <code>Umami</code> 统计博客浏览量</h2>
 <div class="outline-text-2" id="text-14">
 <p>
 <code>Umami</code> 是开源圈和独立博客圈中流行的轻量级统计分析工具，是 <code>Google Analytics</code> 的替代品。
@@ -875,7 +887,7 @@ $ git push
 <li><p>
 创建完成后，点击该网站旁边的 <code>Edit -&gt; Tracking code</code> ，获得一段类似这样的 <code>HTML</code> 脚本：
 </p>
-<pre class="example" id="org3e9cafa">
+<pre class="example" id="org2f07986">
 &lt;script defer src="https://cloud.umami.is/script.js" data-website-id="你的唯一ID"&gt;&lt;/script&gt;
 </pre></li>
 </ol>
@@ -894,7 +906,7 @@ $ git push
 再使用 <code>Git</code> 将修改推送到 <code>GitHub</code> ：
 </p>
 
-<pre class="example" id="orgbc8ad9f">
+<pre class="example" id="org1650583">
 $ git add layouts/partials/extend_head.html
 $ git commit -m "chore: add umami analytics script"
 $ git push
@@ -905,8 +917,8 @@ $ git push
 </p>
 </div>
 </div>
-<div id="outline-container-org64890f3" class="outline-2">
-<h2 id="org64890f3"><span class="section-number-2">15.</span> 搭建评论系统 <code>Giscus</code></h2>
+<div id="outline-container-orgb91a4ef" class="outline-2">
+<h2 id="orgb91a4ef"><span class="section-number-2">15.</span> 搭建评论系统 <code>Giscus</code></h2>
 <div class="outline-text-2" id="text-15">
 <p>
 我们选用目前最纯粹、最适合技术博客的方案 <code>Giscus</code> 搭建评论系统。
@@ -967,7 +979,7 @@ $ git push
 <li><p>
 完成后，页面最下方的激活 <code>giscus</code> 区域会自动生成一段完整的 <code>HTML</code> 代码，它看起来像这样（请复制你自己的那段代码）：
 </p>
-<pre class="example" id="org8273ce6">
+<pre class="example" id="orga75d909">
 &lt;script src="https://giscus.app/client.js"
      data-repo="你的用户名/你的仓库名"
      data-repo-id="R_kgDO..."
@@ -1007,7 +1019,7 @@ $ git push
 修改后的局部结构应该如下所示：
 </p>
 
-<pre class="example" id="orgaea354d">
+<pre class="example" id="org68e2cbd">
 title: "我的技术日志"
 theme: "PaperMod"
 
@@ -1027,7 +1039,7 @@ params:
 <li><p>
 推送上线： 确认无误后，用 <code>Git</code> 将新文件提交并推送到 <code>GitHub</code> ：
 </p>
-<pre class="example" id="org78e07cb">
+<pre class="example" id="org4e38e16">
 $ git add layouts/partials/comments.html hugo.yaml
 $ git commit -m "feat: setup giscus comments system"
 $ git push
@@ -1043,7 +1055,7 @@ $ git push
 <div id="postamble" class="status">
 <p class="date">Date: 2026-07-07</p>
 <p class="author">Author: zbliang</p>
-<p class="date">Created: 2026-07-27 Mon 12:47</p>
+<p class="date">Created: 2026-07-27 Mon 13:28</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
