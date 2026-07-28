@@ -15,6 +15,53 @@
 我们将把系统换成 =Fedora 44= 。
 安装系统时要注意不要把 =data= 分区格式化。
 
+** 制作 Fedora 启动 U 盘
+
+前往 =Fedora= 官网下载 =Fedora Workstation= 的 =.iso= 镜像文件。
+准备一个 =8GB= 或以上 的 U 盘，我们将在终端使用 =dd= 命令制作启动 U 盘。
+要注意的是，烧录会清空 U 盘内所有数据。
+
+首先，插入 U 盘并查找盘符。
+查找 U 盘的盘符，方法是在终端输入 =lsblk= ，从返回结果中找到 U 盘设备的名称。
+比如，从返回结果看到
+#+begin_example
+sda                         8:0    1  14.3G  0 disk 
+└─sda1                      8:1    1  14.3G  0 part 
+#+end_example
+那么的 U 盘设备名称是 =sda= （对应的分区是 =sda1= ）。
+这一步请务必确认清楚，选错盘符会抹除误选的硬盘！
+
+然后，执行烧录命令。
+使用 =cd= 命令切换到下载 =Fedora= 镜像的文件夹，然后运行以下命令
+
+#+begin_example
+sudo dd if=Fedora-Workstation.iso of=/dev/sda bs=4M status=progress oflag=sync
+#+end_example
+
+其中
++ 把 =Fedora-Workstation.iso= 替换为下载的实际的 =ISO= 文件名（输入 =Fedora= 后按 =Tab= 键可以自动补全文件名）。
++ 必须写 =of=/dev/sda= ，而不是 =of=/dev/sda1= 。 =sda= 和 =sda1= 是有区别的。
++ 参数 =status=progress= 可以显示实时的烧录进度。
+
+烧录 Fedora 镜像通常需要 2 到 5 分钟。
+
+** 使用 =Fedora= 试用系统
+
+现在 =Fedora= 启动 U 盘已经制作完成了。
+接下来，可以在不破坏笔记本原有系统的情况下，从 U 盘启动进入 Fedora 试用系统。
+进入使用系统后，我们主要看看 =Wi-Fi= 、声音和快捷键是否正常工作。
+
++ 将华为笔记本彻底关机（不是休眠或睡眠）。
++ 将刚刚制作好的 U 盘插入笔记本的 USB 接口中。
++ 按下笔记本的电源键开机。在屏幕亮起前，立刻连续、快速地按下 =F12= 键（如果无反应，可以尝试按住 =Fn= 键的同时狂按 =F12= ）。
+  如果操作成功，屏幕上会弹出一个蓝底或黑底的引导菜单 =Boot Menu= ，显示当前可用的启动项。
++ 在引导菜单中，使用键盘上的方向键移动光标，找到带有 USB 或 U 盘品牌名称的选项，按下 =Enter= (回车) 键确认选择。
+
+随后屏幕会进入 =Fedora= 的启动加载界面，首行通常是 =Start Fedora Workstation...= 。
+直接按下回车，或者等待几秒让它自动进入。
+系统加载完成后，屏幕上会弹出一个欢迎窗口，请务必点击 =Try Fedora= （试用 =Fedora= ），而不要点击 =Install to Hard Drive= （安装到硬盘）。
+此时，就进入了一个完全运行在 U 盘上的 =Fedora= 系统，它不会对电脑现有的操作系统和数据造成任何影响。
+
 ** 选择英文为系统语言
 
 如果在安装系统时直接选择 =中文（简体）= ， =Fedora= 有可能会默认将用户主目录下的常用文件夹命名为中文：
@@ -234,7 +281,6 @@ sudo dnf install -y gnome-shell-extension-installer gnome-extensions-app
   如果没有，可以在终端安装 =sudo dnf install -y gnome-tweaks= 。
 + 在左侧菜单点击「字体」 =Fonts= ，找到缩放比例 =Scaling Factor= 。
   默认只是 =1.00= ，可以调整为比如 =1.25= ，那么全局字号会按比例平滑放大。
-
 
 ** 更新软件
 
