@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-07-27 Mon 14:17 -->
+<!-- 2026-08-16 Sun 21:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Git 使用</title>
@@ -201,90 +201,91 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd71e598">1. 基本操作</a>
+<li><a href="#orgad0a509">1. 基本操作</a>
 <ul>
-<li><a href="#org8c1cc48">1.1. <code>git init</code> 初始化仓库</a></li>
-<li><a href="#orge938145">1.2. <code>git status</code> 查看仓库的状态</a></li>
-<li><a href="#orga71a7c2">1.3. <code>git add</code> 向暂存区中添加文件</a></li>
-<li><a href="#org48492d2">1.4. 撤销操作</a></li>
-<li><a href="#org49af952">1.5. <code>git commit</code> 保存仓库的历史记录</a></li>
-<li><a href="#org7e1a28e">1.6. <code>git log</code> 查看提交日志</a></li>
-<li><a href="#orga7b5243">1.7. <code>git diff</code> 查看更改前后的差别</a></li>
-<li><a href="#orgd2c9d70">1.8. <code>git checkout</code> 退回到某个历史版本</a></li>
-<li><a href="#org6922faa">1.9. <code>git branch</code> 显示分支一览表</a></li>
-<li><a href="#org6369064">1.10. <code>git checkout -b</code> 创建、切换分支</a></li>
-<li><a href="#org09d3f94">1.11. <code>git merge</code> 合并分支</a></li>
-<li><a href="#orgc61b114">1.12. <code>git log --graph</code> 以图表形式查看分支</a></li>
-<li><a href="#orgca605df">1.13. <code>git reset</code> 回溯历史版本</a></li>
-<li><a href="#org45f5ae4">1.14. 解决合并时出现的冲突</a></li>
-<li><a href="#org7c23e21">1.15. <code>git commit --amend</code> 修改刚刚提交的信息</a></li>
-<li><a href="#org1bcde2c">1.16. <code>git rebase -i</code> 将前几次的提交合并为一次提交</a></li>
-<li><a href="#org4975cb6">1.17. <code>git remote add</code> 添加远程仓库</a></li>
-<li><a href="#org7bb61f7">1.18. <code>git push</code> 推送至远程仓库</a></li>
-<li><a href="#org4eb8472">1.19. 推送至 master 以外的分支</a></li>
-<li><a href="#org4b2a528">1.20. <code>git clone</code> 获取远程仓库</a></li>
-<li><a href="#org4601242">1.21. 获取远程的 feature-D 分支</a></li>
-<li><a href="#orgc2f8d2e">1.22. 向本地的 feature-D 分支提交更改</a></li>
-<li><a href="#orgbfce934">1.23. 推送 feature-D 分支</a></li>
-<li><a href="#org35d5bb3">1.24. <code>git pull</code> 获取最新的远程仓库分支</a></li>
-<li><a href="#orge7a89d9">1.25. 创建标签</a></li>
-<li><a href="#org0a1f7da">1.26. 后期打标签</a></li>
-<li><a href="#orgb914e75">1.27. 查看标签</a></li>
-<li><a href="#orgbc241a0">1.28. 共享标签</a></li>
+<li><a href="#orga7f2f50">1.1. <code>git init</code> 初始化仓库</a></li>
+<li><a href="#orga1181f3">1.2. <code>git status</code> 查看仓库的状态</a></li>
+<li><a href="#orgd00b78e">1.3. <code>git add</code> 向暂存区中添加文件</a></li>
+<li><a href="#orge2e1970">1.4. 撤销操作</a></li>
+<li><a href="#orgb4de8f4">1.5. <code>git commit</code> 保存仓库的历史记录</a></li>
+<li><a href="#orgdfe9a6e">1.6. <code>git log</code> 查看提交日志</a></li>
+<li><a href="#orge02c1b6">1.7. <code>git diff</code> 查看更改前后的差别</a></li>
+<li><a href="#org49f5960">1.8. <code>git checkout</code> 退回到某个历史版本</a></li>
+<li><a href="#orgc6b5b16">1.9. <code>git branch</code> 显示分支一览表</a></li>
+<li><a href="#org614f270">1.10. <code>git checkout -b</code> 创建、切换分支</a></li>
+<li><a href="#org1ec64df">1.11. <code>git merge</code> 合并分支</a></li>
+<li><a href="#org150eba8">1.12. <code>git log --graph</code> 以图表形式查看分支</a></li>
+<li><a href="#orgbccac4a">1.13. <code>git reset</code> 回溯历史版本</a></li>
+<li><a href="#org8ff4a1f">1.14. 解决合并时出现的冲突</a></li>
+<li><a href="#orga084f39">1.15. <code>git commit --amend</code> 修改刚刚提交的信息</a></li>
+<li><a href="#org23188db">1.16. <code>git rebase -i</code> 将前几次的提交合并为一次提交</a></li>
+<li><a href="#orgafb4c19">1.17. <code>git remote add</code> 添加远程仓库</a></li>
+<li><a href="#orgb33939b">1.18. <code>git push</code> 推送至远程仓库</a></li>
+<li><a href="#org9227907">1.19. 推送至 master 以外的分支</a></li>
+<li><a href="#org142d261">1.20. <code>git clone</code> 获取远程仓库</a></li>
+<li><a href="#org9fc20d6">1.21. 获取远程的 feature-D 分支</a></li>
+<li><a href="#org4856289">1.22. 向本地的 feature-D 分支提交更改</a></li>
+<li><a href="#org4dee8c2">1.23. 推送 feature-D 分支</a></li>
+<li><a href="#org818e797">1.24. <code>git pull</code> 获取最新的远程仓库分支</a></li>
+<li><a href="#orgf32c5b6">1.25. 创建标签</a></li>
+<li><a href="#orgc7e6e9d">1.26. 后期打标签</a></li>
+<li><a href="#org8d5b618">1.27. 查看标签</a></li>
+<li><a href="#org6856519">1.28. 共享标签</a></li>
 </ul>
 </li>
-<li><a href="#orgf71503c">2. 分支原理和进阶</a>
+<li><a href="#org21eaab8">2. 分支原理和进阶</a>
 <ul>
-<li><a href="#orgf7df55e">2.1. master 分支</a></li>
-<li><a href="#org50ce0de">2.2. 创建分支</a></li>
-<li><a href="#org380fc68">2.3. HEAD 指针</a></li>
-<li><a href="#orgbc27df0">2.4. 切换分支</a></li>
-<li><a href="#org22bb911">2.5. 合并分支</a></li>
-<li><a href="#org744ec05">2.6. 删除分支</a></li>
-<li><a href="#org493dd47">2.7. 查看分支</a></li>
-<li><a href="#org9daaefb">2.8. 分支开发工作流</a></li>
+<li><a href="#org0e01ee2">2.1. master 分支</a></li>
+<li><a href="#orgd3f05dd">2.2. 创建分支</a></li>
+<li><a href="#org49004a0">2.3. HEAD 指针</a></li>
+<li><a href="#orgc10ae19">2.4. 切换分支</a></li>
+<li><a href="#org5b438dd">2.5. 合并分支</a></li>
+<li><a href="#org19c284f">2.6. 删除分支</a></li>
+<li><a href="#org1bd913e">2.7. 查看分支</a></li>
+<li><a href="#orgcba1a71">2.8. 分支开发工作流</a></li>
 </ul>
 </li>
-<li><a href="#orgd1338cd">3. 远程仓库的使用</a>
+<li><a href="#orge4038d0">3. 远程仓库的使用</a>
 <ul>
-<li><a href="#org276a16f">3.1. <code>git clone</code> 克隆远程仓库</a></li>
-<li><a href="#org88db869">3.2. <code>git fecth</code> 抓取远程仓库</a></li>
-<li><a href="#orga1453e1">3.3. <code>git remote add</code> 添加远程仓库</a></li>
-<li><a href="#org47c25ad">3.4. 查看远程仓库</a></li>
-<li><a href="#org28ebe51">3.5. <code>git push</code> 推送</a></li>
-<li><a href="#org2afdaa7">3.6. 建立跟踪分支</a></li>
-<li><a href="#orgedcdc48">3.7. 查看跟踪分支</a></li>
-<li><a href="#org076dfb4">3.8. <code>git pull</code> 拉取远程仓库</a></li>
-<li><a href="#orge49dc12">3.9. 删除远程分支</a></li>
+<li><a href="#orge8878e8">3.1. <code>git clone</code> 克隆远程仓库</a></li>
+<li><a href="#org4a4f0f8">3.2. <code>git fecth</code> 抓取远程仓库</a></li>
+<li><a href="#orgd246e46">3.3. <code>git remote add</code> 添加远程仓库</a></li>
+<li><a href="#org88cf15b">3.4. 查看远程仓库</a></li>
+<li><a href="#orgdbf41bc">3.5. <code>git push</code> 推送</a></li>
+<li><a href="#orge95b45e">3.6. 建立跟踪分支</a></li>
+<li><a href="#org5e361a6">3.7. 查看跟踪分支</a></li>
+<li><a href="#org18537bc">3.8. <code>git pull</code> 拉取远程仓库</a></li>
+<li><a href="#org2830fcc">3.9. 删除远程分支</a></li>
 </ul>
 </li>
-<li><a href="#org2501df3">4. 变基</a>
+<li><a href="#org04167ac">4. 变基</a>
 <ul>
-<li><a href="#orga677e19">4.1. 变基 <code>git rebase</code> 的基本操作</a></li>
-<li><a href="#org4d426bf">4.2. 变基的风险</a></li>
+<li><a href="#org3f7db13">4.1. 变基 <code>git rebase</code> 的基本操作</a></li>
+<li><a href="#orge5674cb">4.2. 变基的风险</a></li>
 </ul>
 </li>
-<li><a href="#org067c439">5. 通过 SSH 密钥连接 GitHub</a>
+<li><a href="#orged99aca">5. 通过 SSH 密钥连接 GitHub</a>
 <ul>
-<li><a href="#org39f43f4">5.1. 第一步：生成本地 SSH 密钥对</a></li>
-<li><a href="#org6551f70">5.2. 第二步：查看并复制公钥</a></li>
-<li><a href="#org7f3e21f">5.3. 第三步：把公钥添加到 <code>GitHub</code> 账号</a></li>
-<li><a href="#org176aca1">5.4. 第四步：测试 SSH 连接</a></li>
-<li><a href="#org626da58">5.5. 管理密钥（SSH Config 机制）</a></li>
+<li><a href="#orgd47a73b">5.1. 第一步：生成本地 SSH 密钥对</a></li>
+<li><a href="#orga7fc080">5.2. 第二步：查看并复制公钥</a></li>
+<li><a href="#orga01d0bb">5.3. 第三步：把公钥添加到 <code>GitHub</code> 账号</a></li>
+<li><a href="#org32cfb13">5.4. 第四步：测试 SSH 连接</a></li>
+<li><a href="#orgf26b722">5.5. 管理密钥（SSH Config 机制）</a></li>
 </ul>
 </li>
-<li><a href="#org7acfaac">6. 杂项</a>
+<li><a href="#org723e996">6. 杂项</a>
 <ul>
-<li><a href="#orge1d597c">6.1. <code>git config</code> 设置</a></li>
-<li><a href="#org46d00a3">6.2. <code>.gitignore</code> 文件</a></li>
-<li><a href="#org2fd308e">6.3. 设置 <code>git status</code> 显示原样文件中文名</a></li>
-<li><a href="#org11d6f6f">6.4. 查找 git 的使用手册</a></li>
-<li><a href="#org0705db0">6.5. 更改 git 的默认编辑器</a></li>
-<li><a href="#orgb44a4b2">6.6. 设置 <code>git diff</code> 调用的软件</a></li>
+<li><a href="#org7ed73bc">6.1. <code>git config</code> 设置</a></li>
+<li><a href="#orgb59bd69">6.2. <code>.gitignore</code> 文件</a></li>
+<li><a href="#orgb03ed94">6.3. 设置 <code>git status</code> 显示原样文件中文名</a></li>
+<li><a href="#orge5a537b">6.4. 查找 git 的使用手册</a></li>
+<li><a href="#orgeddb2d6">6.5. 更改 git 的默认编辑器</a></li>
+<li><a href="#orgb94d49f">6.6. 设置 <code>git diff</code> 调用的软件</a></li>
+<li><a href="#orgaff51d7">6.7. 删除全部提交历史重新开始</a></li>
 </ul>
 </li>
-<li><a href="#orgbdbe816">7. <code>Magit</code> 使用</a></li>
-<li><a href="#orgefc4b00">8. 删去/待整理</a></li>
+<li><a href="#org70ba01b">7. <code>Magit</code> 使用</a></li>
+<li><a href="#org32ff78c">8. 删去/待整理</a></li>
 </ul>
 </div>
 </div>
@@ -296,21 +297,21 @@
 <li>Pro Git，第二版，简体中文，在线阅读
 <a href="https://git-scm.com/book/zh/v2">https://git-scm.com/book/zh/v2</a> 或  <a href="https://bingohuang.gitbooks.io/progit2/content/">https://bingohuang.gitbooks.io/progit2/content/</a></li>
 </ul>
-<div id="outline-container-orgd71e598" class="outline-2">
-<h2 id="orgd71e598"><span class="section-number-2">1.</span> 基本操作</h2>
+<div id="outline-container-orgad0a509" class="outline-2">
+<h2 id="orgad0a509"><span class="section-number-2">1.</span> 基本操作</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 下面以实际操作介绍 Git 的一些基本命令和操作。
 </p>
 </div>
-<div id="outline-container-org8c1cc48" class="outline-3">
-<h3 id="org8c1cc48"><span class="section-number-3">1.1.</span> <code>git init</code> 初始化仓库</h3>
+<div id="outline-container-orga7f2f50" class="outline-3">
+<h3 id="orga7f2f50"><span class="section-number-3">1.1.</span> <code>git init</code> 初始化仓库</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 要使用 Git 进行版本管理， 必须先初始化仓库。
 </p>
 
-<pre class="example" id="org93115cb">
+<pre class="example" id="orge461a44">
 $ mkdir git-tutorial
 $ cd git-tutorial
 $ git init
@@ -329,15 +330,15 @@ Initialized empty Git repository in /Users/hirocaster/github/github-book/git-tut
 </p>
 </div>
 </div>
-<div id="outline-container-orge938145" class="outline-3">
-<h3 id="orge938145"><span class="section-number-3">1.2.</span> <code>git status</code> 查看仓库的状态</h3>
+<div id="outline-container-orga1181f3" class="outline-3">
+<h3 id="orga1181f3"><span class="section-number-3">1.2.</span> <code>git status</code> 查看仓库的状态</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 工作树和仓库在被操作的过程中，状态会不断发生变化。
 在 Git 操作过程中时常用 <code>git status</code> 命令查看当前状态，可谓基本中的基本。
 </p>
 
-<pre class="example" id="org274a4ee">
+<pre class="example" id="org0ec2f45">
 $ git status
 
 # On branch master
@@ -352,7 +353,7 @@ nothing to commit (create/copy files and use "git add" to track)
 我们建立 <code>README.md</code> 文件作为管理对象，为第一次提交做前期准备。
 </p>
 
-<pre class="example" id="org63f3ae1">
+<pre class="example" id="org68075da">
 $ touch README.md
 $ git status
 
@@ -365,15 +366,15 @@ nothing added to commit but untracked files present (use "git add" to track)
 </pre>
 </div>
 </div>
-<div id="outline-container-orga71a7c2" class="outline-3">
-<h3 id="orga71a7c2"><span class="section-number-3">1.3.</span> <code>git add</code> 向暂存区中添加文件</h3>
+<div id="outline-container-orgd00b78e" class="outline-3">
+<h3 id="orgd00b78e"><span class="section-number-3">1.3.</span> <code>git add</code> 向暂存区中添加文件</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 要想让文件成为 Git 仓库的管理对象，就需要用 <code>git add</code> 命令将其加入暂存区（Stage 或者 Index）中。
 暂存区是提交之前的一个临时区域。
 </p>
 
-<pre class="example" id="org36b3acc">
+<pre class="example" id="orgc258bcd">
 $ git add README.md
 $ git status
 
@@ -394,8 +395,8 @@ $ git status
 </p>
 </div>
 </div>
-<div id="outline-container-org48492d2" class="outline-3">
-<h3 id="org48492d2"><span class="section-number-3">1.4.</span> 撤销操作</h3>
+<div id="outline-container-orge2e1970" class="outline-3">
+<h3 id="orge2e1970"><span class="section-number-3">1.4.</span> 撤销操作</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 例如，你已经修改了两个文件并且想要将它们作为两次独立的修改提交，但是却意外地输入了 <code>git add *</code> 暂存了它们两个。
@@ -403,7 +404,7 @@ $ git status
 其实 <code>git status</code> 命令已经提示了你：
 </p>
 
-<pre class="example" id="org0fd394d">
+<pre class="example" id="orga2ed304">
 $ git add *
 $ git status
 On branch master
@@ -419,7 +420,7 @@ Changes to be committed:
 所以，我们可以这样来取消暂存 <code>CONTRIBUTING.md</code> 文件：
 </p>
 
-<pre class="example" id="org1af3a57">
+<pre class="example" id="orga9b6cc0">
 $ git reset HEAD CONTRIBUTING.md
 Unstaged changes after reset:
 M	CONTRIBUTING.md
@@ -442,7 +443,7 @@ Changes not staged for commit:
 其实 <code>git status</code> 也告诉了你应该如何做。
 </p>
 
-<pre class="example" id="org6f81d0c">
+<pre class="example" id="orgbaafd85">
 Changes not staged for commit:
   (use "git add &lt;file&gt;..." to update what will be committed)
   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
@@ -454,7 +455,7 @@ Changes not staged for commit:
 按照提示执行：
 </p>
 
-<pre class="example" id="org53c8c3e">
+<pre class="example" id="orgce2836e">
 $ git checkout -- CONTRIBUTING.md
 $ git status
 On branch master
@@ -471,8 +472,8 @@ Changes to be committed:
 </p>
 </div>
 </div>
-<div id="outline-container-org49af952" class="outline-3">
-<h3 id="org49af952"><span class="section-number-3">1.5.</span> <code>git commit</code> 保存仓库的历史记录</h3>
+<div id="outline-container-orgb4de8f4" class="outline-3">
+<h3 id="orgb4de8f4"><span class="section-number-3">1.5.</span> <code>git commit</code> 保存仓库的历史记录</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 <code>git commit</code> 命令可以将当前暂存区中的文件实际保存到仓库的历史记录中。
@@ -483,7 +484,7 @@ Changes to be committed:
 通过参数 <code>-m</code> 简洁记述一行提交信息：
 </p>
 
-<pre class="example" id="orgd2ef36d">
+<pre class="example" id="org85827ef">
 $ git commit -m "First commit"
 
 [master (root-commit) 9f129ba] First commit
@@ -496,7 +497,7 @@ $ git commit -m "First commit"
 执行后编辑器就会启动，并显示如下结果。
 </p>
 
-<pre class="example" id="orgbff0e46">
+<pre class="example" id="orgde495c8">
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
@@ -532,7 +533,7 @@ $ git commit -m "First commit"
 执行完 <code>git commit</code> 命令后再来查看当前状态。
 </p>
 
-<pre class="example" id="orge1e8194">
+<pre class="example" id="orgd8cd81c">
 $ git status
 
 # On branch master
@@ -540,10 +541,10 @@ nothing to c ommit, working directory clean
 </pre>
 </div>
 </div>
-<div id="outline-container-org7e1a28e" class="outline-3">
-<h3 id="org7e1a28e"><span class="section-number-3">1.6.</span> <code>git log</code> 查看提交日志</h3>
+<div id="outline-container-orgdfe9a6e" class="outline-3">
+<h3 id="orgdfe9a6e"><span class="section-number-3">1.6.</span> <code>git log</code> 查看提交日志</h3>
 <div class="outline-text-3" id="text-1-6">
-<pre class="example" id="org7942af0">
+<pre class="example" id="orgd97cc88">
 $ git log
 
 commit 9f129bae19b2c82fb4e98cde5890e52a6c546922
@@ -562,7 +563,7 @@ Git 的其他命令中，有时会用到这个哈希值（一般只要输入该�
 如果只想显示第一行简述信息，可以在 <code>git log</code> 命令后加上 <code>--pretty=short</code> 。
 </p>
 
-<pre class="example" id="org41cd413">
+<pre class="example" id="orgdb9ea63">
 $ git log --pretty=short
 
 commit 9f129bae19b2c82fb4e98cde5890e52a6c546922
@@ -580,7 +581,7 @@ Author: hirocaster &lt;hohtsuka@gmail.com&gt;
 通过 <code>git log --pretty-format</code> 可以定制要显示的记录格式。
 </p>
 
-<pre class="example" id="orgc1c25e3">
+<pre class="example" id="orgca29d30">
 git log --pretty=format:"%h - %an, %ar : %s"
 </pre>
 
@@ -695,7 +696,7 @@ git log --pretty=format:"%h - %an, %ar : %s"
 例如
 </p>
 
-<pre class="example" id="org4a62255">
+<pre class="example" id="orgb52c216">
 $ git log --pretty=format:"%h %s" --graph
 </pre>
 
@@ -704,7 +705,7 @@ $ git log --pretty=format:"%h %s" --graph
 如果加的是文件名，就会只显示与该文件相关的日志。
 </p>
 
-<pre class="example" id="org7e63779">
+<pre class="example" id="org77c7e18">
 $ git log README.md
 </pre>
 
@@ -712,7 +713,7 @@ $ git log README.md
 如果想查看提交所带来的改动，可以加上 <code>-p</code> 参数，文件的前后差别就会显示在提交信息之后。
 </p>
 
-<pre class="example" id="orgcbc22e4">
+<pre class="example" id="orgdc6e09e">
 $ git log -p
 </pre>
 
@@ -720,7 +721,7 @@ $ git log -p
 比如，执行下面的命令，就可以只查看 <code>README.md</code> 文件的提交日志以及提交前后的差别。
 </p>
 
-<pre class="example" id="org342e8b2">
+<pre class="example" id="orgaf86875">
 $ git log -p README.md
 </pre>
 
@@ -860,21 +861,21 @@ $ git log -p README.md
 比如要查看 Git 仓库中，2008 年 10 月期间，Junio Hamano 提交的但未合并的测试文件，可以用下面的查询命令：
 </p>
 
-<pre class="example" id="org3f3e43a">
+<pre class="example" id="orgaf43803">
 $ git log --pretty="%h - %s" --author=gitster --since="2008-10-01" \
    --before="2008-11-01" --no-merges -- t/
 </pre>
 </div>
 </div>
-<div id="outline-container-orga7b5243" class="outline-3">
-<h3 id="orga7b5243"><span class="section-number-3">1.7.</span> <code>git diff</code> 查看更改前后的差别</h3>
+<div id="outline-container-orge02c1b6" class="outline-3">
+<h3 id="orge02c1b6"><span class="section-number-3">1.7.</span> <code>git diff</code> 查看更改前后的差别</h3>
 <div class="outline-text-3" id="text-1-7">
 <p>
 <code>git diff</code> 命令可以查看工作树、暂存区、最新提交之间的差别。
 举一个例子，在刚刚提交的 <code>README.md</code> 中写点东西。
 </p>
 
-<pre class="example" id="orgd89be5b">
+<pre class="example" id="org59b5782">
 # Git教程
 </pre>
 
@@ -883,7 +884,7 @@ $ git log --pretty="%h - %s" --author=gitster --since="2008-10-01" \
 由于我们尚未用 <code>git add</code> ，此时执行 <code>git diff</code> 命令，可以查看到当前工作树与暂存区的差别。
 </p>
 
-<pre class="example" id="org13ab1b7">
+<pre class="example" id="org44224ac">
 $ git diff
 
 diff --git a/README.md b/README.md
@@ -904,7 +905,7 @@ index e69de29..cb5dc9f 100644
 用 <code>git add</code> 命令将 <code>README.md</code> 文件加入暂存区。
 </p>
 
-<pre class="example" id="orgd5687d5">
+<pre class="example" id="org742d0d4">
 $ git add README.md
 </pre>
 
@@ -921,7 +922,7 @@ $ git add README.md
 也可以用 <code>git diff HEAD</code> 命令。
 </p>
 
-<pre class="example" id="orga87e511">
+<pre class="example" id="orgede9d3b">
 $ git diff HEAD
 
 diff --git a/README.md b/README.md
@@ -941,7 +942,7 @@ index e69de29..cb5dc9f 100644
 确认无误后提交。
 </p>
 
-<pre class="example" id="org02c53e2">
+<pre class="example" id="org795f018">
 $ git commit -m "Add index"
 [master fd0cbf0] Add index
   1 file changed, 1 insertion(+)
@@ -951,7 +952,7 @@ $ git commit -m "Add index"
 查看日志，确认第二提交成功。
 </p>
 
-<pre class="example" id="org842ec3d">
+<pre class="example" id="org21aa6c0">
 $ git log
 
 commit fd0cbf0d4a25f747230694d95cac1be72d33441d
@@ -968,14 +969,14 @@ Date:    Sun May 5 16:06:49 2013 +0900
 </pre>
 </div>
 </div>
-<div id="outline-container-orgd2c9d70" class="outline-3">
-<h3 id="orgd2c9d70"><span class="section-number-3">1.8.</span> <code>git checkout</code> 退回到某个历史版本</h3>
+<div id="outline-container-org49f5960" class="outline-3">
+<h3 id="org49f5960"><span class="section-number-3">1.8.</span> <code>git checkout</code> 退回到某个历史版本</h3>
 <div class="outline-text-3" id="text-1-8">
 <p>
 假设要退回到之前的某次提交，先找到该提交的哈希值，如 <code>8b3fa5934ad94d62bbe28984a6a5375f27ca43e8</code> ，那么执行：
 </p>
 
-<pre class="example" id="org179d2f2">
+<pre class="example" id="org562a3f0">
 $ git checkout 8b3fa5934ad94d62bbe28984a6a5375f27ca43e8
 </pre>
 
@@ -983,7 +984,7 @@ $ git checkout 8b3fa5934ad94d62bbe28984a6a5375f27ca43e8
 也可以至写出该哈希值的前 4 位或以上：
 </p>
 
-<pre class="example" id="org1df5d87">
+<pre class="example" id="org459e23c">
 $ git checkout 8b3f
 </pre>
 
@@ -1002,15 +1003,15 @@ $ git checkout 8b3f
 如果想在旧提交上做较大修改，可以从旧提交新建分支 <code>fix-old</code> ：
 </p>
 
-<pre class="example" id="orgc7d914b">
+<pre class="example" id="orgff05d99">
 git checkout -b fix-old
 </pre>
 </div>
 </div>
-<div id="outline-container-org6922faa" class="outline-3">
-<h3 id="org6922faa"><span class="section-number-3">1.9.</span> <code>git branch</code> 显示分支一览表</h3>
+<div id="outline-container-orgc6b5b16" class="outline-3">
+<h3 id="orgc6b5b16"><span class="section-number-3">1.9.</span> <code>git branch</code> 显示分支一览表</h3>
 <div class="outline-text-3" id="text-1-9">
-<pre class="example" id="orgff99160">
+<pre class="example" id="org272f5dd">
 $ git branch
 * master
 </pre>
@@ -1020,14 +1021,14 @@ $ git branch
 </p>
 </div>
 </div>
-<div id="outline-container-org6369064" class="outline-3">
-<h3 id="org6369064"><span class="section-number-3">1.10.</span> <code>git checkout -b</code> 创建、切换分支</h3>
+<div id="outline-container-org614f270" class="outline-3">
+<h3 id="org614f270"><span class="section-number-3">1.10.</span> <code>git checkout -b</code> 创建、切换分支</h3>
 <div class="outline-text-3" id="text-1-10">
 <p>
 创建名为 <code>feature-A</code> 的分支，并切换到该分支。
 </p>
 
-<pre class="example" id="org350a1fe">
+<pre class="example" id="orgcfdfb50">
 $ git checkout -b feature-A
 
 Switched to a new branch 'feature-A'
@@ -1037,7 +1038,7 @@ Switched to a new branch 'feature-A'
 查看分支列表，确认成功执行。
 </p>
 
-<pre class="example" id="org08bfa52">
+<pre class="example" id="org81803e1">
 $ git branch
 
 * feature-A
@@ -1054,7 +1055,7 @@ master
 在 <code>README.md</code> 文件中添加一行。
 </p>
 
-<pre class="example" id="org9cde472">
+<pre class="example" id="org5a89694">
 # Git教程
 
 - feature-A
@@ -1064,7 +1065,7 @@ master
 然后进行提交。
 </p>
 
-<pre class="example" id="org5a370e0">
+<pre class="example" id="orgbd9c74d">
 $ git add README.md
 $ git commit -m "Add feature-A"
 
@@ -1080,7 +1081,7 @@ $ git commit -m "Add feature-A"
 现在切换回 <code>master</code> 分支。
 </p>
 
-<pre class="example" id="orgf701f88">
+<pre class="example" id="org3c1d375">
 $ git checkout master
 
 Switched to branch 'master'
@@ -1092,15 +1093,15 @@ Switched to branch 'master'
 </p>
 </div>
 </div>
-<div id="outline-container-org09d3f94" class="outline-3">
-<h3 id="org09d3f94"><span class="section-number-3">1.11.</span> <code>git merge</code> 合并分支</h3>
+<div id="outline-container-org1ec64df" class="outline-3">
+<h3 id="org1ec64df"><span class="section-number-3">1.11.</span> <code>git merge</code> 合并分支</h3>
 <div class="outline-text-3" id="text-1-11">
 <p>
 假设 feature-A 已经实现完毕，想要将它合并到主干分支 <code>master</code> 中。
 首先切换到 <code>master</code> 分支。
 </p>
 
-<pre class="example" id="org4edd645">
+<pre class="example" id="org8a8b887">
 $ git checkout master
 
 Switched to branch 'master'
@@ -1110,7 +1111,7 @@ Switched to branch 'master'
 然后开始合并。
 </p>
 
-<pre class="example" id="org03c6d0e">
+<pre class="example" id="org3be0fcd">
 $ git merge --no-ff feature-A
 </pre>
 
@@ -1119,7 +1120,7 @@ $ git merge --no-ff feature-A
 此时编辑器会启动，用于录入合并提交的信息。
 </p>
 
-<pre class="example" id="orga40db66">
+<pre class="example" id="org0bcda2c">
 Merge branch 'feature-A'
 
 # Please enter a commit message to explain why this merge is necessary,
@@ -1133,7 +1134,7 @@ Merge branch 'feature-A'
 编辑后关闭编辑器，然后就会看到下面的结果。
 </p>
 
-<pre class="example" id="org17c2ce4">
+<pre class="example" id="org2b5618c">
 Merge made by the 'recursive' strategy.
   README.md | 2 ++
   1 file changed, 2 insertions(+)
@@ -1144,14 +1145,14 @@ Merge made by the 'recursive' strategy.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc61b114" class="outline-3">
-<h3 id="orgc61b114"><span class="section-number-3">1.12.</span> <code>git log --graph</code> 以图表形式查看分支</h3>
+<div id="outline-container-org150eba8" class="outline-3">
+<h3 id="org150eba8"><span class="section-number-3">1.12.</span> <code>git log --graph</code> 以图表形式查看分支</h3>
 <div class="outline-text-3" id="text-1-12">
 <p>
 用 <code>git log --graph</code> 命令进行查看的话，能很清楚地看到特性分支 <code>feature-A</code> 提交的内容已被合并。
 </p>
 
-<pre class="example" id="org8a95b6e">
+<pre class="example" id="orga8aae24">
 $ git log --graph
 
 *  commit 83b0b94268675cb715ac6c8a5bc1965938c15f62
@@ -1181,8 +1182,8 @@ $ git log --graph
 </pre>
 </div>
 </div>
-<div id="outline-container-orgca605df" class="outline-3">
-<h3 id="orgca605df"><span class="section-number-3">1.13.</span> <code>git reset</code> 回溯历史版本</h3>
+<div id="outline-container-orgbccac4a" class="outline-3">
+<h3 id="orgbccac4a"><span class="section-number-3">1.13.</span> <code>git reset</code> 回溯历史版本</h3>
 <div class="outline-text-3" id="text-1-13">
 <p>
 假设我们要回溯到上一节 <code>feature-A</code> 分支创建之前， 创建一个名为 <code>fix-B</code> 的特性分支。
@@ -1193,7 +1194,7 @@ $ git log --graph
 只要提供目标时间点的哈希值，就可以完全恢复至该时间点的状态。
 </p>
 
-<pre class="example" id="orgb2445e7">
+<pre class="example" id="org150aba5">
 $ git reset --hard fd0cbf0d4a25f747230694d95cac1be72d33441d
 
 HEAD is now at fd0cbf0 Add index
@@ -1208,7 +1209,7 @@ HEAD is now at fd0cbf0 Add index
 现在我们来创建特性分支 <code>fix-B</code> 。
 </p>
 
-<pre class="example" id="org9a6fa7e">
+<pre class="example" id="org322fcdb">
 $ git checkout -b fix-B
 
 Switched to a new branch 'fix-B'
@@ -1218,7 +1219,7 @@ Switched to a new branch 'fix-B'
 我们在 <code>README.md</code> 文件中添加一行文字。
 </p>
 
-<pre class="example" id="org2f07ec6">
+<pre class="example" id="orga8d6ae1">
 # Git教程
 
 - fix-B
@@ -1228,7 +1229,7 @@ Switched to a new branch 'fix-B'
 然后直接提交 <code>README.md</code> 文件。
 </p>
 
-<pre class="example" id="org508bea2">
+<pre class="example" id="org2799b42">
 $ git add README.md
 $ git commit -m "Fix B"
 
@@ -1244,7 +1245,7 @@ $ git commit -m "Fix B"
 在日志中找出回溯历史之前的哈希值，通过 <code>git reset --hard</code> 命令恢复到回溯历史前的状态。
 </p>
 
-<pre class="example" id="org363eaf4">
+<pre class="example" id="orgf2d61f5">
 $ git reflog
 4096d9e HEAD@{0}: commit: Fix B
 fd0cbf0 HEAD@{1}: checkout: moving from master to fix-B
@@ -1265,7 +1266,7 @@ fd0cbf0 HEAD@{9}: commit: Add index
 我们将 <code>HEAD</code> 、暂存区、工作树恢复到这个时间点的状态。
 </p>
 
-<pre class="example" id="org64738bc">
+<pre class="example" id="org4706b24">
 $ git checkout master
 
 $ git reset --hard 83b0b94
@@ -1274,14 +1275,14 @@ HEAD is now at 83b0b94 Merge branch 'feature-A'
 </pre>
 </div>
 </div>
-<div id="outline-container-org45f5ae4" class="outline-3">
-<h3 id="org45f5ae4"><span class="section-number-3">1.14.</span> 解决合并时出现的冲突</h3>
+<div id="outline-container-org8ff4a1f" class="outline-3">
+<h3 id="org8ff4a1f"><span class="section-number-3">1.14.</span> 解决合并时出现的冲突</h3>
 <div class="outline-text-3" id="text-1-14">
 <p>
 接着，我们合并 fix-B 分支。
 </p>
 
-<pre class="example" id="org25244ca">
+<pre class="example" id="org05659b8">
 $ git merge --no-ff fix-B
 
 Auto-merging README.md
@@ -1303,7 +1304,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 用编辑器打开 <code>README.md</code> 文件，就会发现其内容变成了下面这个样子。
 </p>
 
-<pre class="example" id="orgea042bd">
+<pre class="example" id="org864802c">
 # Git教程
 
 &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
@@ -1318,7 +1319,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 我们在编辑器中将其改成想要的样子。
 </p>
 
-<pre class="example" id="org96adefa">
+<pre class="example" id="org998a9e3">
 # Git教程
 
 - feature-A
@@ -1329,7 +1330,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 保存后执行 <code>git add</code> 命令与 <code>git commit</code> 命令。
 </p>
 
-<pre class="example" id="org7ca7d40">
+<pre class="example" id="orgf71ddb1">
 $ git add README.md
 
 $ git commit -m "Fix conflict"
@@ -1348,8 +1349,8 @@ Recorded resolution for 'README.md'.
 </p>
 </div>
 </div>
-<div id="outline-container-org7c23e21" class="outline-3">
-<h3 id="org7c23e21"><span class="section-number-3">1.15.</span> <code>git commit --amend</code> 修改刚刚提交的信息</h3>
+<div id="outline-container-orga084f39" class="outline-3">
+<h3 id="orga084f39"><span class="section-number-3">1.15.</span> <code>git commit --amend</code> 修改刚刚提交的信息</h3>
 <div class="outline-text-3" id="text-1-15">
 <p>
 要修改上一条提交信息，可以使用 <code>git commit --amend</code> 命令。
@@ -1357,7 +1358,7 @@ Recorded resolution for 'README.md'.
 于是，我们要修改这条提交信息。
 </p>
 
-<pre class="example" id="orgf977129">
+<pre class="example" id="org90e9b18">
 $ git commit --amend
 </pre>
 
@@ -1365,7 +1366,7 @@ $ git commit --amend
 执行上面的命令后，编辑器就会启动。
 </p>
 
-<pre class="example" id="org53179ba">
+<pre class="example" id="orgeb36194">
 Fix conflict
 
 # Please enter the commit message for your changes. Lines starting
@@ -1385,7 +1386,7 @@ Fix conflict
 此时会显示下面的结果。
 </p>
 
-<pre class="example" id="org91b8185">
+<pre class="example" id="org4d64337">
 [master 2e7db6f] Merge branch 'fix-B'
 </pre>
 
@@ -1393,7 +1394,7 @@ Fix conflict
 执行 git 可以看到提交日志中的相应内容也已经被修改。
 </p>
 
-<pre class="example" id="org9e55d2e">
+<pre class="example" id="org1849e60">
 $ git log --graph
 
 *  commit 2e7db6fb0b576e9946965ea680e4834ee889c9d8
@@ -1439,7 +1440,7 @@ $ git log --graph
 假设上一次提交后还进行过 <code>git add</code> ，比如
 </p>
 
-<pre class="example" id="orgdb8dd77">
+<pre class="example" id="org200a4a1">
 $ git commit -m 'initial commit'
 $ git add forgotten_file
 $ git commit --amend
@@ -1450,8 +1451,8 @@ $ git commit --amend
 </p>
 </div>
 </div>
-<div id="outline-container-org1bcde2c" class="outline-3">
-<h3 id="org1bcde2c"><span class="section-number-3">1.16.</span> <code>git rebase -i</code> 将前几次的提交合并为一次提交</h3>
+<div id="outline-container-org23188db" class="outline-3">
+<h3 id="org23188db"><span class="section-number-3">1.16.</span> <code>git rebase -i</code> 将前几次的提交合并为一次提交</h3>
 <div class="outline-text-3" id="text-1-16">
 <p>
 在合并特性分支之前，如果发现已提交的内容中有些许拼写错误等， 不妨提交一个修改，然后将这个修改包含到前一个提交之中，压缩成一个历史记录。
@@ -1462,7 +1463,7 @@ $ git commit --amend
 首先，新建一个 <code>feature-C</code> 特性分支。
 </p>
 
-<pre class="example" id="orgca8082b">
+<pre class="example" id="org186dcab">
 $ git checkout -b feature-C
 
 Switched to a new branch 'feature-C'
@@ -1472,7 +1473,7 @@ Switched to a new branch 'feature-C'
 然后在 <code>README.md</code> 文件中添加一行文字，并且故意留下拼写错误，以便之后修正。
 </p>
 
-<pre class="example" id="orgba7da1c">
+<pre class="example" id="org932d0ce">
 # Git教程
 
 - feature-A
@@ -1485,7 +1486,7 @@ Switched to a new branch 'feature-C'
 这个小小的变更就没必要先执行 <code>git add</code> 命令再执行 <code>git commit</code> 命令了，我们用 <code>git commit -am</code> 命令来一次完成这两步操作。
 </p>
 
-<pre class="example" id="org592bff2">
+<pre class="example" id="orgb6fef30">
 $ git commit -am "Add feature-C"
 
 [feature-C 7a34294] Add feature-C
@@ -1498,7 +1499,7 @@ $ git commit -am "Add feature-C"
 执行 <code>git diff</code> 观察。
 </p>
 
-<pre class="example" id="orgcc39dd2">
+<pre class="example" id="orgfbdda8c">
 $ git diff
 
 diff --git a/README.md b/README.md
@@ -1518,7 +1519,7 @@ index ad19aba..af647fd 100644
 然后进行提交。
 </p>
 
-<pre class="example" id="org8086b8c">
+<pre class="example" id="org0b1d5ae">
 $ git commit -am "Fix typo"
 
 [feature-C 6fba227] Fix typo
@@ -1536,7 +1537,7 @@ $ git commit -am "Fix typo"
 为此， 我们要用到 <code>git rebase</code> 命令。
 </p>
 
-<pre class="example" id="org87fe43d">
+<pre class="example" id="orgab06fb2">
 $ git rebase -i HEAD~2
 </pre>
 
@@ -1544,7 +1545,7 @@ $ git rebase -i HEAD~2
 用上述方式执行 <code>git rebase</code> 命令， 可以选定当前分支中包含 <code>HEAD</code> （最新提交）在内的两个最新历史记录为对象， 并在编辑器中打开。
 </p>
 
-<pre class="example" id="org551a905">
+<pre class="example" id="org161211b">
 pick 7a34294 Add feature-C
 pick 6fba227 Fix typo
 
@@ -1572,7 +1573,7 @@ pick 6fba227 Fix typo
 按照下图所示，将 <code>6fba227</code> 左侧的 <code>pick</code> 部分删除，改写为 <code>fixup</code> 。
 </p>
 
-<pre class="example" id="org547dadd">
+<pre class="example" id="org1f0ce06">
 pick 7a34294 Add feature-C
 fixup 6fba227 Fix typo
 </pre>
@@ -1581,7 +1582,7 @@ fixup 6fba227 Fix typo
 保存编辑器里的内容，关闭编辑器。
 </p>
 
-<pre class="example" id="org16767b5">
+<pre class="example" id="orgaac0c82">
 [detached HEAD 51440c5] Add feature-C
  1 file changed, 1 insertion(+)
 Successfully rebased and updated refs/heads/feature-C.
@@ -1596,7 +1597,7 @@ Successfully rebased and updated refs/heads/feature-C.
 现在再查看提交日志时会发现 Add feature-C 的哈希值已经不是 <code>7a34294</code> 了，这证明提交已经被更改。
 </p>
 
-<pre class="example" id="org8b9756b">
+<pre class="example" id="orgb7b3856">
 $ git log --graph
 
 * commit 51440c55b23fa7fa50aedf20aa43c54138171137
@@ -1630,7 +1631,7 @@ $ git log --graph
 feature-C 分支的使命告一段落，我们将它与 master 分支合并。
 </p>
 
-<pre class="example" id="org7aa0e3a">
+<pre class="example" id="org1f8ae75">
 $ git checkout master
 Switched to branch 'master'
 
@@ -1646,8 +1647,8 @@ master 分支整合了 feature-C 分支。
 </p>
 </div>
 </div>
-<div id="outline-container-org4975cb6" class="outline-3">
-<h3 id="org4975cb6"><span class="section-number-3">1.17.</span> <code>git remote add</code> 添加远程仓库</h3>
+<div id="outline-container-orgafb4c19" class="outline-3">
+<h3 id="orgafb4c19"><span class="section-number-3">1.17.</span> <code>git remote add</code> 添加远程仓库</h3>
 <div class="outline-text-3" id="text-1-17">
 <p>
 回忆，我们已经将本地目录 <code>/Users/hirocaster/github/github-book/git-tutorial/</code> 设置为 git 的仓库。
@@ -1666,7 +1667,7 @@ master 分支整合了 feature-C 分支。
 现在我们用 <code>git remote add</code> 命令将它设置成本地仓库的远程仓库。
 </p>
 
-<pre class="example" id="orge48b1b1">
+<pre class="example" id="org5a7a7ce">
 $ git remote add origin git@github.com:github-book/git-tutorial.git
 </pre>
 
@@ -1675,15 +1676,15 @@ $ git remote add origin git@github.com:github-book/git-tutorial.git
 </p>
 </div>
 </div>
-<div id="outline-container-org7bb61f7" class="outline-3">
-<h3 id="org7bb61f7"><span class="section-number-3">1.18.</span> <code>git push</code> 推送至远程仓库</h3>
+<div id="outline-container-orgb33939b" class="outline-3">
+<h3 id="orgb33939b"><span class="section-number-3">1.18.</span> <code>git push</code> 推送至远程仓库</h3>
 <div class="outline-text-3" id="text-1-18">
 <p>
 如果想将当前分支下本地仓库中的内容推送给远程仓库，需要用到 <code>git push</code> 命令。
 现在假定我们在 master 分支下进行操作。
 </p>
 
-<pre class="example" id="org8beeaae">
+<pre class="example" id="org00960c3">
 $ git push -u origin master
 
 Counting objects: 20, done.
@@ -1708,15 +1709,15 @@ Branch master set up to track remote branch master from origin.
 </p>
 </div>
 </div>
-<div id="outline-container-org4eb8472" class="outline-3">
-<h3 id="org4eb8472"><span class="section-number-3">1.19.</span> 推送至 master 以外的分支</h3>
+<div id="outline-container-org9227907" class="outline-3">
+<h3 id="org9227907"><span class="section-number-3">1.19.</span> 推送至 master 以外的分支</h3>
 <div class="outline-text-3" id="text-1-19">
 <p>
 除了 master 分支之外，远程仓库也可以创建其他分支。
 举个例子，我们在本地仓库中创建 feature-D 分支，并将它以同名形式 push 至远程仓库。
 </p>
 
-<pre class="example" id="orgd172730">
+<pre class="example" id="org404490b">
 $ git checkout -b feature-D
 
 Switched to a new branch 'feature-D'
@@ -1726,7 +1727,7 @@ Switched to a new branch 'feature-D'
 我们在本地仓库中创建了 feature-D 分支，现在将它 push 给远程仓库并保持分支名称不变。
 </p>
 
-<pre class="example" id="org2e0cfc0">
+<pre class="example" id="orgaf5ea4a">
 $ git push -u origin feature-D
 
 Total 0 (delta 0), reused 0 (delta 0)
@@ -1740,8 +1741,8 @@ Branch feature-D set up to track remote branch feature-D from origin.
 </p>
 </div>
 </div>
-<div id="outline-container-org4b2a528" class="outline-3">
-<h3 id="org4b2a528"><span class="section-number-3">1.20.</span> <code>git clone</code> 获取远程仓库</h3>
+<div id="outline-container-org142d261" class="outline-3">
+<h3 id="org142d261"><span class="section-number-3">1.20.</span> <code>git clone</code> 获取远程仓库</h3>
 <div class="outline-text-3" id="text-1-20">
 <p>
 上面，我们把在 GitHub 上新建的仓库设置成了远程仓库，并向这个仓库 push 了 feature-D 分支。
@@ -1754,7 +1755,7 @@ Branch feature-D set up to track remote branch feature-D from origin.
 小明选择在他本地的某个目录，并执行：
 </p>
 
-<pre class="example" id="orgbd60e5f">
+<pre class="example" id="orge8ab1e5">
 $ git clone git@github.com:github-book/git-tutorial.git
 
 Cloning into 'git-tutorial'...
@@ -1771,7 +1772,7 @@ $ cd git-tutorial
 也就是说，当前本地仓库的 <code>master</code> 分支与 GitHub 端远程仓库 <code>origin</code> 的 <code>master</code> 分支在内容上是完全相同的。
 </p>
 
-<pre class="example" id="org8715aae">
+<pre class="example" id="orgb200c7a">
 $ git branch -a
 
 * master
@@ -1794,7 +1795,7 @@ $ git branch -a
 比如，要克隆 Git 仓库服务器的仓库 libgit2，可以在本地的某目录下执行以下命令。
 </p>
 
-<pre class="example" id="org23a9a90">
+<pre class="example" id="org021f7d6">
 # 比如，要克隆 Git 的可链接库 libgit2
 git clone https://github.com/libgit2/libgit2
 
@@ -1803,14 +1804,14 @@ git clone https://github.com/libgit2/libgit2 mylibgit
 </pre>
 </div>
 </div>
-<div id="outline-container-org4601242" class="outline-3">
-<h3 id="org4601242"><span class="section-number-3">1.21.</span> 获取远程的 feature-D 分支</h3>
+<div id="outline-container-org9fc20d6" class="outline-3">
+<h3 id="org9fc20d6"><span class="section-number-3">1.21.</span> 获取远程的 feature-D 分支</h3>
 <div class="outline-text-3" id="text-1-21">
 <p>
 小明尝试将 feature-D 分支获取至本地仓库。
 </p>
 
-<pre class="example" id="org014b5e4">
+<pre class="example" id="org9559178">
 $ git checkout -b feature-D origin/feature-D
 
 Branch feature-D set up to track remote branch feature-D from origin.
@@ -1825,15 +1826,15 @@ Switched to a new branch 'feature-D'
 </p>
 </div>
 </div>
-<div id="outline-container-orgc2f8d2e" class="outline-3">
-<h3 id="orgc2f8d2e"><span class="section-number-3">1.22.</span> 向本地的 feature-D 分支提交更改</h3>
+<div id="outline-container-org4856289" class="outline-3">
+<h3 id="org4856289"><span class="section-number-3">1.22.</span> 向本地的 feature-D 分支提交更改</h3>
 <div class="outline-text-3" id="text-1-22">
 <p>
 小明获取远程的 feature-D 分支后，在 <code>README. md</code> 文件中添加一行文字。
 然后查看更改。
 </p>
 
-<pre class="example" id="orged69b69">
+<pre class="example" id="orgb09502d">
 $ git diff
 
 diff --git a/README.md b/README.md
@@ -1851,7 +1852,7 @@ index af647fd..30378c9 100644
 按照之前学过的方式提交即可。
 </p>
 
-<pre class="example" id="org6d5a2cc">
+<pre class="example" id="orgb108039">
 $ git commit -am "Add feature-D"
 
 [feature-D ed9721e] Add feature-D
@@ -1859,14 +1860,14 @@ $ git commit -am "Add feature-D"
 </pre>
 </div>
 </div>
-<div id="outline-container-orgbfce934" class="outline-3">
-<h3 id="orgbfce934"><span class="section-number-3">1.23.</span> 推送 feature-D 分支</h3>
+<div id="outline-container-org4dee8c2" class="outline-3">
+<h3 id="org4dee8c2"><span class="section-number-3">1.23.</span> 推送 feature-D 分支</h3>
 <div class="outline-text-3" id="text-1-23">
 <p>
 小明现在推送 feature-D 分支。
 </p>
 
-<pre class="example" id="org4263ebd">
+<pre class="example" id="orgfa4d96b">
 $ git push
 
 Counting objects: 5, done.
@@ -1884,8 +1885,8 @@ To git@github.com:github-book/git-tutorial.git
 </p>
 </div>
 </div>
-<div id="outline-container-org35d5bb3" class="outline-3">
-<h3 id="org35d5bb3"><span class="section-number-3">1.24.</span> <code>git pull</code> 获取最新的远程仓库分支</h3>
+<div id="outline-container-org818e797" class="outline-3">
+<h3 id="org818e797"><span class="section-number-3">1.24.</span> <code>git pull</code> 获取最新的远程仓库分支</h3>
 <div class="outline-text-3" id="text-1-24">
 <p>
 回顾一下，我们这边的本地仓库中只创建并推送了 feature-D 分支，并没有在 feature-D 分支中任何修改。
@@ -1894,7 +1895,7 @@ To git@github.com:github-book/git-tutorial.git
 假设我们的当前分支为 feature-D 分支。
 </p>
 
-<pre class="example" id="orga84062a">
+<pre class="example" id="org70e20b7">
 $ git pull origin feature-D
 
 remote: Counting objects: 5, done.
@@ -1918,8 +1919,8 @@ From github.com:github-book/git-tutorial
 </p>
 </div>
 </div>
-<div id="outline-container-orge7a89d9" class="outline-3">
-<h3 id="orge7a89d9"><span class="section-number-3">1.25.</span> 创建标签</h3>
+<div id="outline-container-orgf32c5b6" class="outline-3">
+<h3 id="orgf32c5b6"><span class="section-number-3">1.25.</span> 创建标签</h3>
 <div class="outline-text-3" id="text-1-25">
 <p>
 Git 使用两种主要类型的标签：轻量标签 <code>lightweight</code> 与附注标签 <code>annotated</code> 。
@@ -1943,7 +1944,7 @@ Git 使用两种主要类型的标签：轻量标签 <code>lightweight</code> �
 最简单的方式是当你在运行 <code>git tag</code> 命令时指定 <code>-a</code> 选项：
 </p>
 
-<pre class="example" id="orgcb9b07d">
+<pre class="example" id="orgada08d2">
 $ git tag -a v1.4 -m 'my version 1.4'
 </pre>
 
@@ -1956,7 +1957,7 @@ $ git tag -a v1.4 -m 'my version 1.4'
 通过使用 <code>git show</code> 命令可以看到标签信息与对应的提交信息：
 </p>
 
-<pre class="example" id="orgf017158">
+<pre class="example" id="orge57ddfb">
 $ git show v1.4
 tag v1.4
 Tagger: Ben Straub &lt;ben@straub.cc&gt;
@@ -1979,7 +1980,7 @@ Date:   Mon Mar 17 21:52:11 2008 -0700
 创建轻量标签，不需要使用 <code>-a</code> 、 <code>-s</code> 或 <code>-m</code> 选项，只需要提供标签名字：
 </p>
 
-<pre class="example" id="org25cdde7">
+<pre class="example" id="org24a82b2">
 $ git tag v1.4-lw
 </pre>
 
@@ -1987,7 +1988,7 @@ $ git tag v1.4-lw
 这时，如果在标签上运行 <code>git show</code> ，你不会看到额外的标签信息。命令只会显示出提交信息：
 </p>
 
-<pre class="example" id="orgfb150d5">
+<pre class="example" id="orgdba45db">
 $ git show v1.4-lw
 commit ca82a6dff817ec66f44342007202690a93763949
 Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
@@ -1997,14 +1998,14 @@ Date:   Mon Mar 17 21:52:11 2008 -0700
 </pre>
 </div>
 </div>
-<div id="outline-container-org0a1f7da" class="outline-3">
-<h3 id="org0a1f7da"><span class="section-number-3">1.26.</span> 后期打标签</h3>
+<div id="outline-container-orgc7e6e9d" class="outline-3">
+<h3 id="orgc7e6e9d"><span class="section-number-3">1.26.</span> 后期打标签</h3>
 <div class="outline-text-3" id="text-1-26">
 <p>
 可以对过去的提交打标签。假设提交历史是这样的：
 </p>
 
-<pre class="example" id="orgdcc01a5">
+<pre class="example" id="org0e8d72a">
 $ git log --pretty=oneline
 15027957951b64cf874c3557a0f3547bd83b3ff6 Merge branch 'experiment'
 a6b4c97498bd301d84096da251c98a07c7723e65 beginning write support
@@ -2024,20 +2025,20 @@ a6b4c97498bd301d84096da251c98a07c7723e65 beginning write support
 要在那个提交上打标签，你需要在命令的末尾指定提交的校验和（或部分校验和）:
 </p>
 
-<pre class="example" id="org5f88c19">
+<pre class="example" id="orgd6f702a">
 $ git tag -a v1.2 9fceb02
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb914e75" class="outline-3">
-<h3 id="orgb914e75"><span class="section-number-3">1.27.</span> 查看标签</h3>
+<div id="outline-container-org8d5b618" class="outline-3">
+<h3 id="org8d5b618"><span class="section-number-3">1.27.</span> 查看标签</h3>
 <div class="outline-text-3" id="text-1-27">
 <p>
 直接执行 <code>git tag</code> （不带参数）就可以返回 Git 中已有的标签。
 这些标签以字面顺序配列出。
 </p>
 
-<pre class="example" id="orgfe5c7f6">
+<pre class="example" id="org9ea6d7c">
 $ git tag
 v0.1
 v1.2
@@ -2052,7 +2053,7 @@ v1.5
 如果只对 <code>1.8.5</code> 系列感兴趣，可以运行：
 </p>
 
-<pre class="example" id="org9459590">
+<pre class="example" id="orgf8bb2e8">
 $ git tag -l 'v1.8.5*'
 v1.8.5
 v1.8.5-rc0
@@ -2067,8 +2068,8 @@ v1.8.5.5
 </pre>
 </div>
 </div>
-<div id="outline-container-orgbc241a0" class="outline-3">
-<h3 id="orgbc241a0"><span class="section-number-3">1.28.</span> 共享标签</h3>
+<div id="outline-container-org6856519" class="outline-3">
+<h3 id="org6856519"><span class="section-number-3">1.28.</span> 共享标签</h3>
 <div class="outline-text-3" id="text-1-28">
 <p>
 默认情况下， <code>git push</code> 命令并不会传送标签到远程仓库服务器上。
@@ -2076,7 +2077,7 @@ v1.8.5.5
 这个过程就像共享远程分支一样，你可以运行 <code>git push origin [tagname]</code> 。
 </p>
 
-<pre class="example" id="orgd433006">
+<pre class="example" id="org91d8f31">
 $ git push origin v1.5
 Counting objects: 14, done.
 Delta compression using up to 8 threads.
@@ -2092,7 +2093,7 @@ To git@github.com:schacon/simplegit.git
 这将会把所有不在远程仓库服务器上的标签全部传送到那里。
 </p>
 
-<pre class="example" id="orgf8ea87e">
+<pre class="example" id="orgc43391f">
 $ git push origin --tags
 Counting objects: 1, done.
 Writing objects: 100% (1/1), 160 bytes | 0 bytes/s, done.
@@ -2108,12 +2109,12 @@ To git@github.com:schacon/simplegit.git
 </div>
 </div>
 </div>
-<div id="outline-container-orgf71503c" class="outline-2">
-<h2 id="orgf71503c"><span class="section-number-2">2.</span> 分支原理和进阶</h2>
+<div id="outline-container-org21eaab8" class="outline-2">
+<h2 id="org21eaab8"><span class="section-number-2">2.</span> 分支原理和进阶</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgf7df55e" class="outline-3">
-<h3 id="orgf7df55e"><span class="section-number-3">2.1.</span> master 分支</h3>
+<div id="outline-container-org0e01ee2" class="outline-3">
+<h3 id="org0e01ee2"><span class="section-number-3">2.1.</span> master 分支</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 <b>Git 的分支，其实本质上仅仅是指向提交对象的可变指针。</b>
@@ -2124,7 +2125,7 @@ master 分支并不是一个特殊分支，它就跟其它分支完全没有区�
 </p>
 
 
-<div id="orgbbeb292" class="figure">
+<div id="org6b7615d" class="figure">
 <p><img src="./images/git-branch-1.png" alt="git-branch-1.png" />
 </p>
 </div>
@@ -2134,26 +2135,26 @@ master 分支并不是一个特殊分支，它就跟其它分支完全没有区�
 </p>
 </div>
 </div>
-<div id="outline-container-org50ce0de" class="outline-3">
-<h3 id="org50ce0de"><span class="section-number-3">2.2.</span> 创建分支</h3>
+<div id="outline-container-orgd3f05dd" class="outline-3">
+<h3 id="orgd3f05dd"><span class="section-number-3">2.2.</span> 创建分支</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 执行 <code>git branch</code> 创建分支 <code>testing</code> ，这会在当前所在的提交对象上创建一个指针。
 </p>
 
-<pre class="example" id="org798cad0">
+<pre class="example" id="org243a9a2">
 $ git branch testing
 </pre>
 
 
-<div id="org7257745" class="figure">
+<div id="org44b049f" class="figure">
 <p><img src="./images/git-branch-2.png" alt="git-branch-2.png" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org380fc68" class="outline-3">
-<h3 id="org380fc68"><span class="section-number-3">2.3.</span> HEAD 指针</h3>
+<div id="outline-container-org49004a0" class="outline-3">
+<h3 id="org49004a0"><span class="section-number-3">2.3.</span> HEAD 指针</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 那么，Git 又是怎么知道当前在哪一个分支上呢？
@@ -2163,7 +2164,7 @@ $ git branch testing
 </p>
 
 
-<div id="org4c3258b" class="figure">
+<div id="org9d0c1c1" class="figure">
 <p><img src="./images/git-branch-3.png" alt="git-branch-3.png" />
 </p>
 </div>
@@ -2172,7 +2173,7 @@ $ git branch testing
 可以使用 <code>git log  --decorate</code> 命令查看各个分支当前所指的对象。
 </p>
 
-<pre class="example" id="orgac267d5">
+<pre class="example" id="orgb69ff08">
 $ git log --oneline --decorate
 f30ab (HEAD -&gt; master, testing) add feature #32 - ability to add new formats to the central interface
 34ac2 Fixed bug #1328 - stack overflow under certain conditions
@@ -2184,14 +2185,14 @@ f30ab (HEAD -&gt; master, testing) add feature #32 - ability to add new formats 
 </p>
 </div>
 </div>
-<div id="outline-container-orgbc27df0" class="outline-3">
-<h3 id="orgbc27df0"><span class="section-number-3">2.4.</span> 切换分支</h3>
+<div id="outline-container-orgc10ae19" class="outline-3">
+<h3 id="orgc10ae19"><span class="section-number-3">2.4.</span> 切换分支</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 使用 <code>git checkout</code> 命令，切换到新创建的 <code>testing</code> 分支去：
 </p>
 
-<pre class="example" id="org03cf4f8">
+<pre class="example" id="orgb41c0bb">
 $ git checkout testing
 </pre>
 
@@ -2200,7 +2201,7 @@ $ git checkout testing
 </p>
 
 
-<div id="org4ce5352" class="figure">
+<div id="orge9dc81d" class="figure">
 <p><img src="./images/git-branch-4.png" alt="git-branch-4.png" />
 </p>
 </div>
@@ -2209,13 +2210,13 @@ $ git checkout testing
 在分支 <code>testing</code> 上进行代码修改，并提交。
 </p>
 
-<pre class="example" id="orga8d1449">
+<pre class="example" id="org35456f6">
 $ vim test.rb
 $ git commit -a -m 'made a change'
 </pre>
 
 
-<div id="orge9b89f2" class="figure">
+<div id="orgcb507e0" class="figure">
 <p><img src="./images/git-branch-5.png" alt="git-branch-5.png" />
 </p>
 </div>
@@ -2228,12 +2229,12 @@ $ git commit -a -m 'made a change'
 现在尝试切换至 <code>master</code> 分支：
 </p>
 
-<pre class="example" id="orge4af04d">
+<pre class="example" id="org7e39db6">
 $ git check out master
 </pre>
 
 
-<div id="org6a41dab" class="figure">
+<div id="org0a5b455" class="figure">
 <p><img src="./images/git-branch-6.png" alt="git-branch-6.png" />
 </p>
 </div>
@@ -2246,7 +2247,7 @@ $ git check out master
 现在不妨再稍微做些修改并提交：
 </p>
 
-<pre class="example" id="org8ea728c">
+<pre class="example" id="org3519959">
 $ vim test.rb
 $ git commit -a -m 'made other changes'
 </pre>
@@ -2259,7 +2260,7 @@ $ git commit -a -m 'made other changes'
 </p>
 
 
-<div id="org3751ae3" class="figure">
+<div id="org7a68150" class="figure">
 <p><img src="./images/git-branch-7.png" alt="git-branch-7.png" />
 </p>
 </div>
@@ -2268,7 +2269,7 @@ $ git commit -a -m 'made other changes'
 运行 <code>git log --oneline --decorate --graph --all</code> ，查看提交历史、各个分支的指向以及项目的分支分叉情况。
 </p>
 
-<pre class="example" id="org024cb9f">
+<pre class="example" id="orgfd80a9a">
 $ git log --oneline --decorate --graph --all
 * c2b9e (HEAD, master) made other changes
 | * 87ab2 (testing) made a change
@@ -2279,14 +2280,14 @@ $ git log --oneline --decorate --graph --all
 </pre>
 </div>
 </div>
-<div id="outline-container-org22bb911" class="outline-3">
-<h3 id="org22bb911"><span class="section-number-3">2.5.</span> 合并分支</h3>
+<div id="outline-container-org5b438dd" class="outline-3">
+<h3 id="org5b438dd"><span class="section-number-3">2.5.</span> 合并分支</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 现在打算将 <code>testing</code> 分支合并入 <code>master</code> 分支。
 </p>
 
-<pre class="example" id="org78e09b2">
+<pre class="example" id="org6a4159d">
 $ git checkout master
 $ git merge testing
 </pre>
@@ -2296,7 +2297,7 @@ $ git merge testing
 </p>
 
 
-<div id="org06da9a7" class="figure">
+<div id="org68493ae" class="figure">
 <p><img src="./images/git-branch-8.png" alt="git-branch-8.png" />
 </p>
 </div>
@@ -2306,20 +2307,20 @@ $ git merge testing
 </p>
 </div>
 </div>
-<div id="outline-container-org744ec05" class="outline-3">
-<h3 id="org744ec05"><span class="section-number-3">2.6.</span> 删除分支</h3>
+<div id="outline-container-org19c284f" class="outline-3">
+<h3 id="org19c284f"><span class="section-number-3">2.6.</span> 删除分支</h3>
 <div class="outline-text-3" id="text-2-6">
 <p>
 现在修改已经合并进来了，就不再需要 <code>testing</code> 分支了，所以可以删除这个分支。
 删除分支的命令是 <code>git branch -d</code> 。
 </p>
 
-<pre class="example" id="orgada79d2">
+<pre class="example" id="orgcebde23">
 $ git branch -d testing
 </pre>
 
 
-<div id="org51f4ab5" class="figure">
+<div id="org0fec303" class="figure">
 <p><img src="./images/git-branch-9.png" alt="git-branch-9.png" />
 </p>
 </div>
@@ -2330,14 +2331,14 @@ $ git branch -d testing
 </p>
 </div>
 </div>
-<div id="outline-container-org493dd47" class="outline-3">
-<h3 id="org493dd47"><span class="section-number-3">2.7.</span> 查看分支</h3>
+<div id="outline-container-org1bd913e" class="outline-3">
+<h3 id="org1bd913e"><span class="section-number-3">2.7.</span> 查看分支</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
 不加任何参数运行 <code>git branch</code> ，会得到当前所有分支的一个列表。
 </p>
 
-<pre class="example" id="org29e3ef1">
+<pre class="example" id="org6f480ac">
 $ git branch
   iss53
 * master
@@ -2353,7 +2354,7 @@ $ git branch
 如果需要查看每一个分支的最后一次提交，可以运行 <code>git branch -v</code> 命令：
 </p>
 
-<pre class="example" id="orgdc506dc">
+<pre class="example" id="orgecf965f">
 $ git branch -v
   iss53   93b412c fix javascript issue
 * master  7a98805 Merge branch 'iss53'
@@ -2364,7 +2365,7 @@ $ git branch -v
 如果要查看哪些分支已经合并到当前分支，可以运行 <code>git branch --merged</code> ：
 </p>
 
-<pre class="example" id="orgee38595">
+<pre class="example" id="orgc781a6d">
 $ git branch --merged
   iss53
 * master
@@ -2385,7 +2386,7 @@ $ git branch --merged
 例如
 </p>
 
-<pre class="example" id="org03f45ce">
+<pre class="example" id="orgc31a2da">
 $ git checkout testing
 $ git branch --no-merged master
   topicA
@@ -2393,8 +2394,8 @@ $ git branch --no-merged master
 </pre>
 </div>
 </div>
-<div id="outline-container-org9daaefb" class="outline-3">
-<h3 id="org9daaefb"><span class="section-number-3">2.8.</span> 分支开发工作流</h3>
+<div id="outline-container-orgcba1a71" class="outline-3">
+<h3 id="orgcba1a71"><span class="section-number-3">2.8.</span> 分支开发工作流</h3>
 <div class="outline-text-3" id="text-2-8">
 <p>
 许多使用 Git 的开发者都喜欢使用这种方式来工作，比如只在 <code>master</code> 分支上保留完全稳定的代码——有可能仅仅是已经发布或即将发布的代码。
@@ -2405,18 +2406,18 @@ $ git branch --no-merged master
 </div>
 </div>
 </div>
-<div id="outline-container-orgd1338cd" class="outline-2">
-<h2 id="orgd1338cd"><span class="section-number-2">3.</span> 远程仓库的使用</h2>
+<div id="outline-container-orge4038d0" class="outline-2">
+<h2 id="orge4038d0"><span class="section-number-2">3.</span> 远程仓库的使用</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org276a16f" class="outline-3">
-<h3 id="org276a16f"><span class="section-number-3">3.1.</span> <code>git clone</code> 克隆远程仓库</h3>
+<div id="outline-container-orge8878e8" class="outline-3">
+<h3 id="orge8878e8"><span class="section-number-3">3.1.</span> <code>git clone</code> 克隆远程仓库</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 假设执行 <code>git clone</code> 克隆一个位于名为 <code>git.ourcompany.com</code> 的 Git 服务器中的仓库。
 </p>
 
-<pre class="example" id="org2d580d9">
+<pre class="example" id="org21e8012">
 git clone janedoe@git.ourcompany.com:project.git
 </pre>
 
@@ -2426,7 +2427,7 @@ Git 也会给你一个与 <code>origin/master</code> 分支在指向同一个地
 </p>
 
 
-<div id="org4486e1b" class="figure">
+<div id="org32b0691" class="figure">
 <p><img src="./images/git-remote-branches-1.png" alt="git-remote-branches-1.png" style="width:80%; height:auto;" />
 </p>
 </div>
@@ -2444,14 +2445,14 @@ Git 也会给你一个与 <code>origin/master</code> 分支在指向同一个地
 </p>
 
 
-<div id="orgd139daa" class="figure">
+<div id="org1153b54" class="figure">
 <p><img src="./images/git-remote-branches-2.png" alt="git-remote-branches-2.png" style="width:80%; height:auto;" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org88db869" class="outline-3">
-<h3 id="org88db869"><span class="section-number-3">3.2.</span> <code>git fecth</code> 抓取远程仓库</h3>
+<div id="outline-container-org4a4f0f8" class="outline-3">
+<h3 id="org4a4f0f8"><span class="section-number-3">3.2.</span> <code>git fecth</code> 抓取远程仓库</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 如果要与远程仓库同步数据，运行 <code>git fetch &lt;remote&gt;</code> 命令（在本例中为 <code>git fetch origin</code> ， <code>orgin</code> 是远程仓库的名字）。
@@ -2459,14 +2460,14 @@ Git 也会给你一个与 <code>origin/master</code> 分支在指向同一个地
 </p>
 
 
-<div id="org458107a" class="figure">
+<div id="orgfde714d" class="figure">
 <p><img src="./images/git-remote-branches-3.png" alt="git-remote-branches-3.png" style="width:80%; height:auto;" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orga1453e1" class="outline-3">
-<h3 id="orga1453e1"><span class="section-number-3">3.3.</span> <code>git remote add</code> 添加远程仓库</h3>
+<div id="outline-container-orgd246e46" class="outline-3">
+<h3 id="orgd246e46"><span class="section-number-3">3.3.</span> <code>git remote add</code> 添加远程仓库</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 假设有另一个服务器位于 <code>git.team1.ourcompany.com</code> 。
@@ -2474,7 +2475,7 @@ Git 也会给你一个与 <code>origin/master</code> 分支在指向同一个地
 将这个远程仓库命名为 <code>teamone</code> ，将其作为完整 URL 的缩写。
 </p>
 
-<pre class="example" id="orgdcf1a73">
+<pre class="example" id="orgeb8fe5a">
 $ git remote add teamone git://git.team1.ourcompany.com
 </pre>
 
@@ -2483,19 +2484,19 @@ $ git remote add teamone git://git.team1.ourcompany.com
 现在假设那台服务器上现有的数据是 <code>origin</code> 服务器上的一个子集，所以 Git 并不会抓取数据而是会设置远程跟踪分支 <code>teamone/master</code> 指向 <code>teamone</code> 的 <code>master</code> 分支。
 </p>
 
-<pre class="example" id="org5e49236">
+<pre class="example" id="orgef6cafa">
 $ git fetch teamone
 </pre>
 
 
-<div id="org7ad581a" class="figure">
+<div id="orgb458fb9" class="figure">
 <p><img src="./images/git-remote-branches-4.png" alt="git-remote-branches-4.png" style="width:80%; height:auto;" />
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-org47c25ad" class="outline-3">
-<h3 id="org47c25ad"><span class="section-number-3">3.4.</span> 查看远程仓库</h3>
+<div id="outline-container-org88cf15b" class="outline-3">
+<h3 id="org88cf15b"><span class="section-number-3">3.4.</span> 查看远程仓库</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 如果想查看你已经配置的远程仓库服务器，可以运行 <code>git remote</code> 命令。
@@ -2503,7 +2504,7 @@ $ git fetch teamone
 如果你已经克隆了仓库，那么至少应该能看到 <code>origin</code> - 这是 Git 给你克隆的仓库服务器的默认名字：
 </p>
 
-<pre class="example" id="orge56b39e">
+<pre class="example" id="org0488aa4">
 $ git clone https://github.com/schacon/ticgit
 Cloning into 'ticgit'...
 remote: Reusing existing pack: 1857, done.
@@ -2520,7 +2521,7 @@ origin
 你也可以指定选项 <code>-v</code> ，会显示需要读写远程仓库使用的 Git 保存的简写与其对应的 URL。
 </p>
 
-<pre class="example" id="orgc64df95">
+<pre class="example" id="orgd91b6d1">
 $ git remote -v
 origin	https://github.com/schacon/ticgit (fetch)
 origin	https://github.com/schacon/ticgit (push)
@@ -2531,7 +2532,7 @@ origin	https://github.com/schacon/ticgit (push)
 例如，与几个协作者合作的，拥有多个远程仓库的仓库看起来像下面这样：
 </p>
 
-<pre class="example" id="orgb37685f">
+<pre class="example" id="org2f4972a">
 $ cd grit
 $ git remote -v
 bakkdoor  https://github.com/bakkdoor/grit (fetch)
@@ -2547,15 +2548,15 @@ origin    git@github.com:mojombo/grit.git (push)
 </pre>
 </div>
 </div>
-<div id="outline-container-org28ebe51" class="outline-3">
-<h3 id="org28ebe51"><span class="section-number-3">3.5.</span> <code>git push</code> 推送</h3>
+<div id="outline-container-orgdbf41bc" class="outline-3">
+<h3 id="orgdbf41bc"><span class="section-number-3">3.5.</span> <code>git push</code> 推送</h3>
 <div class="outline-text-3" id="text-3-5">
 <p>
 将本地分支推送远程分支的命令是 <code>git push [remote-name] [branch-name]</code> 。
 当你想要将 <code>master</code> 分支推送到 <code>origin</code> 服务器时（再次说明，克隆时通常会自动帮你设置好那两个名字），那么运行这个命令就可以将你所做的备份到服务器：
 </p>
 
-<pre class="example" id="orgb714792">
+<pre class="example" id="orgdd824b2">
 $ git push origin master
 </pre>
 
@@ -2577,7 +2578,7 @@ $ git push origin master
 运行 <code>git push &lt;remote&gt; &lt;branch&gt;</code> ：
 </p>
 
-<pre class="example" id="orgb778f85">
+<pre class="example" id="orgdc71b74">
 $ git push origin serverfix
 Counting objects: 24, done.
 Delta compression using up to 8 threads.
@@ -2597,7 +2598,7 @@ To https://github.com/schacon/simplegit
 下一次其他协作者从服务器上抓取（ <code>git fetch</code> ）数据时，Git 会在他们的本地生成一个远程分支 <code>origin/serverfix</code> ，指向服务器的 <code>serverfix</code> 分支的引用：
 </p>
 
-<pre class="example" id="orgf6288ea">
+<pre class="example" id="org237a43e">
 $ git fetch origin
 remote: Counting objects: 7, done.
 remote: Compressing objects: 100% (2/2), done.
@@ -2608,8 +2609,8 @@ From https://github.com/schacon/simplegit
 </pre>
 </div>
 </div>
-<div id="outline-container-org2afdaa7" class="outline-3">
-<h3 id="org2afdaa7"><span class="section-number-3">3.6.</span> 建立跟踪分支</h3>
+<div id="outline-container-orge95b45e" class="outline-3">
+<h3 id="orge95b45e"><span class="section-number-3">3.6.</span> 建立跟踪分支</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 刚才讲到其他协作者执行 <code>git fetch origin</code> ，在本地生成了远程分支 <code>orgin/serverfix</code> ，指向服务器的 <code>serverfix</code> 分支的引用。
@@ -2626,7 +2627,7 @@ From https://github.com/schacon/simplegit
 第二种做法，具体来说是执行命令 <code>运行 git checkout -b &lt;branch&gt; &lt;remote&gt;/&lt;branch&gt;</code> ：
 </p>
 
-<pre class="example" id="orgcc4c179">
+<pre class="example" id="orgd950b86">
 $ git checkout -b serverfix origin/serverfix
 Branch serverfix set up to track remote branch serverfix from origin.
 Switched to a new branch 'serverfix'
@@ -2645,7 +2646,7 @@ Switched to a new branch 'serverfix'
 如果想要将本地分支与远程分支设置为不同的名字，可以执行
 </p>
 
-<pre class="example" id="org4e67fd9">
+<pre class="example" id="org9b1345d">
 $ git checkout -b sf origin/serverfix
 Branch sf set up to track remote branch serverfix from origin.
 Switched to a new branch 'sf'
@@ -2659,21 +2660,21 @@ Switched to a new branch 'sf'
 如果要设置已有的本地分支跟踪刚刚拉取下来的远程分支 <code>origin/serverfix</code> ，可以进入该本地分支，然后执行
 </p>
 
-<pre class="example" id="orgb4d7251">
+<pre class="example" id="org57a08c9">
 $ git branch -u origin/serverfix
 Branch serverfix set up to track remote branch serverfix from origin.
 </pre>
 </div>
 </div>
-<div id="outline-container-orgedcdc48" class="outline-3">
-<h3 id="orgedcdc48"><span class="section-number-3">3.7.</span> 查看跟踪分支</h3>
+<div id="outline-container-org5e361a6" class="outline-3">
+<h3 id="org5e361a6"><span class="section-number-3">3.7.</span> 查看跟踪分支</h3>
 <div class="outline-text-3" id="text-3-7">
 <p>
 如果想要查看设置的所有跟踪分支，可以使用 <code>git branch</code> 的 <code>-vv</code> 选项。
 这会将所有的本地分支列出来并且包含更多的信息，如每一个分支正在跟踪哪个远程分支与本地分支是否是领先、落后或是都有。
 </p>
 
-<pre class="example" id="org9aca474">
+<pre class="example" id="org3dc906b">
 $ git branch -vv
 iss53     7e424c3 [origin/iss53: ahead 2] forgot the brackets
 master    1ae2a45 [origin/master] deploying index fix
@@ -2694,13 +2695,13 @@ testing   5ea463a trying something new
 如果想要统计最新的领先与落后数字，需要在运行此命令前抓取所有的远程仓库：
 </p>
 
-<pre class="example" id="orgf0cc6b5">
+<pre class="example" id="org54d246e">
 $ git fetch --all; git branch -vv
 </pre>
 </div>
 </div>
-<div id="outline-container-org076dfb4" class="outline-3">
-<h3 id="org076dfb4"><span class="section-number-3">3.8.</span> <code>git pull</code> 拉取远程仓库</h3>
+<div id="outline-container-org18537bc" class="outline-3">
+<h3 id="org18537bc"><span class="section-number-3">3.8.</span> <code>git pull</code> 拉取远程仓库</h3>
 <div class="outline-text-3" id="text-3-8">
 <p>
 前面讲到 <code>git fetch</code> 命令从服务器上抓取本地没有的数据时，它并不会修改工作目录中的内容。
@@ -2717,8 +2718,8 @@ $ git fetch --all; git branch -vv
 </p>
 </div>
 </div>
-<div id="outline-container-orge49dc12" class="outline-3">
-<h3 id="orge49dc12"><span class="section-number-3">3.9.</span> 删除远程分支</h3>
+<div id="outline-container-org2830fcc" class="outline-3">
+<h3 id="org2830fcc"><span class="section-number-3">3.9.</span> 删除远程分支</h3>
 <div class="outline-text-3" id="text-3-9">
 <p>
 假设你已经通过远程分支做完所有的工作了——比如说，你和你的协作者已经完成了一个特性，并且将其合并到了远程仓库的 <code>master</code> 分支（或任何其他稳定代码分支）。
@@ -2726,7 +2727,7 @@ $ git fetch --all; git branch -vv
 比如，如果想要从服务器上删除 <code>serverfix</code> 分支，运行下面的命令：
 </p>
 
-<pre class="example" id="org484a8a5">
+<pre class="example" id="org5b7b3cd">
 $ git push origin --delete serverfix
 To https://github.com/schacon/simplegit
  - [deleted]         serverfix
@@ -2739,12 +2740,12 @@ Git 服务器通常会保留数据一段时间直到垃圾回收运行，所以�
 </div>
 </div>
 </div>
-<div id="outline-container-org2501df3" class="outline-2">
-<h2 id="org2501df3"><span class="section-number-2">4.</span> 变基</h2>
+<div id="outline-container-org04167ac" class="outline-2">
+<h2 id="org04167ac"><span class="section-number-2">4.</span> 变基</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orga677e19" class="outline-3">
-<h3 id="orga677e19"><span class="section-number-3">4.1.</span> 变基 <code>git rebase</code> 的基本操作</h3>
+<div id="outline-container-org3f7db13" class="outline-3">
+<h3 id="org3f7db13"><span class="section-number-3">4.1.</span> 变基 <code>git rebase</code> 的基本操作</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 变基 <code>rebase</code> 和合并 <code>merge</code> 都是中整合的不同分支的方法。
@@ -2756,7 +2757,7 @@ Git 服务器通常会保留数据一段时间直到垃圾回收运行，所以�
 </p>
 
 
-<div id="orged87d95" class="figure">
+<div id="orgf8661f0" class="figure">
 <p><img src="./images/git-rebase-1.png" alt="git-rebase-1.png" />
 </p>
 </div>
@@ -2767,7 +2768,7 @@ Git 服务器通常会保留数据一段时间直到垃圾回收运行，所以�
 </p>
 
 
-<div id="org1f6bf3c" class="figure">
+<div id="org1ff87d6" class="figure">
 <p><img src="./images/git-rebase-2.png" alt="git-rebase-2.png" />
 </p>
 </div>
@@ -2776,7 +2777,7 @@ Git 服务器通常会保留数据一段时间直到垃圾回收运行，所以�
 而使用 <code>git rebase</code> 的方法是先进入 <code>experiment</code> 分支，然后将它变基到 <code>master</code> 分支上：
 </p>
 
-<pre class="example" id="org7483daa">
+<pre class="example" id="org18ea1c7">
 $ git checkout experiment
 $ git rebase master
 First, rewinding head to replay your work on top of it...
@@ -2788,7 +2789,7 @@ Applying: added staged command
 </p>
 
 
-<div id="org1e34cac" class="figure">
+<div id="org80ccbf9" class="figure">
 <p><img src="./images/git-rebase-3.png" alt="git-rebase-3.png" />
 </p>
 </div>
@@ -2797,13 +2798,13 @@ Applying: added staged command
 现在回到 <code>master</code> 分支，进行一次快进合并。
 </p>
 
-<pre class="example" id="orgbe603be">
+<pre class="example" id="org49ab1fd">
 $ git checkout master
 $ git merge experiment
 </pre>
 
 
-<div id="org49e8a77" class="figure">
+<div id="org4776957" class="figure">
 <p><img src="./images/git-rebase-4.png" alt="git-rebase-4.png" />
 </p>
 </div>
@@ -2826,8 +2827,8 @@ $ git merge experiment
 </p>
 </div>
 </div>
-<div id="outline-container-org4d426bf" class="outline-3">
-<h3 id="org4d426bf"><span class="section-number-3">4.2.</span> 变基的风险</h3>
+<div id="outline-container-orge5674cb" class="outline-3">
+<h3 id="orge5674cb"><span class="section-number-3">4.2.</span> 变基的风险</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
 变基也并非完美无缺，要用它得遵守一条准则：
@@ -2849,7 +2850,7 @@ $ git merge experiment
 </p>
 
 
-<div id="org82acb64" class="figure">
+<div id="org6e86a2e" class="figure">
 <p><img src="./images/git-rebase-1-download.png" alt="git-rebase-1-download.png" style="width:80%; height:auto;" />
 </p>
 </div>
@@ -2860,7 +2861,7 @@ $ git merge experiment
 </p>
 
 
-<div id="orgfc8b826" class="figure">
+<div id="org8a08255" class="figure">
 <p><img src="./images/git-rebase-2-download.png" alt="git-rebase-2-download.png" style="width:80%; height:auto;" />
 </p>
 </div>
@@ -2871,7 +2872,7 @@ $ git merge experiment
 </p>
 
 
-<div id="org03f1169" class="figure">
+<div id="org6c53d2c" class="figure">
 <p><img src="./images/git-rebase-3-download.png" alt="git-rebase-3-download.png" style="width:80%; height:auto;" />
 </p>
 </div>
@@ -2882,7 +2883,7 @@ $ git merge experiment
 </p>
 
 
-<div id="orge86d93b" class="figure">
+<div id="orgb6710df" class="figure">
 <p><img src="./images/git-rebase-4-download.png" alt="git-rebase-4-download.png" style="width:80%; height:auto;" />
 </p>
 </div>
@@ -2905,8 +2906,8 @@ $ git merge experiment
 </div>
 </div>
 </div>
-<div id="outline-container-org067c439" class="outline-2">
-<h2 id="org067c439"><span class="section-number-2">5.</span> 通过 SSH 密钥连接 GitHub</h2>
+<div id="outline-container-orged99aca" class="outline-2">
+<h2 id="orged99aca"><span class="section-number-2">5.</span> 通过 SSH 密钥连接 GitHub</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 从 2021 年开始， <code>GitHub</code> 已经彻底停止了使用「账号密码」直接拉取或推送代码的验证方式。
@@ -2917,14 +2918,14 @@ $ git merge experiment
 配置 <code>SSH</code> 连接只需简单 4 个步骤。
 </p>
 </div>
-<div id="outline-container-org39f43f4" class="outline-3">
-<h3 id="org39f43f4"><span class="section-number-3">5.1.</span> 第一步：生成本地 SSH 密钥对</h3>
+<div id="outline-container-orgd47a73b" class="outline-3">
+<h3 id="orgd47a73b"><span class="section-number-3">5.1.</span> 第一步：生成本地 SSH 密钥对</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 打开终端运行以下命令生成现代且安全的 <code>Ed25519</code> 类型的 <code>SSH</code> 密钥
 </p>
 
-<pre class="example" id="org2f23691">
+<pre class="example" id="org5ae6e20">
 ssh-keygen -t ed25519 -C "your_email@example.com"
 </pre>
 
@@ -2952,14 +2953,14 @@ ssh-keygen -t ed25519 -C "your_email@example.com"
 如果以后突然需要查看指纹，随时可以在终端运行命令重新计算出它的指纹和 ASCII 图案：
 </p>
 
-<pre class="example" id="org56cdb15">
+<pre class="example" id="orgfcd278e">
 # 查看本地公钥的指纹与 ASCII 画
 ssh-keygen -l -f ~/.ssh/id_ed25519.pub
 </pre>
 </div>
 </div>
-<div id="outline-container-org6551f70" class="outline-3">
-<h3 id="org6551f70"><span class="section-number-3">5.2.</span> 第二步：查看并复制公钥</h3>
+<div id="outline-container-orga7fc080" class="outline-3">
+<h3 id="orga7fc080"><span class="section-number-3">5.2.</span> 第二步：查看并复制公钥</h3>
 <div class="outline-text-3" id="text-5-2">
 <p>
 公钥（以 <code>.pub</code> 结尾的文件）是可以公开上传到 <code>GitHub</code> 的，私钥请妥善保存在本地。
@@ -2970,7 +2971,7 @@ ssh-keygen -l -f ~/.ssh/id_ed25519.pub
 在终端运行以下命令，直接打印并复制显示的公钥内容：
 </p>
 
-<pre class="example" id="org3a9ca98">
+<pre class="example" id="orgcb7d150">
 cat ~/.ssh/id_ed25519.pub
 </pre>
 
@@ -2978,7 +2979,7 @@ cat ~/.ssh/id_ed25519.pub
 终端会输出一行类似于下面的文本：
 </p>
 
-<pre class="example" id="org35616a4">
+<pre class="example" id="orgcad3003">
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... your_email@example.com
 </pre>
 
@@ -2987,8 +2988,8 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... your_email@example.com
 </p>
 </div>
 </div>
-<div id="outline-container-org7f3e21f" class="outline-3">
-<h3 id="org7f3e21f"><span class="section-number-3">5.3.</span> 第三步：把公钥添加到 <code>GitHub</code> 账号</h3>
+<div id="outline-container-orga01d0bb" class="outline-3">
+<h3 id="orga01d0bb"><span class="section-number-3">5.3.</span> 第三步：把公钥添加到 <code>GitHub</code> 账号</h3>
 <div class="outline-text-3" id="text-5-3">
 <ul class="org-ul">
 <li>打开浏览器登录 <code>GitHub</code> ，点击右上角个人头像，点进 <code>Settings</code> 。</li>
@@ -2999,14 +3000,14 @@ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... your_email@example.com
 </ul>
 </div>
 </div>
-<div id="outline-container-org176aca1" class="outline-3">
-<h3 id="org176aca1"><span class="section-number-3">5.4.</span> 第四步：测试 SSH 连接</h3>
+<div id="outline-container-org32cfb13" class="outline-3">
+<h3 id="org32cfb13"><span class="section-number-3">5.4.</span> 第四步：测试 SSH 连接</h3>
 <div class="outline-text-3" id="text-5-4">
 <p>
 返回终端，运行以下测试命令：
 </p>
 
-<pre class="example" id="orgdc1b414">
+<pre class="example" id="org818bb1a">
 ssh -T git@github.com
 </pre>
 
@@ -3015,7 +3016,7 @@ ssh -T git@github.com
 如果看到以下欢迎语，
 </p>
 
-<pre class="example" id="org4c916e1">
+<pre class="example" id="org816d66c">
 Hi Username! You've successfully authenticated, but GitHub does not provide shell access.
 </pre>
 
@@ -3041,8 +3042,8 @@ Hi Username! You've successfully authenticated, but GitHub does not provide shel
 </p>
 </div>
 </div>
-<div id="outline-container-org626da58" class="outline-3">
-<h3 id="org626da58"><span class="section-number-3">5.5.</span> 管理密钥（SSH Config 机制）</h3>
+<div id="outline-container-orgf26b722" class="outline-3">
+<h3 id="orgf26b722"><span class="section-number-3">5.5.</span> 管理密钥（SSH Config 机制）</h3>
 <div class="outline-text-3" id="text-5-5">
 <p>
 在绝大多数情况下，不建议所有场合都使用同一个密钥对。
@@ -3064,7 +3065,7 @@ Hi Username! You've successfully authenticated, but GitHub does not provide shel
 打开或创建该配置文件
 </p>
 
-<pre class="example" id="org61b1780">
+<pre class="example" id="org676b6cc">
 nano ~/.ssh/config
 </pre>
 
@@ -3072,7 +3073,7 @@ nano ~/.ssh/config
 在里面写入不同场合的规则（非常直观）：
 </p>
 
-<pre class="example" id="orgd2b240c">
+<pre class="example" id="org676f291">
 # 场合一：连接 GitHub 个人账号
 Host github.com
     HostName github.com
@@ -3102,12 +3103,12 @@ Host myserver
 </div>
 </div>
 </div>
-<div id="outline-container-org7acfaac" class="outline-2">
-<h2 id="org7acfaac"><span class="section-number-2">6.</span> 杂项</h2>
+<div id="outline-container-org723e996" class="outline-2">
+<h2 id="org723e996"><span class="section-number-2">6.</span> 杂项</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orge1d597c" class="outline-3">
-<h3 id="orge1d597c"><span class="section-number-3">6.1.</span> <code>git config</code> 设置</h3>
+<div id="outline-container-org7ed73bc" class="outline-3">
+<h3 id="org7ed73bc"><span class="section-number-3">6.1.</span> <code>git config</code> 设置</h3>
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #989898;"># </span><span style="color: #989898;">&#26597;&#30475; git &#20840;&#23616;&#30340;&#29992;&#25143;&#21517;&#21644;&#30005;&#23376;&#37038;&#20214;
@@ -3134,14 +3135,14 @@ git config user.email <span style="color: #79a8ff;">"Lisa@outlook.com"</span> <s
 </div>
 </div>
 </div>
-<div id="outline-container-org46d00a3" class="outline-3">
-<h3 id="org46d00a3"><span class="section-number-3">6.2.</span> <code>.gitignore</code> 文件</h3>
+<div id="outline-container-orgb59bd69" class="outline-3">
+<h3 id="orgb59bd69"><span class="section-number-3">6.2.</span> <code>.gitignore</code> 文件</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 通过 <code>touch .gitignore</code> 文件，声明不同步的文件的格式，例如
 </p>
 
-<pre class="example" id="org73696f6">
+<pre class="example" id="orgfa8542d">
 # ========== LaTeX 编译中间文件（核心）
 *.aux
 *.log
@@ -3217,7 +3218,7 @@ __MACOSX
 再看一个 <code>.gitignore</code> 文件的例子：
 </p>
 
-<pre class="example" id="orge68e6f8">
+<pre class="example" id="org5ead3d2">
 # no .a files
 *.a
 
@@ -3238,8 +3239,8 @@ doc/**/*.pdf
 </pre>
 </div>
 </div>
-<div id="outline-container-org2fd308e" class="outline-3">
-<h3 id="org2fd308e"><span class="section-number-3">6.3.</span> 设置 <code>git status</code> 显示原样文件中文名</h3>
+<div id="outline-container-orgb03ed94" class="outline-3">
+<h3 id="orgb03ed94"><span class="section-number-3">6.3.</span> 设置 <code>git status</code> 显示原样文件中文名</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 有时 <code>git status</code> 会看到类似 <code>\347\263\273\347\211\210.tex</code> 的文件名。
@@ -3251,7 +3252,7 @@ doc/**/*.pdf
 要让原样输出中文文件名，可以执行命令
 </p>
 
-<pre class="example" id="org95b3e68">
+<pre class="example" id="org00f54c5">
 git config core.quotepath false
 </pre>
 
@@ -3260,7 +3261,7 @@ git config core.quotepath false
 完整的命令是
 </p>
 
-<pre class="example" id="org7ce04dd">
+<pre class="example" id="orgcb2f812">
 git config --global core.quotepath false
 </pre>
 
@@ -3269,14 +3270,14 @@ git config --global core.quotepath false
 </p>
 </div>
 </div>
-<div id="outline-container-org11d6f6f" class="outline-3">
-<h3 id="org11d6f6f"><span class="section-number-3">6.4.</span> 查找 git 的使用手册</h3>
+<div id="outline-container-orge5a537b" class="outline-3">
+<h3 id="orge5a537b"><span class="section-number-3">6.4.</span> 查找 git 的使用手册</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 有三种方法可以找到 Git 命令的使用手册：
 </p>
 
-<pre class="example" id="org38c640c">
+<pre class="example" id="org014f5e4">
 git help &lt;verb&gt;
 git &lt;verb&gt; --help
 man git-&lt;verb&gt;
@@ -3286,8 +3287,8 @@ git help config
 </pre>
 </div>
 </div>
-<div id="outline-container-org0705db0" class="outline-3">
-<h3 id="org0705db0"><span class="section-number-3">6.5.</span> 更改 git 的默认编辑器</h3>
+<div id="outline-container-orgeddb2d6" class="outline-3">
+<h3 id="orgeddb2d6"><span class="section-number-3">6.5.</span> 更改 git 的默认编辑器</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 Git 的默认编辑器是 <code>vi</code> 。
@@ -3296,15 +3297,15 @@ Git 的默认编辑器是 <code>vi</code> 。
 </p>
 </div>
 </div>
-<div id="outline-container-orgb44a4b2" class="outline-3">
-<h3 id="orgb44a4b2"><span class="section-number-3">6.6.</span> 设置 <code>git diff</code> 调用的软件</h3>
+<div id="outline-container-orgb94d49f" class="outline-3">
+<h3 id="orgb94d49f"><span class="section-number-3">6.6.</span> 设置 <code>git diff</code> 调用的软件</h3>
 <div class="outline-text-3" id="text-6-6">
 <p>
 如果你喜欢通过图形化的方式或其它格式输出方式的话，可以使用 <code>git difftool</code> 命令来用 <code>Araxis</code> ， <code>emerge</code> 或 <code>vimdiff</code> 等软件输出 <code>diff</code> 分析结果。
 使用 <code>git difftool --tool-help</code> 命令来看你的系统支持哪些 Git Diff 插件。
 </p>
 
-<pre class="example" id="org7616ce2">
+<pre class="example" id="orgafa417e">
 $ git difftool --tool-help
 
 'git difftool --tool=&lt;tool&gt;' may be set to one of the following:
@@ -3348,9 +3349,49 @@ environment. If run in a terminal-only session, they will fail.
 </p>
 </div>
 </div>
+<div id="outline-container-orgaff51d7" class="outline-3">
+<h3 id="orgaff51d7"><span class="section-number-3">6.7.</span> 删除全部提交历史重新开始</h3>
+<div class="outline-text-3" id="text-6-7">
+<p>
+假设本地有一个 <code>Git</code> 仓库，与 <code>Github</code> 仓库同步。
+现希望在不删除 <code>.git</code> 文件夹的情况下，在本地删除全部旧的提交历史，然后重新推送到 <code>Github</code> 仓库。
+为什么会有这样的需求？
+这是因为有时需要一个「全新」的开始。
+</p>
+
+<p>
+实现的方式如下：
+</p>
+
+<pre class="example" id="org94afc95">
+# 确认在main主分支
+git checkout main
+
+# 创建临时分支 temp_new
+# 参数 --orphan 保证创建的新分支没有任何父提交，文件保留当前状态，与旧历史彻底切断
+git checkout --orphan temp_new
+
+# 把当前全部文件加入暂存
+git add .
+
+# 创建唯一的初始提交（现在整个仓库只有这一条commit）
+git commit -m "Initial clean start"
+
+# 删除原来带历史的main分支
+git branch -D main
+
+# 将临时分支重命名回main
+git branch -m main
+
+# 强制推送覆盖GitHub远程仓库
+# 参数 -f 表示「强制」；参数 -u 方便以后推送命令可以简单地写为 git push
+git push -u -f origin main
+</pre>
 </div>
-<div id="outline-container-orgbdbe816" class="outline-2">
-<h2 id="orgbdbe816"><span class="section-number-2">7.</span> <code>Magit</code> 使用</h2>
+</div>
+</div>
+<div id="outline-container-org70ba01b" class="outline-2">
+<h2 id="org70ba01b"><span class="section-number-2">7.</span> <code>Magit</code> 使用</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 在 <code>~/.emacs.d/init.el</code> 文件中配置
@@ -3371,8 +3412,8 @@ environment. If run in a terminal-only session, they will fail.
 </p>
 </div>
 </div>
-<div id="outline-container-orgefc4b00" class="outline-2">
-<h2 id="orgefc4b00"><span class="section-number-2">8.</span> 删去/待整理</h2>
+<div id="outline-container-org32ff78c" class="outline-2">
+<h2 id="org32ff78c"><span class="section-number-2">8.</span> 删去/待整理</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 <code>git rm</code> 移除文件 <a href="https://bingohuang.gitbooks.io/progit2/content/02-git-basics/sections/recording-changes.html">https://bingohuang.gitbooks.io/progit2/content/02-git-basics/sections/recording-changes.html</a>
@@ -3439,7 +3480,7 @@ git log -p readme.md
 <div id="postamble" class="status">
 <p class="date">Date: 2026-07-06</p>
 <p class="author">Author: zbliang</p>
-<p class="date">Created: 2026-07-27 Mon 14:17</p>
+<p class="date">Created: 2026-08-16 Sun 21:16</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
