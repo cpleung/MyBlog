@@ -2,7 +2,7 @@
 title = "Hugo + Netlify 的 Org-mode 博客方案"
 author = ["zbliang"]
 date = 2026-07-07
-tags = ["Hugo", "Netlift", "Emacs", "Org"]
+tags = ["Hugo", "Netlify", "Emacs", "Org"]
 categories = ["tech"]
 draft = false
 +++

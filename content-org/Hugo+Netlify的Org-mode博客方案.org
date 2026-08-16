@@ -4,7 +4,7 @@
 #+HUGO_BASE_DIR: ../
 #+HUGO_SECTION: posts
 #+HUGO_PAIRED_OUT_DIR: ../static
-#+HUGO_TAGS: Hugo Netlift Emacs Org
+#+HUGO_TAGS: Hugo Netlify Emacs Org
 #+HUGO_CATEGORIES: tech
 #+HUGO_DRAFT: false
 

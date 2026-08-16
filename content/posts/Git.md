@@ -2224,6 +2224,41 @@ environment. If run in a terminal-only session, they will fail.
 从结果看到可以使用 Emacs 的 `emerge` ，那么可以执行 `git difftool --tool=emerge` 。
 
 
+### 删除全部提交历史重新开始 {#删除全部提交历史重新开始}
+
+假设本地有一个 `Git` 仓库，与 `Github` 仓库同步。
+现希望在不删除 `.git` 文件夹的情况下，在本地删除全部旧的提交历史，然后重新推送到 `Github` 仓库。
+为什么会有这样的需求？
+这是因为有时需要一个「全新」的开始。
+
+实现的方式如下：
+
+```text
+# 确认在main主分支
+git checkout main
+
+# 创建临时分支 temp_new
+# 参数 --orphan 保证创建的新分支没有任何父提交，文件保留当前状态，与旧历史彻底切断
+git checkout --orphan temp_new
+
+# 把当前全部文件加入暂存
+git add .
+
+# 创建唯一的初始提交（现在整个仓库只有这一条commit）
+git commit -m "Initial clean start"
+
+# 删除原来带历史的main分支
+git branch -D main
+
+# 将临时分支重命名回main
+git branch -m main
+
+# 强制推送覆盖GitHub远程仓库
+# 参数 -f 表示「强制」；参数 -u 方便以后推送命令可以简单地写为 git push
+git push -u -f origin main
+```
+
+
 ## `Magit` 使用 {#magit-使用}
 
 在 `~/.emacs.d/init.el` 文件中配置
