@@ -1,0 +1,1252 @@
+#+TITLE: 创建课程数据库
+#+AUTHOR: zbliang
+#+DATE: 2026-08-25
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: posts
+#+HUGO_PAIRED_OUT_DIR: ../static
+#+HUGO_TAGS: SQLite
+#+HUGO_CATEGORIES: tech
+#+HUGO_DRAFT: false
+
+#+OPTIONS: num:nil ^:nil
+
+#+PROPERTY: header-args:sqlite :db example.sqlite :colnames yes :cmdline "-header -separator '\t'" :exports both :cache yes
+# 只有当下划线后面紧跟花括号时才会解析为下标
+#+OPTIONS: ^:{}
+
+* 创建教学数据库
+
+我们将在这个 =Emacs Org= 中创建数据库 =teaching_database.sqlite= ，用于保存教学数据。
+这个数据包含了以下 6 个表格：
++ =terms=
++ =class_sections=
++ =courses=
++ =students=
++ =enrollments=
++ =grades=
+
+下面介绍并创建每一个表格。
+
+** =students= 表格
+
+=students= 表保存的是学生的相对稳定的个人基本信息：
+
+| 字段             | 含义          | 示例          | 数据类型  |
+|------------------+---------------+---------------+-----------|
+| =student_id=       | 数据库内部编号 | 1             | INTEGER |
+| =student_no=      | 学号          | 2025150006    | TEXT     |
+| =name=           | 姓名          | 张三          | TEXT     |
+| =college=          | 学院          | 经济学院      | TEXT     |
+| =major=           | 专业          | 国际经济与贸易 | TEXT     |
+| =student_category= | 学生类别      | 内招生 / 外招生   | TEXT     |
+| =notes=           | 备注          | 可为空        | TEXT     |
+
+=student_id= 是数据库内部使用的编号，由 =SQLite= 在插入数据时自动生成，不需要手工填写。
+这个编号是唯一的，并将作为主键。
+
+学号 =student_no= 看起来是数字，但建议使用 =TEXT= ，而不是 =INTEGER= 。
+原因是学号本质上是身份编号，而不是用来计算的数。
+要注意的是，学号具有唯一性，也就是 =students= 表格不能出现相同学号的两行。
+
+=student_category= 可以填「内招生」或「外招生」。
+
+根据上述设计，在数据库中创建 =students= 表：
+
+#+begin_src sqlite
+  PRAGMA foreign_keys = ON;
+
+  CREATE TABLE students (
+      student_id INTEGER PRIMARY KEY,
+      student_no TEXT NOT NULL UNIQUE,
+      name TEXT NOT NULL,
+      college TEXT,
+      major TEXT,
+      student_category TEXT,
+      notes TEXT
+      );
+#+end_src
+
+#+RESULTS[c27990dd16b4f69e5c61c6f92d38e4861d509493]:
+
+以虽然本地目录没有 =example.sqlite= ，但由于 =Org= 文件的文件头写有
+
+#+begin_example
+#+PROPERTY: header-args:sqlite :db example.sqlite
+#+end_example
+
+所以执行前面命令后，就会自动创建 =example.sqlite= 这个数据库。
+
+查看 =students= 表结构：
+
+#+begin_src sqlite
+  PRAGMA table_info(students);
+#+end_src
+
+#+RESULTS[42df9e45e69200e764b4aee7b491f9121137ee13]:
+| cid | name          | type      | notnull | dflt_value | pk |
+|-----+----------------+-----------+--------+----------+-------|
+|   0 | student_id      | INTEGER |      0 |          | 1  |
+|   1 | student_no      | TEXT     |      1 |          | 0  |
+|   2 | name          | TEXT     |      1 |          | 0  |
+|   3 | college         | TEXT     |      0 |          | 0  |
+|   4 | major          | TEXT     |      0 |          | 0  |
+|   5 | student_category | TEXT     |      0 |          | 0  |
+|   6 | notes          | TEXT     |      0 |          | 0  |
+
+** =courses= 表格
+
+=courses= 表格由以下字段构成：
+
+| 字段                 | 含义              |          例子 |
+|----------------------+-------------------+---------------|
+| course_id             | 数据库编号        |             1 |
+| course_code          | 课程号            |      07010029 |
+| course_name          | 课程名            |      线性代数 |
+| target_student_category | 课程面向的学生类别 | 内招生 / 外招生 |
+| credits               | 学分              |             3 |
+| total_hours            | 学时              |            54 |
+| notes                | 备注              |               |
+
+注意到 =course_code= 不是唯一的。
+比如，《线性代数》不论是外招生还是内招生，课程编号都是 =07010155= 。
+
+执行以下代码创建 =courses= 表格：
+
+#+begin_src sqlite
+  CREATE TABLE courses (
+    course_id INTEGER PRIMARY KEY,
+    course_code TEXT NOT NULL,
+    course_name TEXT NOT NULL,
+    target_student_category TEXT NOT NULL,
+    credits REAL,
+    total_hours INTEGER,
+    notes TEXT
+    );
+#+end_src
+
+#+RESULTS[8769e02a71534c7266554c7a216385abdab044e6]:
+
+其中 =course_id= 是 =SQLite= 在插入数据时自动生成。
+
+检查 =courses= 表格的结构：
+
+#+begin_src sqlite
+  PRAGMA table_info(courses);
+#+end_src
+
+#+RESULTS[e537fe2759472e58c665f33e9257dd79d4aa367f]:
+| cid | name                | type      | notnull | dflt_value | pk |
+|-----+----------------------+-----------+--------+----------+-------|
+|   0 | course_id             | INTEGER |      0 |          | 1  |
+|   1 | course_code          | TEXT     |      1 |          | 0  |
+|   2 | course_name          | TEXT     |      1 |          | 0  |
+|   3 | target_student_category | TEXT     |      1 |          | 0  |
+|   4 | credits               | REAL     |      0 |          | 0  |
+|   5 | total_hours            | INTEGER |      0 |          | 0  |
+|   6 | notes                | TEXT     |      0 |          | 0  |
+
+** =terms= 表格
+
+=terms= 表格是保存学年的信息：
+
+| 字段       | 说明       | 例子   |
+|------------+------------+--------|
+| term_id    | 数据库编号 | 1      |
+| term_name | 学期名称   | 2026春 |
+
+其中 =term_id= 是 =SQLite= 在插入数据时自动生成。
+
+为什么不把学年信息直接保存在后面的教学班级 =class_sections= 表格中？
+一个原因是，比如说 =2025秋= 学年有 3 个教学班级，如果这三个班级都要输入 =2025秋= ，那么就会重复保存文字。
+现在有了学年表格，以后在班级中可以简单地引用。
+
+创建 =terms= 表格的代码：
+
+#+begin_src sqlite
+  CREATE TABLE terms (
+    term_id INTEGER PRIMARY KEY,
+    term_name TEXT NOT NULL UNIQUE
+);
+#+end_src
+
+#+RESULTS[7e535a194a01d4ff03477de7f61494f63d23934c]:
+
+检查：
+
+#+begin_src sqlite
+    PRAGMA table_info(terms);
+#+end_src
+
+#+RESULTS[5c33065e0e2e96931e6ef431019a3345acfc1555]:
+| cid | name      | type      | notnull | dflt_value | pk |
+|-----+------------+-----------+--------+----------+-------|
+|   0 | term_id    | INTEGER |      0 |          | 1  |
+|   1 | term_name | TEXT     |      1 |          | 0  |
+
+** =class_sections= 表格
+
+目前数据库已经有
+
+#+begin_example
+students
+courses
+terms
+#+end_example
+
+现在创建表格 =class_sections= 用于保存「某门课程在某个学期中的某个教学班」的信息，把前面三个「基础信息表」连接起来。
+
+=class_sections= 的字段：
+
+| 字段          | 含义              |       例子 |
+|---------------+-------------------+------------|
+| section_id     | 数据库编号        |          1 |
+| section_no     | 班号              | 2526102153 |
+| course_id      | 对应课程          |          1 |
+| term_id       | 对应学期          |          1 |
+| requesting_unit | 排课单位      | 经济学院 |
+| regular_weight  | 平时成绩比例      |         30 |
+| final_weight    | 期末成绩比例      |         70 |
+| notes         | 备注              |            |
+
+其中
++ =section_id= 是数据库自动创建。
++ =section_no= 是班号，数据类型是 =TEXT= 。
++ =course_id= 表示这个教学班属于哪门课程，与 =courses= 表格有关， =course_id=1= 对应的是 =线性代数= 。
++ =term_id= 表示这个教学班在哪个学期，与 =terms= 表格有关， =term_id=1= 对应的是 =2025秋= 。
+
+创建 =section_id= 表格的代码是：
+
+#+begin_src sqlite
+  CREATE TABLE class_sections (
+    section_id INTEGER PRIMARY KEY,
+
+    section_no TEXT NOT NULL UNIQUE,
+
+    course_id INTEGER NOT NULL,
+
+    term_id INTEGER NOT NULL,
+
+    requesting_unit TEXT,
+
+    regular_weight INTEGER NOT NULL DEFAULT 30,
+
+    final_weight INTEGER NOT NULL DEFAULT 70,
+
+    notes TEXT,
+
+    FOREIGN KEY(course_id)
+        REFERENCES courses(course_id),
+
+    FOREIGN KEY(term_id)
+        REFERENCES terms(term_id),
+
+    CHECK (
+        regular_weight >=0
+        AND regular_weight <=100
+    ),
+
+    CHECK (
+        final_weight >=0
+        AND final_weight <=100
+    ),
+
+    CHECK (
+        regular_weight + final_weight =100
+    )
+);
+#+end_src
+
+#+RESULTS[d68b1759d92a5670ecab7cd58a13303099655af6]:
+
+检查创建的表格：
+
+#+begin_src sqlite
+    PRAGMA table_info(class_sections);
+#+end_src
+
+#+RESULTS[854d52e26aab7f5bfd65bba120a2842341dafe23]:
+| cid | name         | type      | notnull | dflt_value | pk |
+|-----+---------------+-----------+--------+----------+-------|
+|   0 | section_id     | INTEGER |      0 |          | 1  |
+|   1 | section_no     | TEXT     |      1 |          | 0  |
+|   2 | course_id      | INTEGER |      1 |          | 0  |
+|   3 | term_id       | INTEGER |      1 |          | 0  |
+|   4 | requesting_unit | TEXT     |      0 |          | 0  |
+|   5 | regular_weight  | INTEGER |      1 |       30 | 0  |
+|   6 | final_weight    | INTEGER |      1 |       70 | 0  |
+|   7 | notes         | TEXT     |      0 |          | 0  |
+
+** =enrollments= 表格
+
+=enrollments= 主要记录某个学生参加了某个教学班，它有以下字段：
+
+| 字段             | 含义                                                             |
+|------------------+------------------------------------------------------------------|
+| =enrollment_id=    | =SQLite= 自动生成的数据库内部编号，为表格的主键                     |
+| =student_id=      | 联系选课学生的学号 =student_no= ，两者关系保存在 =students= 表格中     |
+| =section_id=      | 联系教学班级的班号 =section_no= ，两者关系保存在 =class_section= 表格中 |
+| =sequence_no=    | 表示学生在班级学生名单中的排序                                     |
+| =course_category= | 表示课程类别：基础必修课、公共选修课，等等                          |
+| =retake_status=   | 表示学生的重修重考的情况：正常/重修                                 |
+
+#+begin_src sqlite
+    CREATE TABLE enrollments (
+
+      enrollment_id INTEGER PRIMARY KEY,
+      student_id INTEGER NOT NULL,
+      section_id INTEGER NOT NULL,
+      sequence_no INTEGER,
+      course_category TEXT,
+      retake_status TEXT DEFAULT '正常',
+
+      FOREIGN KEY(student_id)
+          REFERENCES students(student_id),
+
+      FOREIGN KEY(section_id)
+          REFERENCES class_sections(section_id),
+
+      UNIQUE(student_id, section_id)
+      );
+#+end_src
+
+#+RESULTS[267a6fdfd11e94872b7f359d086b0b65dde8e625]:
+
+检查：
+
+#+begin_src sqlite
+  PRAGMA table_info(enrollments);
+#+end_src
+
+#+RESULTS[b5b364a977eadc619d9dc756dd6b756e1cd075fd]:
+| cid | name          | type      | notnull | dflt_value | pk |
+|-----+----------------+-----------+--------+----------+-------|
+|   0 | enrollment_id    | INTEGER |      0 |          | 1  |
+|   1 | student_id      | INTEGER |      1 |          | 0  |
+|   2 | section_id      | INTEGER |      1 |          | 0  |
+|   3 | sequence_no    | INTEGER |      0 |          | 0  |
+|   4 | course_category | TEXT     |      0 |          | 0  |
+|   5 | retake_status    | TEXT     |      0 | '正常'    | 0  |
+
+**  =grades= 表
+
+=grades= 表的字段介绍
+
+| 字段            | 含义                                                                                 |
+|-----------------+--------------------------------------------------------------------------------------|
+| =grade_id=      | =SQLite= 在插入数据时自动生成的数据库内部数据                                           |
+| =enrollment_id=   | 来源于 =enrollments= 表格，表示哪个学生哪门课                                            |
+| =regular_score=  | 最终平时成绩，0-100 的整数                                                             |
+| =final_score=     | 期末成绩，0-100 的整数                                                                 |
+| =final_status=    | 标记「正常/缺考/缓考/作弊」 ，如果 =final_status= 不是「正常」，那么 =final_score= 应该是 =NULL= |
+| =exam_type=    | 期末考试的类型，如「闭卷考试/开卷考试/课程论文/项目报告」                                 |
+| =total_score=    | 总评成绩，检验直接输入或导入，而不是通过计算公式得到                                     |
+| =makeup_score= | 补考成绩                                                                             |
+| =final_result=  |               课程最终状态，如「通过/挂科」。虽然可以由成绩推导，但建议现阶段不填写                                                  |
+
+执行以下代码创建 =grades= 表格：
+
+#+begin_src sqlite
+    CREATE TABLE grades (
+
+      grade_id INTEGER PRIMARY KEY,
+      enrollment_id INTEGER NOT NULL UNIQUE,
+      
+      regular_score INTEGER,
+
+      final_score INTEGER,
+      final_status TEXT DEFAULT '正常',
+
+      exam_type TEXT,
+
+      total_score INTEGER,
+
+      makeup_score INTEGER,
+
+      final_result TEXT,
+      notes TEXT,
+
+      FOREIGN KEY(enrollment_id)
+          REFERENCES enrollments(enrollment_id)
+  );
+#+end_src
+
+#+RESULTS[553867178d52899bdfc888a0abe9c6f2e498386d]:
+
+检查：
+
+#+begin_src sqlite
+    PRAGMA table_info(grades);
+#+end_src
+
+#+RESULTS[500adea12c569972ca40c4aaeb8c37b1616f6704]:
+| cid | name        | type      | notnull | dflt_value | pk |
+|-----+--------------+-----------+--------+----------+-------|
+|   0 | grade_id      | INTEGER |      0 |          | 1  |
+|   1 | enrollment_id  | INTEGER |      1 |          | 0  |
+|   2 | regular_score | INTEGER |      0 |          | 0  |
+|   3 | final_score    | INTEGER |      0 |          | 0  |
+|   4 | final_status   | TEXT     |      0 | '正常'    | 0  |
+|   5 | exam_type    | TEXT     |      0 |          | 0  |
+|   6 | total_score    | INTEGER |      0 |          | 0  |
+|   7 | makeup_score | INTEGER |      0 |          | 0  |
+|   8 | final_result    | TEXT     |      0 |          | 0  |
+|   9 | notes        | TEXT     |      0 |          | 0  |
+
+* 把 =CSV= 文件导入数据库
+
+** python 脚本
+假设 2025 年线性代数（内招）某一个教学班级的数据保存在项目根目录下的 ~csv/线性代数_2025秋.csv~ 。
+文件的头两行是（第一行是字段，第二行开始是每个学生的数据）：
+
+#+begin_example
+course_code	course_name	target_student_category	credits	total_hours	section_no	term_name	requesting_unit	regular_weight	final_weight	sequence_no	student_no	name	college	major	student_category	course_category	retake_status	regular_score	final_score	final_status	exam_type	total_score	makeup_score	final_result
+7010155	线性代数	内招生	3	54	2526102170	2025秋	经济学院	30	70	1	2022104080	张一	经济学院	税收学	内招生	基础必修课	重修	84	84	正常	闭卷考试	84
+7010155	线性代数	内招生	3	54	2526102170	2025秋	经济学院	30	70	2	2022104490	杨而	管理学院	会计学	内招生	基础必修课	重修	95	78	正常	闭卷考试	83		
+#+end_example
+
+导入脚本 =import_csv.py= 如下。
+要注意的是数据库的名称 =example.sqlite= 已经固定写在脚本中。
+如果更改了数据库的名字，要手动同步修改脚本。
+
+#+begin_src python
+  import sqlite3
+  import csv
+  import sys
+
+
+  DB_FILE = "example.sqlite"
+
+
+
+  # ============================
+  # term
+  # ============================
+
+  def get_or_create_term(cur, term_name):
+
+      cur.execute(
+          """
+          SELECT term_id
+          FROM terms
+          WHERE term_name=?
+          """,
+          (term_name,)
+      )
+
+      result = cur.fetchone()
+
+      if result:
+          return result[0]
+
+
+      cur.execute(
+          """
+          INSERT INTO terms
+          (
+              term_name
+          )
+          VALUES (?)
+          """,
+          (term_name,)
+      )
+
+      return cur.lastrowid
+
+
+
+  # ============================
+  # courses
+  # ============================
+
+  def get_or_create_course(
+          cur,
+          row
+  ):
+
+      course_code = row["course_code"]
+      course_name = row["course_name"]
+      category = row["target_student_category"]
+
+
+      # 精确匹配
+
+      cur.execute(
+          """
+          SELECT course_id
+          FROM courses
+          WHERE course_code=?
+          AND target_student_category=?
+          AND course_name=?
+          """,
+          (
+              course_code,
+              category,
+              course_name
+          )
+      )
+
+      result = cur.fetchone()
+
+
+      if result:
+          return result[0]
+
+
+
+      # 检查同课程号但名称不同
+
+      cur.execute(
+          """
+          SELECT
+              course_id,
+              course_name
+
+          FROM courses
+
+          WHERE course_code=?
+          AND target_student_category=?
+
+          """,
+          (
+              course_code,
+              category
+          )
+      )
+
+
+      result = cur.fetchone()
+
+
+      if result:
+
+          raise Exception(
+              "\n课程信息冲突：\n"
+              f"数据库已有：{result[1]}\n"
+              f"CSV中为：{course_name}"
+          )
+
+
+
+      cur.execute(
+          """
+          INSERT INTO courses
+          (
+              course_code,
+              course_name,
+              target_student_category,
+              credits,
+              total_hours,
+              notes
+          )
+
+          VALUES
+          (?,?,?,?,?,?)
+
+          """,
+          (
+              course_code,
+              course_name,
+              category,
+              row["credits"],
+              row["total_hours"],
+              None
+          )
+      )
+
+
+      return cur.lastrowid
+
+
+
+
+  # ============================
+  # class_sections
+  # ============================
+
+  def get_or_create_section(
+          cur,
+          row,
+          course_id,
+          term_id
+  ):
+
+      section_no = row["section_no"]
+
+
+      cur.execute(
+          """
+          SELECT section_id
+          FROM class_sections
+          WHERE section_no=?
+          """,
+          (section_no,)
+      )
+
+
+      result = cur.fetchone()
+
+
+      if result:
+          return result[0]
+
+
+
+      cur.execute(
+          """
+          INSERT INTO class_sections
+          (
+              section_no,
+              course_id,
+              term_id,
+              requesting_unit,
+              regular_weight,
+              final_weight,
+              notes
+          )
+
+          VALUES
+          (?,?,?,?,?,?,?)
+
+          """,
+          (
+              section_no,
+              course_id,
+              term_id,
+              row["requesting_unit"],
+              row["regular_weight"],
+              row["final_weight"],
+              None
+          )
+      )
+
+
+      return cur.lastrowid
+
+
+
+
+
+  # ============================
+  # students
+  # ============================
+
+  def get_or_create_student(
+          cur,
+          row
+  ):
+
+      student_no = row["student_no"]
+
+
+      cur.execute(
+          """
+          SELECT student_id
+          FROM students
+          WHERE student_no=?
+          """,
+          (student_no,)
+      )
+
+
+      result = cur.fetchone()
+
+
+      if result:
+          return result[0]
+
+
+
+      cur.execute(
+          """
+          INSERT INTO students
+          (
+              student_no,
+              name,
+              college,
+              major,
+              student_category,
+              notes
+          )
+
+          VALUES
+          (?,?,?,?,?,?)
+
+          """,
+          (
+              row["student_no"],
+              row["name"],
+              row["college"],
+              row["major"],
+              row["student_category"],
+              None
+          )
+      )
+
+
+      return cur.lastrowid
+
+
+
+
+  # ============================
+  # enrollments
+  # ============================
+
+  def get_or_create_enrollment(
+          cur,
+          row,
+          student_id,
+          section_id
+  ):
+
+
+      cur.execute(
+          """
+          SELECT enrollment_id
+          FROM enrollments
+
+          WHERE student_id=?
+          AND section_id=?
+
+          """,
+          (
+              student_id,
+              section_id
+          )
+      )
+
+
+      result = cur.fetchone()
+
+
+      if result:
+          return result[0]
+
+
+
+      cur.execute(
+          """
+          INSERT INTO enrollments
+          (
+              student_id,
+              section_id,
+              sequence_no,
+              course_category,
+              retake_status
+          )
+
+          VALUES
+          (?,?,?,?,?)
+
+          """,
+          (
+              student_id,
+              section_id,
+              row["sequence_no"],
+              row["course_category"],
+              row["retake_status"]
+          )
+      )
+
+
+      return cur.lastrowid
+
+
+
+
+  # ============================
+  # grades
+  # ============================
+
+  def insert_or_update_grade(
+          cur,
+          row,
+          enrollment_id
+  ):
+
+
+      cur.execute(
+          """
+          INSERT OR REPLACE INTO grades
+          (
+              enrollment_id,
+
+              regular_score,
+
+              final_score,
+
+              final_status,
+
+              exam_type,
+
+              total_score,
+
+              makeup_score,
+
+              final_result
+
+          )
+
+          VALUES
+          (?,?,?,?,?,?,?,?)
+
+          """,
+          (
+
+              enrollment_id,
+
+              row["regular_score"]
+              if row["regular_score"] != ""
+              else None,
+
+
+              row["final_score"]
+              if row["final_score"] != ""
+              else None,
+
+
+              row["final_status"],
+
+
+              row["exam_type"],
+
+
+              row["total_score"]
+              if row["total_score"] != ""
+              else None,
+
+
+              row["makeup_score"]
+              if row["makeup_score"] != ""
+              else None,
+
+
+              row["final_result"]
+              if row["final_result"] != ""
+              else None
+
+          )
+      )
+
+
+
+
+  # ============================
+  # 导入 CSV
+  # ============================
+
+  def import_csv(filename):
+
+      print("\n开始导入:", filename)
+
+
+      conn = sqlite3.connect(DB_FILE)
+
+      cur = conn.cursor()
+
+
+      try:
+
+          conn.execute("BEGIN")
+
+
+          with open(
+              filename,
+              encoding="utf-8-sig",
+              newline=""
+          ) as f:
+
+
+              reader = csv.DictReader(f)
+
+              rows = list(reader)
+
+
+
+          for row in rows:
+
+
+              term_id = get_or_create_term(
+                  cur,
+                  row["term_name"]
+              )
+
+
+
+              course_id = get_or_create_course(
+                  cur,
+                  row
+              )
+
+
+
+              section_id = get_or_create_section(
+                  cur,
+                  row,
+                  course_id,
+                  term_id
+              )
+
+
+
+              student_id = get_or_create_student(
+                  cur,
+                  row
+              )
+
+
+
+              enrollment_id = get_or_create_enrollment(
+                  cur,
+                  row,
+                  student_id,
+                  section_id
+              )
+
+
+
+              insert_or_update_grade(
+                  cur,
+                  row,
+                  enrollment_id
+              )
+
+
+
+          conn.commit()
+
+
+          print(
+              "导入成功:",
+              len(rows),
+              "条学生记录"
+          )
+
+
+
+      except Exception as e:
+
+          conn.rollback()
+
+          print(
+              "导入失败:"
+          )
+
+          print(e)
+
+          raise
+
+
+
+      finally:
+
+          conn.close()
+
+
+
+
+
+  # ============================
+  # main
+  # ============================
+
+  if __name__ == "__main__":
+
+
+      if len(sys.argv) < 2:
+
+          print(
+              "使用方法:"
+          )
+
+          print(
+              "python import_csv.py file.csv"
+          )
+
+          sys.exit(1)
+
+
+
+      for filename in sys.argv[1:]:
+
+          import_csv(filename)
+#+end_src
+
+** 脚本使用方法
+
+假设目录结构是：
+
+#+begin_example
+project/
+
+├── example.sqlite
+├── import_csv.py
+└── csv/
+    ├── 线性代数_2025秋.csv
+    ├── 高等数学Ⅱ_2025春.csv
+    └── 概率统计_2026春.csv
+#+end_example
+
+如果是第一次导入，可以在项目根目录下，终端运行：
+#+begin_example
+python3 import_csv.py csv/*.csv
+#+end_example
+
+以后修改或增加某门课程，运行
+#+begin_example
+python import_csv.py csv/线性代数_2025秋.csv
+#+end_example
+
+此时输出的信息类似
+#+begin_example
+开始导入: csv/线性代数_2025秋.csv
+导入成功: 99 条学生记录
+#+end_example
+
+在正式导入前，建议：
+
++ 检查 =CSV= 文档的字段是否完整。
+  比如，如果缺少字段 =final_score= ，那么会报错 =ERROR: missing column final_score= 。
++ 增加 =dry-run= 模式，例如先运行
+  #+begin_example
+  python3 import_csv.py --check csv/25fall_linear_algebra_m.csv
+  #+end_example
+  检查
+  + 有多少学生；
+  + 有多少教学班；
+  + 是否有重复学号；
+  + 是否有课程冲突；
+  但不写数据库。
+
+** 脚本的逻辑
+
+总体流程是
+ 
+#+begin_example
+读取 CSV
+     |
+     |
+逐行处理学生记录
+     |
+     |
+--------------------------------
+       |
+       |
+       v
+   term
+       |
+       v
+   course
+       |
+       v
+   class_section
+       |
+       v
+   student
+       |
+       v
+   enrollment
+       |
+       v
+   grade
+--------------------------------
+#+end_example
+
+*** 导入 =terms= 表格
+
+假设 =CSV= 中的 =term_name= 是 =2025秋= ，那么查询：
+
+#+begin_example
+SELECT term_id
+FROM terms
+WHERE term_name=?
+#+end_example
+
+如果存在就直接使用，否则 =INSERT= 。
+
+*** 导入 =courses= 表格
+
+查找 =CSV= 文件中的以下字段
+#+begin_example
+course_code
+course_name
+target_student_category
+credits
+total_hours
+#+end_example
+
+先寻找
+#+begin_example
+WHERE
+
+course_code=?
+AND target_student_category=?
+AND course_name=?
+#+end_example
+
+如果能存在，那么使用已有的 =course_id= 。
+
+如果不存在，再查询：
+#+begin_example
+WHERE
+
+course_code=?
+AND target_student_category=?
+#+end_example
+如果还是不存在，创建新的课程信息（新的 =course_id= ）。
+
+但如果存在，说明在相同的 =course_code= 和 =target_student_category= 下，有不同名称的课程名。
+这时报错 =课程信息冲突= ，需要人工判断：是课程改名？
+还是新课程？
+
+*** 导入 =class_sections= 表格
+
+比较 =CSV= 文件中的 =section_no= 是否包含在数据库中的 =section_no= 。
+如果没有，则导入。
+
+*** 导入 =students= 表格
+
+查询
+#+begin_example
+WHERE student_no=?
+#+end_example
+如果不存在，那么创建该学生信息。
+
+*** 导入 =enrollments= 表格
+
+查询：
+#+begin_example
+WHERE
+
+student_id=?
+AND
+section_id=?
+#+end_example
+如果不存在，创建选课信息。
+
+*** 导入 =grades= 表格
+
+导入时使用
+#+begin_example
+INSERT OR REPLACE
+#+end_example
+
+因此第一次导入时，导入成绩。
+以后修改 =CSV= 重新导入，就会更新成绩。
+
+*** 重复的导入行为
+
+假设第一次
+#+begin_example
+python import_csv.py csv/math.csv
+#+end_example
+
+第二次（可能更新了 =csv/math.csv= 文件中某些学生的成绩）：
+#+begin_example
+python import_csv.py csv/math.csv
+#+end_example
+
+那么结果是：
+
+| 表             | 结果     |
+|----------------+----------|
+| =terms=        | 不会重复 |
+| =courses=      | 不会重复 |
+| =class_sections= | 不会重复 |
+| =students=     | 不会重复 |
+| =enrollments=   | 不会重复 |
+| =grades=       | 更新     |
+
+* 建立视图
+
+#+begin_src sqlite
+  CREATE VIEW grade_view AS
+
+  SELECT
+
+  students.student_no,
+  students.name,
+
+  students.college,
+
+  terms.term_name,
+
+  courses.course_code,
+  courses.course_name,
+
+  class_sections.section_no,
+
+  class_sections.requesting_unit,
+
+  grades.regular_score,
+
+  grades.final_score,
+
+  grades.total_score,
+
+  grades.makeup_score,
+
+  grades.final_result
+
+
+  FROM grades
+
+  JOIN enrollments
+  ON grades.enrollment_id =
+     enrollments.enrollment_id
+
+  JOIN students
+  ON enrollments.student_id =
+     students.student_id
+
+  JOIN class_sections
+  ON enrollments.section_id =
+     class_sections.section_id
+
+  JOIN courses
+  ON class_sections.course_id =
+     courses.course_id
+
+  JOIN terms
+  ON class_sections.term_id =
+  terms.term_id;
+#+end_src
+
+#+RESULTS[485f0077639873eabc816cff7b761e5b60d4bb13]:
+
+以后
+#+begin_src sqlite
+    SELECT *
+    FROM grade_view;
+#+end_src
+
+#+RESULTS[b29686bd1bb4ac9c970145f0fa68757be93a724f]:
+|  student_no | name  | college   | term_name | course_code | course_name |  section_no | requesting_unit | regular_score | final_score | total_score | makeup_score | final_result |
+|------------+--------+----------+------------+-------------+-------------+------------+---------------+--------------+-----------+-----------+--------------+--------------|
+| 2022104080 | 张一   | 经济学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |           84 |        84 |        84 |              |           |
+| 2022104490 | 杨而   | 管理学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |           95 |        78 |        83 |              |           |
+| 2023100250 | 曹三三 | 管理学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |           99 |        78 |        84 |              |           |
+| 2024100152 | 黄仁东 | 经济学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |           93 |        77 |        82 |              |           |
+| 2024100332 | 陈大大 | 经济学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |           91 |        58 |        68 |              |           |
+| 2024100517 | 李杰夫 | 经济学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |           99 |        82 |        87 |              |           |
+| 2024101371 | 刘思思 | 管理学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |          100 |        82 |        87 |              |           |
+| 2024101888 | 王东西 | 经济学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |           99 |        84 |        89 |              |           |
+| 2024101904 | 胡海   | 经济学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |          100 |        66 |        76 |              |           |
+| 2024101566 | 李可   | 经济学院 | 2025秋     |     7010155 | 线性代数    | 2526102170 | 经济学院      |          100 |        80 |        86 |              |           |
+
+直接得到分析数据。
+
+=R= 导入也非常方便：
+#+begin_src R
+    library(RSQLite)
+
+  con <- dbConnect(
+      SQLite(),
+      "example.sqlite"
+  )
+
+  df <- dbGetQuery(
+      con,
+      "SELECT * FROM grade_view"
+  )
+#+end_src

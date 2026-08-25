@@ -1,0 +1,2636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-08-25 Tue 17:25 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>创建课程数据库</title>
+<meta name="author" content="zbliang" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">创建课程数据库</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org8341361">创建教学数据库</a>
+<ul>
+<li><a href="#orgdbd97c3"><code>students</code> 表格</a></li>
+<li><a href="#org21761d4"><code>courses</code> 表格</a></li>
+<li><a href="#org38d0c55"><code>terms</code> 表格</a></li>
+<li><a href="#org6ceaabe"><code>class_sections</code> 表格</a></li>
+<li><a href="#orge1c5434"><code>enrollments</code> 表格</a></li>
+<li><a href="#orge473535"><code>grades</code> 表</a></li>
+</ul>
+</li>
+<li><a href="#org7332de3">把 <code>CSV</code> 文件导入数据库</a>
+<ul>
+<li><a href="#org872f794">python 脚本</a></li>
+<li><a href="#org193e3e9">脚本使用方法</a></li>
+<li><a href="#org998c56a">脚本的逻辑</a></li>
+</ul>
+</li>
+<li><a href="#org7e19022">建立视图</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8341361" class="outline-2">
+<h2 id="org8341361">创建教学数据库</h2>
+<div class="outline-text-2" id="text-org8341361">
+<p>
+我们将在这个 <code>Emacs Org</code> 中创建数据库 <code>teaching_database.sqlite</code> ，用于保存教学数据。
+这个数据包含了以下 6 个表格：
+</p>
+<ul class="org-ul">
+<li><code>terms</code></li>
+<li><code>class_sections</code></li>
+<li><code>courses</code></li>
+<li><code>students</code></li>
+<li><code>enrollments</code></li>
+<li><code>grades</code></li>
+</ul>
+
+<p>
+下面介绍并创建每一个表格。
+</p>
+</div>
+<div id="outline-container-orgdbd97c3" class="outline-3">
+<h3 id="orgdbd97c3"><code>students</code> 表格</h3>
+<div class="outline-text-3" id="text-orgdbd97c3">
+<p>
+<code>students</code> 表保存的是学生的相对稳定的个人基本信息：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">字段</th>
+<th scope="col" class="org-left">含义</th>
+<th scope="col" class="org-left">示例</th>
+<th scope="col" class="org-left">数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>student_id</code></td>
+<td class="org-left">数据库内部编号</td>
+<td class="org-left">1</td>
+<td class="org-left">INTEGER</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>student_no</code></td>
+<td class="org-left">学号</td>
+<td class="org-left">2025150006</td>
+<td class="org-left">TEXT</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>name</code></td>
+<td class="org-left">姓名</td>
+<td class="org-left">张三</td>
+<td class="org-left">TEXT</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>college</code></td>
+<td class="org-left">学院</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">TEXT</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>major</code></td>
+<td class="org-left">专业</td>
+<td class="org-left">国际经济与贸易</td>
+<td class="org-left">TEXT</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>student_category</code></td>
+<td class="org-left">学生类别</td>
+<td class="org-left">内招生 / 外招生</td>
+<td class="org-left">TEXT</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>notes</code></td>
+<td class="org-left">备注</td>
+<td class="org-left">可为空</td>
+<td class="org-left">TEXT</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<code>student_id</code> 是数据库内部使用的编号，由 <code>SQLite</code> 在插入数据时自动生成，不需要手工填写。
+这个编号是唯一的，并将作为主键。
+</p>
+
+<p>
+学号 <code>student_no</code> 看起来是数字，但建议使用 <code>TEXT</code> ，而不是 <code>INTEGER</code> 。
+原因是学号本质上是身份编号，而不是用来计算的数。
+要注意的是，学号具有唯一性，也就是 <code>students</code> 表格不能出现相同学号的两行。
+</p>
+
+<p>
+<code>student_category</code> 可以填「内招生」或「外招生」。
+</p>
+
+<p>
+根据上述设计，在数据库中创建 <code>students</code> 表：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">PRAGMA foreign_keys = <span style="color: #b6a0ff;">ON</span>;
+
+<span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">TABLE</span> <span style="color: #feacd0;">students</span> (
+    student_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">PRIMARY</span> <span style="color: #b6a0ff;">KEY</span>,
+    student_no TEXT <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span> <span style="color: #b6a0ff;">UNIQUE</span>,
+    <span style="color: #b6a0ff;">name</span> TEXT <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+    college TEXT,
+    major TEXT,
+    student_category TEXT,
+    notes TEXT
+    );
+</pre>
+</div>
+
+<p>
+以虽然本地目录没有 <code>example.sqlite</code> ，但由于 <code>Org</code> 文件的文件头写有
+</p>
+
+<pre class="example" id="org9e3dfb0">
+#+PROPERTY: header-args:sqlite :db example.sqlite
+</pre>
+
+<p>
+所以执行前面命令后，就会自动创建 <code>example.sqlite</code> 这个数据库。
+</p>
+
+<p>
+查看 <code>students</code> 表结构：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">PRAGMA table_info(students);
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">cid</th>
+<th scope="col" class="org-left">name</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-right">notnull</th>
+<th scope="col" class="org-left">dflt_value</th>
+<th scope="col" class="org-right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-left">student_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">student_no</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">name</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">college</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">major</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">student_category</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-left">notes</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org21761d4" class="outline-3">
+<h3 id="org21761d4"><code>courses</code> 表格</h3>
+<div class="outline-text-3" id="text-org21761d4">
+<p>
+<code>courses</code> 表格由以下字段构成：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">字段</th>
+<th scope="col" class="org-left">含义</th>
+<th scope="col" class="org-right">例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">course_id</td>
+<td class="org-left">数据库编号</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-left">course_code</td>
+<td class="org-left">课程号</td>
+<td class="org-right">07010029</td>
+</tr>
+
+<tr>
+<td class="org-left">course_name</td>
+<td class="org-left">课程名</td>
+<td class="org-right">线性代数</td>
+</tr>
+
+<tr>
+<td class="org-left">target_student_category</td>
+<td class="org-left">课程面向的学生类别</td>
+<td class="org-right">内招生 / 外招生</td>
+</tr>
+
+<tr>
+<td class="org-left">credits</td>
+<td class="org-left">学分</td>
+<td class="org-right">3</td>
+</tr>
+
+<tr>
+<td class="org-left">total_hours</td>
+<td class="org-left">学时</td>
+<td class="org-right">54</td>
+</tr>
+
+<tr>
+<td class="org-left">notes</td>
+<td class="org-left">备注</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+注意到 <code>course_code</code> 不是唯一的。
+比如，《线性代数》不论是外招生还是内招生，课程编号都是 <code>07010155</code> 。
+</p>
+
+<p>
+执行以下代码创建 <code>courses</code> 表格：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite"><span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">TABLE</span> <span style="color: #feacd0;">courses</span> (
+  course_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">PRIMARY</span> <span style="color: #b6a0ff;">KEY</span>,
+  course_code TEXT <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+  course_name TEXT <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+  target_student_category TEXT <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+  credits <span style="color: #6ae4b9;">REAL</span>,
+  total_hours <span style="color: #6ae4b9;">INTEGER</span>,
+  notes TEXT
+  );
+</pre>
+</div>
+
+<p>
+其中 <code>course_id</code> 是 <code>SQLite</code> 在插入数据时自动生成。
+</p>
+
+<p>
+检查 <code>courses</code> 表格的结构：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">PRAGMA table_info(courses);
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">cid</th>
+<th scope="col" class="org-left">name</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-right">notnull</th>
+<th scope="col" class="org-left">dflt_value</th>
+<th scope="col" class="org-right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-left">course_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">course_code</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">course_name</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">target_student_category</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">credits</td>
+<td class="org-left">REAL</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">total_hours</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-left">notes</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org38d0c55" class="outline-3">
+<h3 id="org38d0c55"><code>terms</code> 表格</h3>
+<div class="outline-text-3" id="text-org38d0c55">
+<p>
+<code>terms</code> 表格是保存学年的信息：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">字段</th>
+<th scope="col" class="org-left">说明</th>
+<th scope="col" class="org-left">例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">term_id</td>
+<td class="org-left">数据库编号</td>
+<td class="org-left">1</td>
+</tr>
+
+<tr>
+<td class="org-left">term_name</td>
+<td class="org-left">学期名称</td>
+<td class="org-left">2026春</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+其中 <code>term_id</code> 是 <code>SQLite</code> 在插入数据时自动生成。
+</p>
+
+<p>
+为什么不把学年信息直接保存在后面的教学班级 <code>class_sections</code> 表格中？
+一个原因是，比如说 <code>2025秋</code> 学年有 3 个教学班级，如果这三个班级都要输入 <code>2025秋</code> ，那么就会重复保存文字。
+现在有了学年表格，以后在班级中可以简单地引用。
+</p>
+
+<p>
+创建 <code>terms</code> 表格的代码：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">  <span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">TABLE</span> <span style="color: #feacd0;">terms</span> (
+    term_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">PRIMARY</span> <span style="color: #b6a0ff;">KEY</span>,
+    term_name TEXT <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span> <span style="color: #b6a0ff;">UNIQUE</span>
+);
+</pre>
+</div>
+
+<p>
+检查：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">PRAGMA table_info(terms);
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">cid</th>
+<th scope="col" class="org-left">name</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-right">notnull</th>
+<th scope="col" class="org-left">dflt_value</th>
+<th scope="col" class="org-right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-left">term_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">term_name</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org6ceaabe" class="outline-3">
+<h3 id="org6ceaabe"><code>class_sections</code> 表格</h3>
+<div class="outline-text-3" id="text-org6ceaabe">
+<p>
+目前数据库已经有
+</p>
+
+<pre class="example" id="orge6501f1">
+students
+courses
+terms
+</pre>
+
+<p>
+现在创建表格 <code>class_sections</code> 用于保存「某门课程在某个学期中的某个教学班」的信息，把前面三个「基础信息表」连接起来。
+</p>
+
+<p>
+<code>class_sections</code> 的字段：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">字段</th>
+<th scope="col" class="org-left">含义</th>
+<th scope="col" class="org-right">例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">section_id</td>
+<td class="org-left">数据库编号</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-left">section_no</td>
+<td class="org-left">班号</td>
+<td class="org-right">2526102153</td>
+</tr>
+
+<tr>
+<td class="org-left">course_id</td>
+<td class="org-left">对应课程</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-left">term_id</td>
+<td class="org-left">对应学期</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-left">requesting_unit</td>
+<td class="org-left">排课单位</td>
+<td class="org-right">经济学院</td>
+</tr>
+
+<tr>
+<td class="org-left">regular_weight</td>
+<td class="org-left">平时成绩比例</td>
+<td class="org-right">30</td>
+</tr>
+
+<tr>
+<td class="org-left">final_weight</td>
+<td class="org-left">期末成绩比例</td>
+<td class="org-right">70</td>
+</tr>
+
+<tr>
+<td class="org-left">notes</td>
+<td class="org-left">备注</td>
+<td class="org-right">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+其中
+</p>
+<ul class="org-ul">
+<li><code>section_id</code> 是数据库自动创建。</li>
+<li><code>section_no</code> 是班号，数据类型是 <code>TEXT</code> 。</li>
+<li><code>course_id</code> 表示这个教学班属于哪门课程，与 <code>courses</code> 表格有关， <code>course_id=1</code> 对应的是 <code>线性代数</code> 。</li>
+<li><code>term_id</code> 表示这个教学班在哪个学期，与 <code>terms</code> 表格有关， <code>term_id=1</code> 对应的是 <code>2025秋</code> 。</li>
+</ul>
+
+<p>
+创建 <code>section_id</code> 表格的代码是：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">  <span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">TABLE</span> <span style="color: #feacd0;">class_sections</span> (
+    section_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">PRIMARY</span> <span style="color: #b6a0ff;">KEY</span>,
+
+    section_no TEXT <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span> <span style="color: #b6a0ff;">UNIQUE</span>,
+
+    course_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+
+    term_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+
+    requesting_unit TEXT,
+
+    regular_weight <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span> <span style="color: #b6a0ff;">DEFAULT</span> 30,
+
+    final_weight <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span> <span style="color: #b6a0ff;">DEFAULT</span> 70,
+
+    notes TEXT,
+
+    <span style="color: #b6a0ff;">FOREIGN</span> <span style="color: #b6a0ff;">KEY</span>(course_id)
+        <span style="color: #b6a0ff;">REFERENCES</span> courses(course_id),
+
+    <span style="color: #b6a0ff;">FOREIGN</span> <span style="color: #b6a0ff;">KEY</span>(term_id)
+        <span style="color: #b6a0ff;">REFERENCES</span> terms(term_id),
+
+    <span style="color: #b6a0ff;">CHECK</span> (
+        regular_weight &gt;=0
+        <span style="color: #b6a0ff;">AND</span> regular_weight &lt;=100
+    ),
+
+    <span style="color: #b6a0ff;">CHECK</span> (
+        final_weight &gt;=0
+        <span style="color: #b6a0ff;">AND</span> final_weight &lt;=100
+    ),
+
+    <span style="color: #b6a0ff;">CHECK</span> (
+        regular_weight + final_weight =100
+    )
+);
+</pre>
+</div>
+
+<p>
+检查创建的表格：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">PRAGMA table_info(class_sections);
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">cid</th>
+<th scope="col" class="org-left">name</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-right">notnull</th>
+<th scope="col" class="org-left">dflt_value</th>
+<th scope="col" class="org-right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-left">section_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">section_no</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">course_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">term_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">requesting_unit</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">regular_weight</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">1</td>
+<td class="org-left">30</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-left">final_weight</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">1</td>
+<td class="org-left">70</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+<td class="org-left">notes</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orge1c5434" class="outline-3">
+<h3 id="orge1c5434"><code>enrollments</code> 表格</h3>
+<div class="outline-text-3" id="text-orge1c5434">
+<p>
+<code>enrollments</code> 主要记录某个学生参加了某个教学班，它有以下字段：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">字段</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>enrollment_id</code></td>
+<td class="org-left"><code>SQLite</code> 自动生成的数据库内部编号，为表格的主键</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>student_id</code></td>
+<td class="org-left">联系选课学生的学号 <code>student_no</code> ，两者关系保存在 <code>students</code> 表格中</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>section_id</code></td>
+<td class="org-left">联系教学班级的班号 <code>section_no</code> ，两者关系保存在 <code>class_section</code> 表格中</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>sequence_no</code></td>
+<td class="org-left">表示学生在班级学生名单中的排序</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>course_category</code></td>
+<td class="org-left">表示课程类别：基础必修课、公共选修课，等等</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>retake_status</code></td>
+<td class="org-left">表示学生的重修重考的情况：正常/重修</td>
+</tr>
+</tbody>
+</table>
+
+<div class="org-src-container">
+<pre class="src src-sqlite"><span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">TABLE</span> <span style="color: #feacd0;">enrollments</span> (
+
+  enrollment_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">PRIMARY</span> <span style="color: #b6a0ff;">KEY</span>,
+  student_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+  section_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span>,
+  sequence_no <span style="color: #6ae4b9;">INTEGER</span>,
+  course_category TEXT,
+  retake_status TEXT <span style="color: #b6a0ff;">DEFAULT</span> <span style="color: #79a8ff;">'&#27491;&#24120;'</span>,
+
+  <span style="color: #b6a0ff;">FOREIGN</span> <span style="color: #b6a0ff;">KEY</span>(student_id)
+      <span style="color: #b6a0ff;">REFERENCES</span> students(student_id),
+
+  <span style="color: #b6a0ff;">FOREIGN</span> <span style="color: #b6a0ff;">KEY</span>(section_id)
+      <span style="color: #b6a0ff;">REFERENCES</span> class_sections(section_id),
+
+  <span style="color: #b6a0ff;">UNIQUE</span>(student_id, section_id)
+  );
+</pre>
+</div>
+
+<p>
+检查：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">PRAGMA table_info(enrollments);
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">cid</th>
+<th scope="col" class="org-left">name</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-right">notnull</th>
+<th scope="col" class="org-left">dflt_value</th>
+<th scope="col" class="org-right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-left">enrollment_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">student_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">section_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">sequence_no</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">course_category</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">retake_status</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">'正常'</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orge473535" class="outline-3">
+<h3 id="orge473535"><code>grades</code> 表</h3>
+<div class="outline-text-3" id="text-orge473535">
+<p>
+<code>grades</code> 表的字段介绍
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">字段</th>
+<th scope="col" class="org-left">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>grade_id</code></td>
+<td class="org-left"><code>SQLite</code> 在插入数据时自动生成的数据库内部数据</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>enrollment_id</code></td>
+<td class="org-left">来源于 <code>enrollments</code> 表格，表示哪个学生哪门课</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>regular_score</code></td>
+<td class="org-left">最终平时成绩，0-100 的整数</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>final_score</code></td>
+<td class="org-left">期末成绩，0-100 的整数</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>final_status</code></td>
+<td class="org-left">标记「正常/缺考/缓考/作弊」 ，如果 <code>final_status</code> 不是「正常」，那么 <code>final_score</code> 应该是 <code>NULL</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>exam_type</code></td>
+<td class="org-left">期末考试的类型，如「闭卷考试/开卷考试/课程论文/项目报告」</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>total_score</code></td>
+<td class="org-left">总评成绩，检验直接输入或导入，而不是通过计算公式得到</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>makeup_score</code></td>
+<td class="org-left">补考成绩</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>final_result</code></td>
+<td class="org-left">课程最终状态，如「通过/挂科」。虽然可以由成绩推导，但建议现阶段不填写</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+执行以下代码创建 <code>grades</code> 表格：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">  <span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">TABLE</span> <span style="color: #feacd0;">grades</span> (
+
+    grade_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">PRIMARY</span> <span style="color: #b6a0ff;">KEY</span>,
+    enrollment_id <span style="color: #6ae4b9;">INTEGER</span> <span style="color: #b6a0ff;">NOT</span> <span style="color: #b6a0ff;">NULL</span> <span style="color: #b6a0ff;">UNIQUE</span>,
+
+    regular_score <span style="color: #6ae4b9;">INTEGER</span>,
+
+    final_score <span style="color: #6ae4b9;">INTEGER</span>,
+    final_status TEXT <span style="color: #b6a0ff;">DEFAULT</span> <span style="color: #79a8ff;">'&#27491;&#24120;'</span>,
+
+    exam_type TEXT,
+
+    total_score <span style="color: #6ae4b9;">INTEGER</span>,
+
+    makeup_score <span style="color: #6ae4b9;">INTEGER</span>,
+
+    final_result TEXT,
+    notes TEXT,
+
+    <span style="color: #b6a0ff;">FOREIGN</span> <span style="color: #b6a0ff;">KEY</span>(enrollment_id)
+        <span style="color: #b6a0ff;">REFERENCES</span> enrollments(enrollment_id)
+);
+</pre>
+</div>
+
+<p>
+检查：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sqlite">PRAGMA table_info(grades);
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">cid</th>
+<th scope="col" class="org-left">name</th>
+<th scope="col" class="org-left">type</th>
+<th scope="col" class="org-right">notnull</th>
+<th scope="col" class="org-left">dflt_value</th>
+<th scope="col" class="org-right">pk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">0</td>
+<td class="org-left">grade_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">1</td>
+</tr>
+
+<tr>
+<td class="org-right">1</td>
+<td class="org-left">enrollment_id</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">1</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">2</td>
+<td class="org-left">regular_score</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">3</td>
+<td class="org-left">final_score</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">4</td>
+<td class="org-left">final_status</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">'正常'</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">5</td>
+<td class="org-left">exam_type</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">6</td>
+<td class="org-left">total_score</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">7</td>
+<td class="org-left">makeup_score</td>
+<td class="org-left">INTEGER</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">8</td>
+<td class="org-left">final_result</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-right">9</td>
+<td class="org-left">notes</td>
+<td class="org-left">TEXT</td>
+<td class="org-right">0</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="outline-container-org7332de3" class="outline-2">
+<h2 id="org7332de3">把 <code>CSV</code> 文件导入数据库</h2>
+<div class="outline-text-2" id="text-org7332de3">
+</div>
+<div id="outline-container-org872f794" class="outline-3">
+<h3 id="org872f794">python 脚本</h3>
+<div class="outline-text-3" id="text-org872f794">
+<p>
+假设 2025 年线性代数（内招）某一个教学班级的数据保存在项目根目录下的 <code>csv/线性代数_2025秋.csv</code> 。
+文件的头两行是（第一行是字段，第二行开始是每个学生的数据）：
+</p>
+
+<pre class="example" id="orgbfad518">
+course_code	course_name	target_student_category	credits	total_hours	section_no	term_name	requesting_unit	regular_weight	final_weight	sequence_no	student_no	name	college	major	student_category	course_category	retake_status	regular_score	final_score	final_status	exam_type	total_score	makeup_score	final_result
+7010155	线性代数	内招生	3	54	2526102170	2025秋	经济学院	30	70	1	2022104080	张一	经济学院	税收学	内招生	基础必修课	重修	84	84	正常	闭卷考试	84
+7010155	线性代数	内招生	3	54	2526102170	2025秋	经济学院	30	70	2	2022104490	杨而	管理学院	会计学	内招生	基础必修课	重修	95	78	正常	闭卷考试	83		
+</pre>
+
+<p>
+导入脚本 <code>import_csv.py</code> 如下。
+要注意的是数据库的名称 <code>example.sqlite</code> 已经固定写在脚本中。
+如果更改了数据库的名字，要手动同步修改脚本。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #b6a0ff;">import</span> sqlite3
+<span style="color: #b6a0ff;">import</span> csv
+<span style="color: #b6a0ff;">import</span> sys
+
+
+<span style="color: #00d3d0;">DB_FILE</span> = <span style="color: #79a8ff;">"example.sqlite"</span>
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">term
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">get_or_create_term</span>(cur, term_name):
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        SELECT term_id
+        FROM terms
+        WHERE term_name=?
+        """</span>,
+        (term_name,)
+    )
+
+    <span style="color: #00d3d0;">result</span> = cur.fetchone()
+
+    <span style="color: #b6a0ff;">if</span> result:
+        <span style="color: #b6a0ff;">return</span> result[0]
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        INSERT INTO terms
+        (
+            term_name
+        )
+        VALUES (?)
+        """</span>,
+        (term_name,)
+    )
+
+    <span style="color: #b6a0ff;">return</span> cur.lastrowid
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">courses
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">get_or_create_course</span>(
+        cur,
+        row
+):
+
+    <span style="color: #00d3d0;">course_code</span> = row[<span style="color: #79a8ff;">"course_code"</span>]
+    <span style="color: #00d3d0;">course_name</span> = row[<span style="color: #79a8ff;">"course_name"</span>]
+    <span style="color: #00d3d0;">category</span> = row[<span style="color: #79a8ff;">"target_student_category"</span>]
+
+
+    <span style="color: #989898;"># </span><span style="color: #989898;">&#31934;&#30830;&#21305;&#37197;
+</span>
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        SELECT course_id
+        FROM courses
+        WHERE course_code=?
+        AND target_student_category=?
+        AND course_name=?
+        """</span>,
+        (
+            course_code,
+            category,
+            course_name
+        )
+    )
+
+    <span style="color: #00d3d0;">result</span> = cur.fetchone()
+
+
+    <span style="color: #b6a0ff;">if</span> result:
+        <span style="color: #b6a0ff;">return</span> result[0]
+
+
+
+    <span style="color: #989898;"># </span><span style="color: #989898;">&#26816;&#26597;&#21516;&#35838;&#31243;&#21495;&#20294;&#21517;&#31216;&#19981;&#21516;
+</span>
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        SELECT
+            course_id,
+            course_name
+
+        FROM courses
+
+        WHERE course_code=?
+        AND target_student_category=?
+
+        """</span>,
+        (
+            course_code,
+            category
+        )
+    )
+
+
+    <span style="color: #00d3d0;">result</span> = cur.fetchone()
+
+
+    <span style="color: #b6a0ff;">if</span> result:
+
+        <span style="color: #b6a0ff;">raise</span> <span style="color: #6ae4b9;">Exception</span>(
+            <span style="color: #79a8ff;">"</span><span style="color: #00bcff;">\n</span><span style="color: #79a8ff;">&#35838;&#31243;&#20449;&#24687;&#20914;&#31361;&#65306;</span><span style="color: #00bcff;">\n</span><span style="color: #79a8ff;">"</span>
+            f<span style="color: #79a8ff;">"&#25968;&#25454;&#24211;&#24050;&#26377;&#65306;</span>{result[1]}<span style="color: #00bcff;">\n</span><span style="color: #79a8ff;">"</span>
+            f<span style="color: #79a8ff;">"CSV&#20013;&#20026;&#65306;</span>{course_name}<span style="color: #79a8ff;">"</span>
+        )
+
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        INSERT INTO courses
+        (
+            course_code,
+            course_name,
+            target_student_category,
+            credits,
+            total_hours,
+            notes
+        )
+
+        VALUES
+        (?,?,?,?,?,?)
+
+        """</span>,
+        (
+            course_code,
+            course_name,
+            category,
+            row[<span style="color: #79a8ff;">"credits"</span>],
+            row[<span style="color: #79a8ff;">"total_hours"</span>],
+            <span style="color: #00bcff;">None</span>
+        )
+    )
+
+
+    <span style="color: #b6a0ff;">return</span> cur.lastrowid
+
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">class_sections
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">get_or_create_section</span>(
+        cur,
+        row,
+        course_id,
+        term_id
+):
+
+    <span style="color: #00d3d0;">section_no</span> = row[<span style="color: #79a8ff;">"section_no"</span>]
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        SELECT section_id
+        FROM class_sections
+        WHERE section_no=?
+        """</span>,
+        (section_no,)
+    )
+
+
+    <span style="color: #00d3d0;">result</span> = cur.fetchone()
+
+
+    <span style="color: #b6a0ff;">if</span> result:
+        <span style="color: #b6a0ff;">return</span> result[0]
+
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        INSERT INTO class_sections
+        (
+            section_no,
+            course_id,
+            term_id,
+            requesting_unit,
+            regular_weight,
+            final_weight,
+            notes
+        )
+
+        VALUES
+        (?,?,?,?,?,?,?)
+
+        """</span>,
+        (
+            section_no,
+            course_id,
+            term_id,
+            row[<span style="color: #79a8ff;">"requesting_unit"</span>],
+            row[<span style="color: #79a8ff;">"regular_weight"</span>],
+            row[<span style="color: #79a8ff;">"final_weight"</span>],
+            <span style="color: #00bcff;">None</span>
+        )
+    )
+
+
+    <span style="color: #b6a0ff;">return</span> cur.lastrowid
+
+
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">students
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">get_or_create_student</span>(
+        cur,
+        row
+):
+
+    <span style="color: #00d3d0;">student_no</span> = row[<span style="color: #79a8ff;">"student_no"</span>]
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        SELECT student_id
+        FROM students
+        WHERE student_no=?
+        """</span>,
+        (student_no,)
+    )
+
+
+    <span style="color: #00d3d0;">result</span> = cur.fetchone()
+
+
+    <span style="color: #b6a0ff;">if</span> result:
+        <span style="color: #b6a0ff;">return</span> result[0]
+
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        INSERT INTO students
+        (
+            student_no,
+            name,
+            college,
+            major,
+            student_category,
+            notes
+        )
+
+        VALUES
+        (?,?,?,?,?,?)
+
+        """</span>,
+        (
+            row[<span style="color: #79a8ff;">"student_no"</span>],
+            row[<span style="color: #79a8ff;">"name"</span>],
+            row[<span style="color: #79a8ff;">"college"</span>],
+            row[<span style="color: #79a8ff;">"major"</span>],
+            row[<span style="color: #79a8ff;">"student_category"</span>],
+            <span style="color: #00bcff;">None</span>
+        )
+    )
+
+
+    <span style="color: #b6a0ff;">return</span> cur.lastrowid
+
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">enrollments
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">get_or_create_enrollment</span>(
+        cur,
+        row,
+        student_id,
+        section_id
+):
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        SELECT enrollment_id
+        FROM enrollments
+
+        WHERE student_id=?
+        AND section_id=?
+
+        """</span>,
+        (
+            student_id,
+            section_id
+        )
+    )
+
+
+    <span style="color: #00d3d0;">result</span> = cur.fetchone()
+
+
+    <span style="color: #b6a0ff;">if</span> result:
+        <span style="color: #b6a0ff;">return</span> result[0]
+
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        INSERT INTO enrollments
+        (
+            student_id,
+            section_id,
+            sequence_no,
+            course_category,
+            retake_status
+        )
+
+        VALUES
+        (?,?,?,?,?)
+
+        """</span>,
+        (
+            student_id,
+            section_id,
+            row[<span style="color: #79a8ff;">"sequence_no"</span>],
+            row[<span style="color: #79a8ff;">"course_category"</span>],
+            row[<span style="color: #79a8ff;">"retake_status"</span>]
+        )
+    )
+
+
+    <span style="color: #b6a0ff;">return</span> cur.lastrowid
+
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">grades
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">insert_or_update_grade</span>(
+        cur,
+        row,
+        enrollment_id
+):
+
+
+    cur.execute(
+        <span style="color: #79a8ff;">"""
+        INSERT OR REPLACE INTO grades
+        (
+            enrollment_id,
+
+            regular_score,
+
+            final_score,
+
+            final_status,
+
+            exam_type,
+
+            total_score,
+
+            makeup_score,
+
+            final_result
+
+        )
+
+        VALUES
+        (?,?,?,?,?,?,?,?)
+
+        """</span>,
+        (
+
+            enrollment_id,
+
+            row[<span style="color: #79a8ff;">"regular_score"</span>]
+            <span style="color: #b6a0ff;">if</span> row[<span style="color: #79a8ff;">"regular_score"</span>] != <span style="color: #79a8ff;">""</span>
+            <span style="color: #b6a0ff;">else</span> <span style="color: #00bcff;">None</span>,
+
+
+            row[<span style="color: #79a8ff;">"final_score"</span>]
+            <span style="color: #b6a0ff;">if</span> row[<span style="color: #79a8ff;">"final_score"</span>] != <span style="color: #79a8ff;">""</span>
+            <span style="color: #b6a0ff;">else</span> <span style="color: #00bcff;">None</span>,
+
+
+            row[<span style="color: #79a8ff;">"final_status"</span>],
+
+
+            row[<span style="color: #79a8ff;">"exam_type"</span>],
+
+
+            row[<span style="color: #79a8ff;">"total_score"</span>]
+            <span style="color: #b6a0ff;">if</span> row[<span style="color: #79a8ff;">"total_score"</span>] != <span style="color: #79a8ff;">""</span>
+            <span style="color: #b6a0ff;">else</span> <span style="color: #00bcff;">None</span>,
+
+
+            row[<span style="color: #79a8ff;">"makeup_score"</span>]
+            <span style="color: #b6a0ff;">if</span> row[<span style="color: #79a8ff;">"makeup_score"</span>] != <span style="color: #79a8ff;">""</span>
+            <span style="color: #b6a0ff;">else</span> <span style="color: #00bcff;">None</span>,
+
+
+            row[<span style="color: #79a8ff;">"final_result"</span>]
+            <span style="color: #b6a0ff;">if</span> row[<span style="color: #79a8ff;">"final_result"</span>] != <span style="color: #79a8ff;">""</span>
+            <span style="color: #b6a0ff;">else</span> <span style="color: #00bcff;">None</span>
+
+        )
+    )
+
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">&#23548;&#20837; CSV
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">def</span> <span style="color: #feacd0;">import_csv</span>(filename):
+
+    <span style="color: #f78fe7;">print</span>(<span style="color: #79a8ff;">"</span><span style="color: #00bcff;">\n</span><span style="color: #79a8ff;">&#24320;&#22987;&#23548;&#20837;:"</span>, filename)
+
+
+    <span style="color: #00d3d0;">conn</span> = sqlite3.connect(DB_FILE)
+
+    <span style="color: #00d3d0;">cur</span> = conn.cursor()
+
+
+    <span style="color: #b6a0ff;">try</span>:
+
+        conn.execute(<span style="color: #79a8ff;">"BEGIN"</span>)
+
+
+        <span style="color: #b6a0ff;">with</span> <span style="color: #f78fe7;">open</span>(
+            filename,
+            encoding=<span style="color: #79a8ff;">"utf-8-sig"</span>,
+            newline=<span style="color: #79a8ff;">""</span>
+        ) <span style="color: #b6a0ff;">as</span> f:
+
+
+            <span style="color: #00d3d0;">reader</span> = csv.DictReader(f)
+
+            <span style="color: #00d3d0;">rows</span> = <span style="color: #f78fe7;">list</span>(reader)
+
+
+
+        <span style="color: #b6a0ff;">for</span> row <span style="color: #b6a0ff;">in</span> rows:
+
+
+            <span style="color: #00d3d0;">term_id</span> = get_or_create_term(
+                cur,
+                row[<span style="color: #79a8ff;">"term_name"</span>]
+            )
+
+
+
+            <span style="color: #00d3d0;">course_id</span> = get_or_create_course(
+                cur,
+                row
+            )
+
+
+
+            <span style="color: #00d3d0;">section_id</span> = get_or_create_section(
+                cur,
+                row,
+                course_id,
+                term_id
+            )
+
+
+
+            <span style="color: #00d3d0;">student_id</span> = get_or_create_student(
+                cur,
+                row
+            )
+
+
+
+            <span style="color: #00d3d0;">enrollment_id</span> = get_or_create_enrollment(
+                cur,
+                row,
+                student_id,
+                section_id
+            )
+
+
+
+            insert_or_update_grade(
+                cur,
+                row,
+                enrollment_id
+            )
+
+
+
+        conn.commit()
+
+
+        <span style="color: #f78fe7;">print</span>(
+            <span style="color: #79a8ff;">"&#23548;&#20837;&#25104;&#21151;:"</span>,
+            <span style="color: #f78fe7;">len</span>(rows),
+            <span style="color: #79a8ff;">"&#26465;&#23398;&#29983;&#35760;&#24405;"</span>
+        )
+
+
+
+    <span style="color: #b6a0ff;">except</span> <span style="color: #6ae4b9;">Exception</span> <span style="color: #b6a0ff;">as</span> e:
+
+        conn.rollback()
+
+        <span style="color: #f78fe7;">print</span>(
+            <span style="color: #79a8ff;">"&#23548;&#20837;&#22833;&#36133;:"</span>
+        )
+
+        <span style="color: #f78fe7;">print</span>(e)
+
+        <span style="color: #b6a0ff;">raise</span>
+
+
+
+    <span style="color: #b6a0ff;">finally</span>:
+
+        conn.close()
+
+
+
+
+
+<span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span><span style="color: #989898;"># </span><span style="color: #989898;">main
+</span><span style="color: #989898;"># </span><span style="color: #989898;">============================
+</span>
+<span style="color: #b6a0ff;">if</span> <span style="color: #f78fe7;">__name__</span> == <span style="color: #79a8ff;">"__main__"</span>:
+
+
+    <span style="color: #b6a0ff;">if</span> <span style="color: #f78fe7;">len</span>(sys.argv) &lt; 2:
+
+        <span style="color: #f78fe7;">print</span>(
+            <span style="color: #79a8ff;">"&#20351;&#29992;&#26041;&#27861;:"</span>
+        )
+
+        <span style="color: #f78fe7;">print</span>(
+            <span style="color: #79a8ff;">"python import_csv.py file.csv"</span>
+        )
+
+        sys.<span style="color: #00bcff;">exit</span>(1)
+
+
+
+    <span style="color: #b6a0ff;">for</span> filename <span style="color: #b6a0ff;">in</span> sys.argv[1:]:
+
+        import_csv(filename)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org193e3e9" class="outline-3">
+<h3 id="org193e3e9">脚本使用方法</h3>
+<div class="outline-text-3" id="text-org193e3e9">
+<p>
+假设目录结构是：
+</p>
+
+<pre class="example" id="org8b77dd5">
+project/
+
+├── example.sqlite
+├── import_csv.py
+└── csv/
+    ├── 线性代数_2025秋.csv
+    ├── 高等数学Ⅱ_2025春.csv
+    └── 概率统计_2026春.csv
+</pre>
+
+<p>
+如果是第一次导入，可以在项目根目录下，终端运行：
+</p>
+<pre class="example" id="orga1cb43d">
+python3 import_csv.py csv/*.csv
+</pre>
+
+<p>
+以后修改或增加某门课程，运行
+</p>
+<pre class="example" id="org01e8174">
+python import_csv.py csv/线性代数_2025秋.csv
+</pre>
+
+<p>
+此时输出的信息类似
+</p>
+<pre class="example" id="org06eb8b0">
+开始导入: csv/线性代数_2025秋.csv
+导入成功: 99 条学生记录
+</pre>
+
+<p>
+在正式导入前，建议：
+</p>
+
+<ul class="org-ul">
+<li>检查 <code>CSV</code> 文档的字段是否完整。
+比如，如果缺少字段 <code>final_score</code> ，那么会报错 <code>ERROR: missing column final_score</code> 。</li>
+<li><p>
+增加 <code>dry-run</code> 模式，例如先运行
+</p>
+<pre class="example" id="orgcc07f95">
+python3 import_csv.py --check csv/25fall_linear_algebra_m.csv
+</pre>
+<p>
+检查
+</p>
+<ul class="org-ul">
+<li>有多少学生；</li>
+<li>有多少教学班；</li>
+<li>是否有重复学号；</li>
+<li>是否有课程冲突；</li>
+</ul>
+<p>
+但不写数据库。
+</p></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org998c56a" class="outline-3">
+<h3 id="org998c56a">脚本的逻辑</h3>
+<div class="outline-text-3" id="text-org998c56a">
+<p>
+总体流程是
+</p>
+
+<pre class="example" id="orgb8d8527">
+读取 CSV
+     |
+     |
+逐行处理学生记录
+     |
+     |
+--------------------------------
+       |
+       |
+       v
+   term
+       |
+       v
+   course
+       |
+       v
+   class_section
+       |
+       v
+   student
+       |
+       v
+   enrollment
+       |
+       v
+   grade
+--------------------------------
+</pre>
+</div>
+<div id="outline-container-org5bd3840" class="outline-4">
+<h4 id="org5bd3840">导入 <code>terms</code> 表格</h4>
+<div class="outline-text-4" id="text-org5bd3840">
+<p>
+假设 <code>CSV</code> 中的 <code>term_name</code> 是 <code>2025秋</code> ，那么查询：
+</p>
+
+<pre class="example" id="org5a6fc6d">
+SELECT term_id
+FROM terms
+WHERE term_name=?
+</pre>
+
+<p>
+如果存在就直接使用，否则 <code>INSERT</code> 。
+</p>
+</div>
+</div>
+<div id="outline-container-orge582800" class="outline-4">
+<h4 id="orge582800">导入 <code>courses</code> 表格</h4>
+<div class="outline-text-4" id="text-orge582800">
+<p>
+查找 <code>CSV</code> 文件中的以下字段
+</p>
+<pre class="example" id="org00f4cc2">
+course_code
+course_name
+target_student_category
+credits
+total_hours
+</pre>
+
+<p>
+先寻找
+</p>
+<pre class="example" id="org70316ac">
+WHERE
+
+course_code=?
+AND target_student_category=?
+AND course_name=?
+</pre>
+
+<p>
+如果能存在，那么使用已有的 <code>course_id</code> 。
+</p>
+
+<p>
+如果不存在，再查询：
+</p>
+<pre class="example" id="orgaeab0b4">
+WHERE
+
+course_code=?
+AND target_student_category=?
+</pre>
+<p>
+如果还是不存在，创建新的课程信息（新的 <code>course_id</code> ）。
+</p>
+
+<p>
+但如果存在，说明在相同的 <code>course_code</code> 和 <code>target_student_category</code> 下，有不同名称的课程名。
+这时报错 <code>课程信息冲突</code> ，需要人工判断：是课程改名？
+还是新课程？
+</p>
+</div>
+</div>
+<div id="outline-container-orgc117991" class="outline-4">
+<h4 id="orgc117991">导入 <code>class_sections</code> 表格</h4>
+<div class="outline-text-4" id="text-orgc117991">
+<p>
+比较 <code>CSV</code> 文件中的 <code>section_no</code> 是否包含在数据库中的 <code>section_no</code> 。
+如果没有，则导入。
+</p>
+</div>
+</div>
+<div id="outline-container-org3de3290" class="outline-4">
+<h4 id="org3de3290">导入 <code>students</code> 表格</h4>
+<div class="outline-text-4" id="text-org3de3290">
+<p>
+查询
+</p>
+<pre class="example" id="org1a5e614">
+WHERE student_no=?
+</pre>
+<p>
+如果不存在，那么创建该学生信息。
+</p>
+</div>
+</div>
+<div id="outline-container-orgca7aef0" class="outline-4">
+<h4 id="orgca7aef0">导入 <code>enrollments</code> 表格</h4>
+<div class="outline-text-4" id="text-orgca7aef0">
+<p>
+查询：
+</p>
+<pre class="example" id="org3657930">
+WHERE
+
+student_id=?
+AND
+section_id=?
+</pre>
+<p>
+如果不存在，创建选课信息。
+</p>
+</div>
+</div>
+<div id="outline-container-org9127572" class="outline-4">
+<h4 id="org9127572">导入 <code>grades</code> 表格</h4>
+<div class="outline-text-4" id="text-org9127572">
+<p>
+导入时使用
+</p>
+<pre class="example" id="org0f63f0d">
+INSERT OR REPLACE
+</pre>
+
+<p>
+因此第一次导入时，导入成绩。
+以后修改 <code>CSV</code> 重新导入，就会更新成绩。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf583322" class="outline-4">
+<h4 id="orgf583322">重复的导入行为</h4>
+<div class="outline-text-4" id="text-orgf583322">
+<p>
+假设第一次
+</p>
+<pre class="example" id="org218e7f6">
+python import_csv.py csv/math.csv
+</pre>
+
+<p>
+第二次（可能更新了 <code>csv/math.csv</code> 文件中某些学生的成绩）：
+</p>
+<pre class="example" id="orga9dc39e">
+python import_csv.py csv/math.csv
+</pre>
+
+<p>
+那么结果是：
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">表</th>
+<th scope="col" class="org-left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>terms</code></td>
+<td class="org-left">不会重复</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>courses</code></td>
+<td class="org-left">不会重复</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>class_sections</code></td>
+<td class="org-left">不会重复</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>students</code></td>
+<td class="org-left">不会重复</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>enrollments</code></td>
+<td class="org-left">不会重复</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>grades</code></td>
+<td class="org-left">更新</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7e19022" class="outline-2">
+<h2 id="org7e19022">建立视图</h2>
+<div class="outline-text-2" id="text-org7e19022">
+<div class="org-src-container">
+<pre class="src src-sqlite"><span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">VIEW</span> <span style="color: #feacd0;">grade_view</span> <span style="color: #b6a0ff;">AS</span>
+
+<span style="color: #b6a0ff;">SELECT</span>
+
+students.student_no,
+students.<span style="color: #b6a0ff;">name</span>,
+
+students.college,
+
+terms.term_name,
+
+courses.course_code,
+courses.course_name,
+
+class_sections.section_no,
+
+class_sections.requesting_unit,
+
+grades.regular_score,
+
+grades.final_score,
+
+grades.total_score,
+
+grades.makeup_score,
+
+grades.final_result
+
+
+<span style="color: #b6a0ff;">FROM</span> grades
+
+<span style="color: #b6a0ff;">JOIN</span> enrollments
+<span style="color: #b6a0ff;">ON</span> grades.enrollment_id =
+   enrollments.enrollment_id
+
+<span style="color: #b6a0ff;">JOIN</span> students
+<span style="color: #b6a0ff;">ON</span> enrollments.student_id =
+   students.student_id
+
+<span style="color: #b6a0ff;">JOIN</span> class_sections
+<span style="color: #b6a0ff;">ON</span> enrollments.section_id =
+   class_sections.section_id
+
+<span style="color: #b6a0ff;">JOIN</span> courses
+<span style="color: #b6a0ff;">ON</span> class_sections.course_id =
+   courses.course_id
+
+<span style="color: #b6a0ff;">JOIN</span> terms
+<span style="color: #b6a0ff;">ON</span> class_sections.term_id =
+terms.term_id;
+</pre>
+</div>
+
+<p>
+以后
+</p>
+<div class="org-src-container">
+<pre class="src src-sqlite"><span style="color: #b6a0ff;">SELECT</span> *
+<span style="color: #b6a0ff;">FROM</span> grade_view;
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">student_no</th>
+<th scope="col" class="org-left">name</th>
+<th scope="col" class="org-left">college</th>
+<th scope="col" class="org-left">term_name</th>
+<th scope="col" class="org-right">course_code</th>
+<th scope="col" class="org-left">course_name</th>
+<th scope="col" class="org-right">section_no</th>
+<th scope="col" class="org-left">requesting_unit</th>
+<th scope="col" class="org-right">regular_score</th>
+<th scope="col" class="org-right">final_score</th>
+<th scope="col" class="org-right">total_score</th>
+<th scope="col" class="org-left">makeup_score</th>
+<th scope="col" class="org-left">final_result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">2022104080</td>
+<td class="org-left">张一</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">84</td>
+<td class="org-right">84</td>
+<td class="org-right">84</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2022104490</td>
+<td class="org-left">杨而</td>
+<td class="org-left">管理学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">95</td>
+<td class="org-right">78</td>
+<td class="org-right">83</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2023100250</td>
+<td class="org-left">曹三三</td>
+<td class="org-left">管理学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">99</td>
+<td class="org-right">78</td>
+<td class="org-right">84</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2024100152</td>
+<td class="org-left">黄仁东</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">93</td>
+<td class="org-right">77</td>
+<td class="org-right">82</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2024100332</td>
+<td class="org-left">陈大大</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">91</td>
+<td class="org-right">58</td>
+<td class="org-right">68</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2024100517</td>
+<td class="org-left">李杰夫</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">99</td>
+<td class="org-right">82</td>
+<td class="org-right">87</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2024101371</td>
+<td class="org-left">刘思思</td>
+<td class="org-left">管理学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">100</td>
+<td class="org-right">82</td>
+<td class="org-right">87</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2024101888</td>
+<td class="org-left">王东西</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">99</td>
+<td class="org-right">84</td>
+<td class="org-right">89</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2024101904</td>
+<td class="org-left">胡海</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">100</td>
+<td class="org-right">66</td>
+<td class="org-right">76</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-right">2024101566</td>
+<td class="org-left">李可</td>
+<td class="org-left">经济学院</td>
+<td class="org-left">2025秋</td>
+<td class="org-right">7010155</td>
+<td class="org-left">线性代数</td>
+<td class="org-right">2526102170</td>
+<td class="org-left">经济学院</td>
+<td class="org-right">100</td>
+<td class="org-right">80</td>
+<td class="org-right">86</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+直接得到分析数据。
+</p>
+
+<p>
+<code>R</code> 导入也非常方便：
+</p>
+<div class="org-src-container">
+<pre class="src src-R">  <span style="color: #00bcff;">library</span>(RSQLite)
+
+con <span style="color: #00bcff;">&lt;-</span> dbConnect(
+    SQLite(),
+    <span style="color: #79a8ff;">"example.sqlite"</span>
+)
+
+df <span style="color: #00bcff;">&lt;-</span> dbGetQuery(
+    con,
+    <span style="color: #79a8ff;">"SELECT * FROM grade_view"</span>
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2026-08-25</p>
+<p class="author">Author: zbliang</p>
+<p class="date">Created: 2026-08-25 Tue 17:25</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
