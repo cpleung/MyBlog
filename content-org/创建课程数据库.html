@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-25 Tue 17:25 -->
+<!-- 2026-08-25 Tue 18:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>创建课程数据库</title>
@@ -201,30 +201,40 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8341361">创建教学数据库</a>
+<li><a href="#org0859cf2">创建教学数据库</a>
 <ul>
-<li><a href="#orgdbd97c3"><code>students</code> 表格</a></li>
-<li><a href="#org21761d4"><code>courses</code> 表格</a></li>
-<li><a href="#org38d0c55"><code>terms</code> 表格</a></li>
-<li><a href="#org6ceaabe"><code>class_sections</code> 表格</a></li>
-<li><a href="#orge1c5434"><code>enrollments</code> 表格</a></li>
-<li><a href="#orge473535"><code>grades</code> 表</a></li>
+<li><a href="#orgfc24aaf"><code>students</code> 表格</a></li>
+<li><a href="#org17be3e8"><code>courses</code> 表格</a></li>
+<li><a href="#org15750a4"><code>terms</code> 表格</a></li>
+<li><a href="#org4b8cc42"><code>class_sections</code> 表格</a></li>
+<li><a href="#orgec41776"><code>enrollments</code> 表格</a></li>
+<li><a href="#org177ea36"><code>grades</code> 表</a></li>
 </ul>
 </li>
-<li><a href="#org7332de3">把 <code>CSV</code> 文件导入数据库</a>
+<li><a href="#org93322b3">把 <code>CSV</code> 文件导入数据库</a>
 <ul>
-<li><a href="#org872f794">python 脚本</a></li>
-<li><a href="#org193e3e9">脚本使用方法</a></li>
-<li><a href="#org998c56a">脚本的逻辑</a></li>
+<li><a href="#org8920d33">python 脚本</a></li>
+<li><a href="#org558f7ce">脚本使用方法</a></li>
+<li><a href="#org224a79d">脚本的逻辑</a>
+<ul>
+<li><a href="#org53e4d00">导入 <code>terms</code> 表格</a></li>
+<li><a href="#orgf9ca847">导入 <code>courses</code> 表格</a></li>
+<li><a href="#org076711e">导入 <code>class_sections</code> 表格</a></li>
+<li><a href="#org871e669">导入 <code>students</code> 表格</a></li>
+<li><a href="#org3b2f052">导入 <code>enrollments</code> 表格</a></li>
+<li><a href="#org5beb72f">导入 <code>grades</code> 表格</a></li>
+<li><a href="#orgfba9616">重复的导入行为</a></li>
 </ul>
 </li>
-<li><a href="#org7e19022">建立视图</a></li>
+</ul>
+</li>
+<li><a href="#org98a9059">建立视图</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org8341361" class="outline-2">
-<h2 id="org8341361">创建教学数据库</h2>
-<div class="outline-text-2" id="text-org8341361">
+<div id="outline-container-org0859cf2" class="outline-2">
+<h2 id="org0859cf2">创建教学数据库</h2>
+<div class="outline-text-2" id="text-org0859cf2">
 <p>
 我们将在这个 <code>Emacs Org</code> 中创建数据库 <code>teaching_database.sqlite</code> ，用于保存教学数据。
 这个数据包含了以下 6 个表格：
@@ -242,9 +252,9 @@
 下面介绍并创建每一个表格。
 </p>
 </div>
-<div id="outline-container-orgdbd97c3" class="outline-3">
-<h3 id="orgdbd97c3"><code>students</code> 表格</h3>
-<div class="outline-text-3" id="text-orgdbd97c3">
+<div id="outline-container-orgfc24aaf" class="outline-3">
+<h3 id="orgfc24aaf"><code>students</code> 表格</h3>
+<div class="outline-text-3" id="text-orgfc24aaf">
 <p>
 <code>students</code> 表保存的是学生的相对稳定的个人基本信息：
 </p>
@@ -359,7 +369,7 @@
 以虽然本地目录没有 <code>example.sqlite</code> ，但由于 <code>Org</code> 文件的文件头写有
 </p>
 
-<pre class="example" id="org9e3dfb0">
+<pre class="example" id="org49710a7">
 #+PROPERTY: header-args:sqlite :db example.sqlite
 </pre>
 
@@ -469,9 +479,9 @@
 </table>
 </div>
 </div>
-<div id="outline-container-org21761d4" class="outline-3">
-<h3 id="org21761d4"><code>courses</code> 表格</h3>
-<div class="outline-text-3" id="text-org21761d4">
+<div id="outline-container-org17be3e8" class="outline-3">
+<h3 id="org17be3e8"><code>courses</code> 表格</h3>
+<div class="outline-text-3" id="text-org17be3e8">
 <p>
 <code>courses</code> 表格由以下字段构成：
 </p>
@@ -666,9 +676,9 @@
 </table>
 </div>
 </div>
-<div id="outline-container-org38d0c55" class="outline-3">
-<h3 id="org38d0c55"><code>terms</code> 表格</h3>
-<div class="outline-text-3" id="text-org38d0c55">
+<div id="outline-container-org15750a4" class="outline-3">
+<h3 id="org15750a4"><code>terms</code> 表格</h3>
+<div class="outline-text-3" id="text-org15750a4">
 <p>
 <code>terms</code> 表格是保存学年的信息：
 </p>
@@ -784,14 +794,14 @@
 </table>
 </div>
 </div>
-<div id="outline-container-org6ceaabe" class="outline-3">
-<h3 id="org6ceaabe"><code>class_sections</code> 表格</h3>
-<div class="outline-text-3" id="text-org6ceaabe">
+<div id="outline-container-org4b8cc42" class="outline-3">
+<h3 id="org4b8cc42"><code>class_sections</code> 表格</h3>
+<div class="outline-text-3" id="text-org4b8cc42">
 <p>
 目前数据库已经有
 </p>
 
-<pre class="example" id="orge6501f1">
+<pre class="example" id="org58ca932">
 students
 courses
 terms
@@ -1039,9 +1049,9 @@ terms
 </table>
 </div>
 </div>
-<div id="outline-container-orge1c5434" class="outline-3">
-<h3 id="orge1c5434"><code>enrollments</code> 表格</h3>
-<div class="outline-text-3" id="text-orge1c5434">
+<div id="outline-container-orgec41776" class="outline-3">
+<h3 id="orgec41776"><code>enrollments</code> 表格</h3>
+<div class="outline-text-3" id="text-orgec41776">
 <p>
 <code>enrollments</code> 主要记录某个学生参加了某个教学班，它有以下字段：
 </p>
@@ -1207,9 +1217,9 @@ terms
 </table>
 </div>
 </div>
-<div id="outline-container-orge473535" class="outline-3">
-<h3 id="orge473535"><code>grades</code> 表</h3>
-<div class="outline-text-3" id="text-orge473535">
+<div id="outline-container-org177ea36" class="outline-3">
+<h3 id="org177ea36"><code>grades</code> 表</h3>
+<div class="outline-text-3" id="text-org177ea36">
 <p>
 <code>grades</code> 表的字段介绍
 </p>
@@ -1436,19 +1446,19 @@ terms
 </div>
 </div>
 </div>
-<div id="outline-container-org7332de3" class="outline-2">
-<h2 id="org7332de3">把 <code>CSV</code> 文件导入数据库</h2>
-<div class="outline-text-2" id="text-org7332de3">
+<div id="outline-container-org93322b3" class="outline-2">
+<h2 id="org93322b3">把 <code>CSV</code> 文件导入数据库</h2>
+<div class="outline-text-2" id="text-org93322b3">
 </div>
-<div id="outline-container-org872f794" class="outline-3">
-<h3 id="org872f794">python 脚本</h3>
-<div class="outline-text-3" id="text-org872f794">
+<div id="outline-container-org8920d33" class="outline-3">
+<h3 id="org8920d33">python 脚本</h3>
+<div class="outline-text-3" id="text-org8920d33">
 <p>
 假设 2025 年线性代数（内招）某一个教学班级的数据保存在项目根目录下的 <code>csv/线性代数_2025秋.csv</code> 。
 文件的头两行是（第一行是字段，第二行开始是每个学生的数据）：
 </p>
 
-<pre class="example" id="orgbfad518">
+<pre class="example" id="orgcdaa928">
 course_code	course_name	target_student_category	credits	total_hours	section_no	term_name	requesting_unit	regular_weight	final_weight	sequence_no	student_no	name	college	major	student_category	course_category	retake_status	regular_score	final_score	final_status	exam_type	total_score	makeup_score	final_result
 7010155	线性代数	内招生	3	54	2526102170	2025秋	经济学院	30	70	1	2022104080	张一	经济学院	税收学	内招生	基础必修课	重修	84	84	正常	闭卷考试	84
 7010155	线性代数	内招生	3	54	2526102170	2025秋	经济学院	30	70	2	2022104490	杨而	管理学院	会计学	内招生	基础必修课	重修	95	78	正常	闭卷考试	83		
@@ -2026,14 +2036,14 @@ course_code	course_name	target_student_category	credits	total_hours	section_no	t
 </div>
 </div>
 </div>
-<div id="outline-container-org193e3e9" class="outline-3">
-<h3 id="org193e3e9">脚本使用方法</h3>
-<div class="outline-text-3" id="text-org193e3e9">
+<div id="outline-container-org558f7ce" class="outline-3">
+<h3 id="org558f7ce">脚本使用方法</h3>
+<div class="outline-text-3" id="text-org558f7ce">
 <p>
 假设目录结构是：
 </p>
 
-<pre class="example" id="org8b77dd5">
+<pre class="example" id="org804fc2b">
 project/
 
 ├── example.sqlite
@@ -2047,36 +2057,34 @@ project/
 <p>
 如果是第一次导入，可以在项目根目录下，终端运行：
 </p>
-<pre class="example" id="orga1cb43d">
+<pre class="example" id="org6b4312b">
 python3 import_csv.py csv/*.csv
 </pre>
 
 <p>
 以后修改或增加某门课程，运行
 </p>
-<pre class="example" id="org01e8174">
+<pre class="example" id="orgd972150">
 python import_csv.py csv/线性代数_2025秋.csv
 </pre>
 
 <p>
 此时输出的信息类似
 </p>
-<pre class="example" id="org06eb8b0">
+<pre class="example" id="org4356c3c">
 开始导入: csv/线性代数_2025秋.csv
 导入成功: 99 条学生记录
 </pre>
 
 <p>
-在正式导入前，建议：
+在正式导入前，建议检查 <code>CSV</code> 文档的字段是否完整。
+比如，如果缺少字段 <code>final_score</code> ，那么会报错 <code>ERROR: missing column final_score</code> 。
 </p>
 
-<ul class="org-ul">
-<li>检查 <code>CSV</code> 文档的字段是否完整。
-比如，如果缺少字段 <code>final_score</code> ，那么会报错 <code>ERROR: missing column final_score</code> 。</li>
-<li><p>
-增加 <code>dry-run</code> 模式，例如先运行
+<p>
+以后可以尝试改进脚本，增加 <code>dry-run</code> 模式，例如可以运行
 </p>
-<pre class="example" id="orgcc07f95">
+<pre class="example" id="org10158a4">
 python3 import_csv.py --check csv/25fall_linear_algebra_m.csv
 </pre>
 <p>
@@ -2090,18 +2098,17 @@ python3 import_csv.py --check csv/25fall_linear_algebra_m.csv
 </ul>
 <p>
 但不写数据库。
-</p></li>
-</ul>
+</p>
 </div>
 </div>
-<div id="outline-container-org998c56a" class="outline-3">
-<h3 id="org998c56a">脚本的逻辑</h3>
-<div class="outline-text-3" id="text-org998c56a">
+<div id="outline-container-org224a79d" class="outline-3">
+<h3 id="org224a79d">脚本的逻辑</h3>
+<div class="outline-text-3" id="text-org224a79d">
 <p>
 总体流程是
 </p>
 
-<pre class="example" id="orgb8d8527">
+<pre class="example" id="org0a24a39">
 读取 CSV
      |
      |
@@ -2131,14 +2138,14 @@ python3 import_csv.py --check csv/25fall_linear_algebra_m.csv
 --------------------------------
 </pre>
 </div>
-<div id="outline-container-org5bd3840" class="outline-4">
-<h4 id="org5bd3840">导入 <code>terms</code> 表格</h4>
-<div class="outline-text-4" id="text-org5bd3840">
+<div id="outline-container-org53e4d00" class="outline-4">
+<h4 id="org53e4d00">导入 <code>terms</code> 表格</h4>
+<div class="outline-text-4" id="text-org53e4d00">
 <p>
 假设 <code>CSV</code> 中的 <code>term_name</code> 是 <code>2025秋</code> ，那么查询：
 </p>
 
-<pre class="example" id="org5a6fc6d">
+<pre class="example" id="org08fcc24">
 SELECT term_id
 FROM terms
 WHERE term_name=?
@@ -2149,13 +2156,13 @@ WHERE term_name=?
 </p>
 </div>
 </div>
-<div id="outline-container-orge582800" class="outline-4">
-<h4 id="orge582800">导入 <code>courses</code> 表格</h4>
-<div class="outline-text-4" id="text-orge582800">
+<div id="outline-container-orgf9ca847" class="outline-4">
+<h4 id="orgf9ca847">导入 <code>courses</code> 表格</h4>
+<div class="outline-text-4" id="text-orgf9ca847">
 <p>
 查找 <code>CSV</code> 文件中的以下字段
 </p>
-<pre class="example" id="org00f4cc2">
+<pre class="example" id="org3d67d15">
 course_code
 course_name
 target_student_category
@@ -2166,7 +2173,7 @@ total_hours
 <p>
 先寻找
 </p>
-<pre class="example" id="org70316ac">
+<pre class="example" id="org597f74d">
 WHERE
 
 course_code=?
@@ -2181,7 +2188,7 @@ AND course_name=?
 <p>
 如果不存在，再查询：
 </p>
-<pre class="example" id="orgaeab0b4">
+<pre class="example" id="org3c3dc85">
 WHERE
 
 course_code=?
@@ -2198,22 +2205,22 @@ AND target_student_category=?
 </p>
 </div>
 </div>
-<div id="outline-container-orgc117991" class="outline-4">
-<h4 id="orgc117991">导入 <code>class_sections</code> 表格</h4>
-<div class="outline-text-4" id="text-orgc117991">
+<div id="outline-container-org076711e" class="outline-4">
+<h4 id="org076711e">导入 <code>class_sections</code> 表格</h4>
+<div class="outline-text-4" id="text-org076711e">
 <p>
 比较 <code>CSV</code> 文件中的 <code>section_no</code> 是否包含在数据库中的 <code>section_no</code> 。
 如果没有，则导入。
 </p>
 </div>
 </div>
-<div id="outline-container-org3de3290" class="outline-4">
-<h4 id="org3de3290">导入 <code>students</code> 表格</h4>
-<div class="outline-text-4" id="text-org3de3290">
+<div id="outline-container-org871e669" class="outline-4">
+<h4 id="org871e669">导入 <code>students</code> 表格</h4>
+<div class="outline-text-4" id="text-org871e669">
 <p>
 查询
 </p>
-<pre class="example" id="org1a5e614">
+<pre class="example" id="org11cd799">
 WHERE student_no=?
 </pre>
 <p>
@@ -2221,13 +2228,13 @@ WHERE student_no=?
 </p>
 </div>
 </div>
-<div id="outline-container-orgca7aef0" class="outline-4">
-<h4 id="orgca7aef0">导入 <code>enrollments</code> 表格</h4>
-<div class="outline-text-4" id="text-orgca7aef0">
+<div id="outline-container-org3b2f052" class="outline-4">
+<h4 id="org3b2f052">导入 <code>enrollments</code> 表格</h4>
+<div class="outline-text-4" id="text-org3b2f052">
 <p>
 查询：
 </p>
-<pre class="example" id="org3657930">
+<pre class="example" id="org3e9ba32">
 WHERE
 
 student_id=?
@@ -2239,13 +2246,13 @@ section_id=?
 </p>
 </div>
 </div>
-<div id="outline-container-org9127572" class="outline-4">
-<h4 id="org9127572">导入 <code>grades</code> 表格</h4>
-<div class="outline-text-4" id="text-org9127572">
+<div id="outline-container-org5beb72f" class="outline-4">
+<h4 id="org5beb72f">导入 <code>grades</code> 表格</h4>
+<div class="outline-text-4" id="text-org5beb72f">
 <p>
 导入时使用
 </p>
-<pre class="example" id="org0f63f0d">
+<pre class="example" id="org31fc291">
 INSERT OR REPLACE
 </pre>
 
@@ -2255,20 +2262,20 @@ INSERT OR REPLACE
 </p>
 </div>
 </div>
-<div id="outline-container-orgf583322" class="outline-4">
-<h4 id="orgf583322">重复的导入行为</h4>
-<div class="outline-text-4" id="text-orgf583322">
+<div id="outline-container-orgfba9616" class="outline-4">
+<h4 id="orgfba9616">重复的导入行为</h4>
+<div class="outline-text-4" id="text-orgfba9616">
 <p>
 假设第一次
 </p>
-<pre class="example" id="org218e7f6">
+<pre class="example" id="orgdec1e46">
 python import_csv.py csv/math.csv
 </pre>
 
 <p>
 第二次（可能更新了 <code>csv/math.csv</code> 文件中某些学生的成绩）：
 </p>
-<pre class="example" id="orga9dc39e">
+<pre class="example" id="orga45052d">
 python import_csv.py csv/math.csv
 </pre>
 
@@ -2326,9 +2333,9 @@ python import_csv.py csv/math.csv
 </div>
 </div>
 </div>
-<div id="outline-container-org7e19022" class="outline-2">
-<h2 id="org7e19022">建立视图</h2>
-<div class="outline-text-2" id="text-org7e19022">
+<div id="outline-container-org98a9059" class="outline-2">
+<h2 id="org98a9059">建立视图</h2>
+<div class="outline-text-2" id="text-org98a9059">
 <div class="org-src-container">
 <pre class="src src-sqlite"><span style="color: #b6a0ff;">CREATE</span> <span style="color: #b6a0ff;">VIEW</span> <span style="color: #feacd0;">grade_view</span> <span style="color: #b6a0ff;">AS</span>
 
@@ -2629,7 +2636,7 @@ df <span style="color: #00bcff;">&lt;-</span> dbGetQuery(
 <div id="postamble" class="status">
 <p class="date">Date: 2026-08-25</p>
 <p class="author">Author: zbliang</p>
-<p class="date">Created: 2026-08-25 Tue 17:25</p>
+<p class="date">Created: 2026-08-25 Tue 18:44</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
