@@ -28,11 +28,11 @@ draft = false
 -   [Linear algebra in R](https://css18.github.io/linear-algebra.html)
 -   Ruriko Yoshida. _Linear Algebra and Its Applications with R_, CRC Press, 2021.
 
-<!--listend-->
+本笔记需要用到以下的 `R` 宏包：
 
 ```R
 library(MASS) # R 内置包，无需安装
-library(matlib)
+library(matlib) # 不是内置包，需安装
 ```
 
 
@@ -154,7 +154,12 @@ class(A[3:5,1:2])
 [1] "matrix" "array"
 ```
 
-线性代数中的向量其实是矩阵，那么创建向量可以把数字列表 `c()` 通过 `as.matrix` 转换为矩阵，也可以直接通过 `matrix` 创建 \\(n\times 1\\) 和 \\(1\times n\\) 的矩阵。
+线性代数中的向量其实是矩阵，向量的创建有两者方法：
+
+-   把数字列表 `c()` 通过 `as.matrix` 转换为矩阵；
+-   直接通过 `matrix` 创建 \\(n\times 1\\) 和 \\(1\times n\\) 的矩阵。
+
+<!--listend-->
 
 ```R
 c <- c(1, 2, 3, 4)

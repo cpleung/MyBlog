@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-09-08 Tue 15:22 -->
+<!-- 2026-09-08 Tue 15:40 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R 语言中的线性代数</title>
@@ -233,21 +233,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org49ce39b">1. 矩阵</a>
+<li><a href="#orgaab5653">1. 矩阵</a>
 <ul>
-<li><a href="#org1f4e8a0">1.1. 创建矩阵</a></li>
-<li><a href="#orgc2a9c20">1.2. 改变矩阵</a></li>
-<li><a href="#orgbba09aa">1.3. 矩阵运算</a></li>
-<li><a href="#orgb3d340b">1.4. 特殊矩阵</a></li>
-<li><a href="#org557de8c">1.5. 矩阵求逆</a></li>
-<li><a href="#org31366ae">1.6. 特征向量和特征值</a></li>
+<li><a href="#orge918058">1.1. 创建矩阵</a></li>
+<li><a href="#org9f74190">1.2. 改变矩阵</a></li>
+<li><a href="#org07985e8">1.3. 矩阵运算</a></li>
+<li><a href="#org2031ecc">1.4. 特殊矩阵</a></li>
+<li><a href="#org569c062">1.5. 矩阵求逆</a></li>
+<li><a href="#orga13d91a">1.6. 特征向量和特征值</a></li>
 </ul>
 </li>
-<li><a href="#org535269e">2. 阶梯形矩阵与线性方程组</a>
+<li><a href="#orgb21df89">2. 阶梯形矩阵与线性方程组</a>
 <ul>
-<li><a href="#orgfc9c39e">2.1. 阶梯形矩阵</a></li>
-<li><a href="#orgffd963a">2.2. 零空间、行空间、列空间</a></li>
-<li><a href="#org79304c5">2.3. 方程组</a></li>
+<li><a href="#org7c6b6e0">2.1. 阶梯形矩阵</a></li>
+<li><a href="#orga186280">2.2. 零空间、行空间、列空间</a></li>
+<li><a href="#orgbd0c009">2.3. 方程组</a></li>
 </ul>
 </li>
 </ul>
@@ -277,17 +277,21 @@
 <li>Ruriko Yoshida. <i>Linear Algebra and Its Applications with R</i>, CRC Press, 2021.</li>
 </ul>
 
+<p>
+本笔记需要用到以下的 <code>R</code> 宏包：
+</p>
+
 <div class="org-src-container">
 <pre class="src src-R"><span style="color: #00bcff;">library</span>(MASS) <span style="color: #989898;"># </span><span style="color: #989898;">R &#20869;&#32622;&#21253;&#65292;&#26080;&#38656;&#23433;&#35013;
-</span><span style="color: #00bcff;">library</span>(matlib)
+</span><span style="color: #00bcff;">library</span>(matlib) <span style="color: #989898;"># </span><span style="color: #989898;">&#19981;&#26159;&#20869;&#32622;&#21253;&#65292;&#38656;&#23433;&#35013;</span>
 </pre>
 </div>
-<div id="outline-container-org49ce39b" class="outline-2">
-<h2 id="org49ce39b"><span class="section-number-2">1.</span> 矩阵</h2>
+<div id="outline-container-orgaab5653" class="outline-2">
+<h2 id="orgaab5653"><span class="section-number-2">1.</span> 矩阵</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org1f4e8a0" class="outline-3">
-<h3 id="org1f4e8a0"><span class="section-number-3">1.1.</span> 创建矩阵</h3>
+<div id="outline-container-orge918058" class="outline-3">
+<h3 id="orge918058"><span class="section-number-3">1.1.</span> 创建矩阵</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 利用 <code>matrix</code> 可以创建矩阵。
@@ -435,8 +439,12 @@ class(A[3:5,1:2])
 
 
 <p>
-线性代数中的向量其实是矩阵，那么创建向量可以把数字列表 <code>c()</code> 通过 <code>as.matrix</code> 转换为矩阵，也可以直接通过 <code>matrix</code> 创建 \(n\times 1\) 和 \(1\times n\) 的矩阵。
+线性代数中的向量其实是矩阵，向量的创建有两者方法：
 </p>
+<ul class="org-ul">
+<li>把数字列表 <code>c()</code> 通过 <code>as.matrix</code> 转换为矩阵；</li>
+<li>直接通过 <code>matrix</code> 创建 \(n\times 1\) 和 \(1\times n\) 的矩阵。</li>
+</ul>
 
 <div class="org-src-container">
 <pre class="src src-R">c <span style="color: #00bcff;">&lt;-</span> c(1, 2, 3, 4)
@@ -486,8 +494,8 @@ identical(c, c1) <span style="color: #989898;"># </span><span style="color: #989
 </pre>
 </div>
 </div>
-<div id="outline-container-orgc2a9c20" class="outline-3">
-<h3 id="orgc2a9c20"><span class="section-number-3">1.2.</span> 改变矩阵</h3>
+<div id="outline-container-org9f74190" class="outline-3">
+<h3 id="org9f74190"><span class="section-number-3">1.2.</span> 改变矩阵</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 假设 \(5\times 3\) 矩阵
@@ -553,7 +561,7 @@ B
 </pre>
 </div>
 
-<pre class="example" id="org0568fff">
+<pre class="example" id="org77b84b5">
       [,1] [,2] [,3]
  [1,]    1   -6   11
  [2,]    2   -7   12
@@ -637,8 +645,8 @@ B
 </pre>
 </div>
 </div>
-<div id="outline-container-orgbba09aa" class="outline-3">
-<h3 id="orgbba09aa"><span class="section-number-3">1.3.</span> 矩阵运算</h3>
+<div id="outline-container-org07985e8" class="outline-3">
+<h3 id="org07985e8"><span class="section-number-3">1.3.</span> 矩阵运算</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 创建矩阵
@@ -784,8 +792,8 @@ sqrt(t(a) <span style="color: #00bcff;">%*%</span> a)
 </pre>
 </div>
 </div>
-<div id="outline-container-orgb3d340b" class="outline-3">
-<h3 id="orgb3d340b"><span class="section-number-3">1.4.</span> 特殊矩阵</h3>
+<div id="outline-container-org2031ecc" class="outline-3">
+<h3 id="org2031ecc"><span class="section-number-3">1.4.</span> 特殊矩阵</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 对角矩阵用 <code>diag</code> 创建：
@@ -823,8 +831,8 @@ sqrt(t(a) <span style="color: #00bcff;">%*%</span> a)
 </pre>
 </div>
 </div>
-<div id="outline-container-org557de8c" class="outline-3">
-<h3 id="org557de8c"><span class="section-number-3">1.5.</span> 矩阵求逆</h3>
+<div id="outline-container-org569c062" class="outline-3">
+<h3 id="org569c062"><span class="section-number-3">1.5.</span> 矩阵求逆</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 设
@@ -916,8 +924,8 @@ D
 </p>
 </div>
 </div>
-<div id="outline-container-org31366ae" class="outline-3">
-<h3 id="org31366ae"><span class="section-number-3">1.6.</span> 特征向量和特征值</h3>
+<div id="outline-container-orga13d91a" class="outline-3">
+<h3 id="orga13d91a"><span class="section-number-3">1.6.</span> 特征向量和特征值</h3>
 <div class="outline-text-3" id="text-1-6">
 <p>
 设矩阵
@@ -993,8 +1001,8 @@ $vectors
 </div>
 </div>
 </div>
-<div id="outline-container-org535269e" class="outline-2">
-<h2 id="org535269e"><span class="section-number-2">2.</span> 阶梯形矩阵与线性方程组</h2>
+<div id="outline-container-orgb21df89" class="outline-2">
+<h2 id="orgb21df89"><span class="section-number-2">2.</span> 阶梯形矩阵与线性方程组</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>matlib</code> 是专门为了教学和线性代数可视化设计的包，在处理矩阵时非常实用，比如：
@@ -1010,8 +1018,8 @@ $vectors
 <code>matlib</code> 不是 <code>R</code> 语言的内置包，而是一个第三方的扩展包，需要先 <code>install.packages("matlib")</code> 安装，再 <code>library(matlib)</code> 加载。
 </p>
 </div>
-<div id="outline-container-orgfc9c39e" class="outline-3">
-<h3 id="orgfc9c39e"><span class="section-number-3">2.1.</span> 阶梯形矩阵</h3>
+<div id="outline-container-org7c6b6e0" class="outline-3">
+<h3 id="org7c6b6e0"><span class="section-number-3">2.1.</span> 阶梯形矩阵</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 任意一个矩阵通过行变换，可以化为行阶梯形（Echelon Form）或简化行阶梯形（Reduced Row Echelon Form, RREF）。
@@ -1075,7 +1083,7 @@ $vectors
 </pre>
 </div>
 
-<pre class="example" id="orgaee88bf">
+<pre class="example" id="org8206520">
 
 Initial matrix:
      [,1] [,2] [,3] [,4] [,5]
@@ -1137,8 +1145,8 @@ row: 2
 </pre>
 </div>
 </div>
-<div id="outline-container-orgffd963a" class="outline-3">
-<h3 id="orgffd963a"><span class="section-number-3">2.2.</span> 零空间、行空间、列空间</h3>
+<div id="outline-container-orga186280" class="outline-3">
+<h3 id="orga186280"><span class="section-number-3">2.2.</span> 零空间、行空间、列空间</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 假设矩阵\(A=\left[\begin{array}{ccccc}
@@ -1201,8 +1209,8 @@ C
 </ul>
 </div>
 </div>
-<div id="outline-container-org79304c5" class="outline-3">
-<h3 id="org79304c5"><span class="section-number-3">2.3.</span> 方程组</h3>
+<div id="outline-container-orgbd0c009" class="outline-3">
+<h3 id="orgbd0c009"><span class="section-number-3">2.3.</span> 方程组</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 考虑线性方程组
@@ -1321,7 +1329,7 @@ x_{4}=c_{2}
 <div id="postamble" class="status">
 <p class="date">Date: 2026-09-08</p>
 <p class="author">Author: zbliang</p>
-<p class="date">Created: 2026-09-08 Tue 15:22</p>
+<p class="date">Created: 2026-09-08 Tue 15:40</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
