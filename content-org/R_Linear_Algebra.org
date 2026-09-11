@@ -10,24 +10,8 @@
 
 #+STARTUP: show2levels
 #+PROPERTY: header-args:R :session *R* :eval no-export :results output :exports both
-
-#+BEGIN_EXPORT html
-<style>
-  /* 仅在这篇文章中生效的临时样式 */
-  .question {
-      border: 2px solid #666;
-      background-color: #f5f5f5;
-      padding: 1em;
-      margin: 1em 0;
-      border-radius: 8px;
-  }
-  .solution {
-      border-left: 5px solid green;
-      padding-left: 1em;
-      margin: 1em 0;
-  }
-</style>
-#+END_EXPORT
+# ReadTheOrg 主题，安装详情：https://github.com/fniessen/org-html-themes
+#+SETUPFILE: ../assets/html-theme-readtheorg.setup
 
 参考资料
 + [[https://css18.github.io/linear-algebra.html][Linear algebra in R]]
@@ -41,12 +25,25 @@
 #+end_src
 
 #+RESULTS[84322cdd65472f65dcc6241e9fa1f7348bec00cc]:
+: 
+: Attaching package: ‘MASS’
+: 
+: The following object is masked from ‘package:dplyr’:
+: 
+:     select
 
 * 矩阵
 ** 创建矩阵
 
 利用 =matrix= 可以创建矩阵。
-例如
+例如，创建$5\times 3$ 矩阵
+$A=\left[\begin{array}{cc}
+1 & -6 & 11\\
+2 & -7 & 12\\
+3 & -8 & 13\\
+4 & -9 & 14\\
+5 & -10 & 15
+\end{array}\right]$ 的命令如下：
 
 #+begin_src R
   A <- matrix(c(1, 2, 3, 4, 5, -6, -7, -8, -9, -10, 11, 12, 13, 14, 15), 5, 3)
@@ -61,14 +58,7 @@
 : [4,]    4   -9   14
 : [5,]    5  -10   15
 
-就创建了$5\times 3$ 矩阵
-$A=\left[\begin{array}{cc}
-1 & -6 & 11\\
-2 & -7 & 12\\
-3 & -8 & 13\\
-4 & -9 & 14\\
-5 & -10 & 15
-\end{array}\right]$。
+可以查看 $A$ 的类型和阶数：
 
 #+begin_src R
   class(A)
@@ -80,7 +70,7 @@ $A=\left[\begin{array}{cc}
 : [1] 5 3
 
  其中
- + =class(A)= 显示 $A$ 的类型是 =matrix= （具体类型）和 =array= （父类型）。
++ =class(A)= 返回 $A$ 的类型是 =matrix= （具体类型）和 =array= （父类型）。
 + =dim(A)= 的结果显示 $A$ 的阶是 3 行 2 列。
 
 要注意的是，矩阵元素默认是逐列输入。
@@ -98,7 +88,7 @@ $A=\left[\begin{array}{cc}
 : [4,]    4   -9   14
 : [5,]    5  -10   15
 
-利用方括号可以实现引用矩阵 $A$ 各部分。
+利用方括号可以引用矩阵 $A$ 各部分。
 
 =A[1,2]= 表示 1 行 2 列的元素：
 
@@ -147,7 +137,7 @@ $A=\left[\begin{array}{cc}
 : [3,]    5  -10
 : [1] "matrix" "array"
 
-线性代数中的向量其实是矩阵，向量的创建有两者方法：
+线性代数中的向量其实是矩阵，创建向量有两种方法：
 + 把数字列表 =c()= 通过 =as.matrix= 转换为矩阵；
 + 直接通过 =matrix= 创建 $n\times 1$ 和 $1\times n$ 的矩阵。
 
@@ -210,14 +200,15 @@ $A=\left[\begin{array}{cc}
 : [4,]    4   -9   14
 : [5,]    5  -10   15
 
-把 $A$ 的第 2 行替换为 21, 22, 23 ，得到矩
+比如，希望把 $A$ 的第 2 行替换为 21，22，23 这三个数，从而得到矩
 $B=\left[\begin{array}{cc}
 1 & -6 & 11\\
 21 & 22 & 23\\
 3 & -8 & 13\\
 4 & -9 & 14\\
 5 & -10 & 15
-\end{array}\right]$ ：
+\end{array}\right]$ 。
+实现的方法很简单：
 
 #+begin_src R
   B <- A
@@ -233,7 +224,8 @@ $B=\left[\begin{array}{cc}
 : [4,]    4   -9   14
 : [5,]    5  -10   15
 
-=rbind()= 将两个列数一样的矩阵上、下拼接起来：
+此外还有一些「扩充」、「删剪」矩阵的技巧。
+命令 =rbind()= 把两个列数相同的矩阵上、下拼接起来，得到更大的矩阵：
 
 #+begin_src R
   rbind(A,B)
@@ -268,7 +260,7 @@ $B=\left[\begin{array}{cc}
 : [4,]    4   -9   14    4   -9   14
 : [5,]    5  -10   15    5  -10   15
 
-删去 $A$ 的第 2 行
+要删去 $A$ 第 2 行，做法很简单：
 
 #+begin_src R
   A[-2,]
@@ -306,7 +298,7 @@ $B=\left[\begin{array}{cc}
 
 ** 矩阵运算
 
-创建矩阵
+首先创建矩阵
 $A=\left[\begin{array}{cc}
 1 & 4\\
 2 & 5\\
@@ -391,7 +383,7 @@ $C=\left[\begin{array}{cc}
 : [2,]   16    1
 : [3,]   21    0
 
-要注意的是， =A * B= 表示同阶的两个矩阵 *逐元素相乘* ：
+要注意的是， =A * B= 表示同阶的两个矩阵 *逐元素相乘* （这种运算在《线性代数》课程中没有用到）：
 
 #+begin_src R
   A * B
@@ -414,9 +406,34 @@ $C=\left[\begin{array}{cc}
 : [,1]
 : [1,]    8
 
+** 方阵行列式
+
+对于方阵，可以通过 =det()= 计算行列式。
+创建矩阵
+$A=\left[\begin{array}{ccc}
+1 & -6 & 11\\
+2 & -7 & 12\\
+3 & -8 & 13
+\end{array}\right]$ ：
+
+#+begin_src R
+  A <- matrix(c(1, 2, 3, 4, 5, -6, -7, -8, -9), 3, 3)
+#+end_src
+
+#+RESULTS:
+
+那么它的行列式等于：
+
+#+begin_src R
+  det(A)
+#+end_src
+
+#+RESULTS:
+: [1] 72
+
 ** 特殊矩阵
 
-对角矩阵用 =diag= 创建：
+对角矩阵用 =diag()= 创建：
 
 #+begin_src R
   diag(c(1, 2, 3, 4), 4, 4)
@@ -429,7 +446,7 @@ $C=\left[\begin{array}{cc}
 : [3,]    0    0    3    0
 : [4,]    0    0    0    4
 
-单位矩阵：
+创建 4 阶单位矩阵：
 
 #+begin_src R
   diag(1, 4, 4)
@@ -457,12 +474,14 @@ $A=\left[\begin{array}{cc}
 
 #+RESULTS[6c448977285f7ab4abb9b2a924adccacc21aff44]:
 
-=solve(A)= 可以求出方阵 $A$ 的逆矩阵 =A_inv= ：
+=solve(A)= 可以求出方阵 $A$ 的逆矩阵：
 
 #+begin_src R
   A_inv <- solve(A)
   A_inv
 #+end_src
+
+上述代码把逆矩阵保存在变量 ~A_inv~ 中，并输出逆矩阵：
 
 #+RESULTS[e0d704be107e2d9c8d9fc7f276569f535c5786ba]:
 : [,1]        [,2]       [,3]
@@ -483,8 +502,8 @@ $A=\left[\begin{array}{cc}
 : [2,] 1.110223e-16    1 -4.440892e-16
 : [3,] 0.000000e+00    0  1.000000e+00
 
-因为计算过程无可避免产生误差，两者的乘积 =D= 只是非常接近单位矩阵。
-使用 =zapsmall(D)= 对 =D= 进行四舍五入后， 的确等于单位矩阵：
+因为计算过程无可避免产生误差，所以两者的乘积 =D= 只是非常接近单位矩阵。
+使用 =zapsmall(D)= 对 =D= 进行四舍五入后， 看到它的确等于单位矩阵：
 
 #+begin_src R
   zapsmall(D)
@@ -508,7 +527,7 @@ $A=\left[\begin{array}{cc}
 : [2,]   8/7   9/7 -27/7
 : [3,]  -1/7  -2/7   6/7
 
-=MASS= 是 =R= 的内置宏包，不需要安装，但需要通过 =library(MASS)= 加载。
+=MASS= 是 =R= 的内置宏包，无需安装，但使用前要通过命令 =library(MASS)= 加载。
 
 ** 特征向量和特征值
 
@@ -564,13 +583,14 @@ $A=\left[\begin{array}{cc}
 : [2,]  0.5345225  0.8080292  0.3244428
 : [3,] -0.8017837  0.3024441 -0.4866643
 
-这里的特征向量已经进行了单位化。
+输出结果中的第 1 列是第 1 个特征值的特征向量，第 2 列是第 2 个的特征向量，等等。
+并且给出的特征向量已经进行了单位化。
 
 * 阶梯形矩阵与线性方程组
 
 =matlib= 是专门为了教学和线性代数可视化设计的包，在处理矩阵时非常实用，比如：
 + 求分数形式的逆矩阵 / 高斯消元： =Inverse(A)=  或 =gaussianElimination(A)=
-+ 求解线性方程组 $Ax = b$： =Solve(A, b)= 
++ 求解线性方程组 $Ax = b$ ： =Solve(A, b)= 
 + 通过 =showEqn(A, b)= 打印漂亮的方程组
 + 向量与矩阵变换可视化： =plotEqn()= ， =vector3d()= 等
 
@@ -712,6 +732,17 @@ $A$ 的行空间与零空间 $\ker A$ 正好构成 $\mathbb{R}^{4}$ 的正交补
 : [4,] 0.2465407  0.42012594
 
 要注意代码是 =Null(t(A))= ，不能省略转置 =t(A)= 。
+验证 $AB=O$ ：
+
+#+begin_src R
+  A %*% B
+#+end_src
+
+#+RESULTS:
+:               [,1]          [,2]
+: [1,] -2.775558e-17  1.110223e-16
+: [2,] -2.775558e-17  1.110223e-16
+: [3,]  6.661338e-16 -4.440892e-16
 
 另一方面，计算 $A$ 的简化阶梯形：
 
@@ -727,10 +758,10 @@ $A$ 的行空间与零空间 $\ker A$ 正好构成 $\mathbb{R}^{4}$ 的正交补
 : [3,]    0    0  0.0    0
 
 由此可知：
-+ $A$ 的列空间的一组基是 =C[1,]= 和 =C[2,]= 。
-+ $A$ 的行空间的一组基是 =A[,1]= 和 =A[,2]= 。（注意，因为行秩等于列秩，行空间和列空间的维数一定相等。）
++ $A$ 的列空间的一组基是 =A[1,]= 和 =A[2,]= 。
++ $A$ 的行空间的一组基是 =C[,1]= 和 =C[,2]= 。（注意，因为行秩等于列秩，行空间和列空间的维数一定相等。）
 
-** 方程组
+* 方程组
 
 考虑线性方程组
 $$\left\{ \begin{array}{l}
@@ -814,3 +845,114 @@ x_{4}=c_{2}
 : [1,]    1    0  1/2   -2    2
 : [2,]    0    1 -3/2    1   -1
 : [3,]    0    0    0    0    0
+
+当方程组的方程个数与未知量个数相等时，还可以通过逆矩阵或克莱姆法则求解。
+例如，设方程组
+
+$$
+\left\{ \begin{array}{l}
+x_{1}+x_{2}+x_{3}=12\\
+x_{1}+2x_{2}+4x_{3}=15\\
+x_{1}+3x_{2}+9x_{3}=16
+\end{array}\right.
+$$
+
+那么系数矩阵
+$A=\left[\begin{array}{ccc}
+1 & 1 & 1\\
+1 & 2 & 4\\
+0 & 3 & 9
+\end{array}\right]$ ，
+常数项 $b=\left[\begin{array}{c}
+12\\
+15\\
+16
+\end{array}\right]$ ，方程组可以表示为 $Ax=b$ 。
+
+#+begin_src R
+  A <- matrix(c(1, 1, 1, 1, 2, 3, 1, 4, 9), 3, 3)
+  b <- matrix(c(12, 15, 16), 3, 1)
+#+end_src
+
+#+RESULTS:
+
+方程组的解为 $x=A^{-1}b$ ：
+
+#+begin_src R
+  solve(A) %*% b
+#+end_src
+
+#+RESULTS:
+:      [,1]
+: [1,]    7
+: [2,]    6
+: [3,]   -1
+
+可见方程组的解是 $x_{1}=7$ ，$x_{2}=6$ ，$x_{3}=-1$ 。
+
+再尝试用克莱姆法计算。
+把系数矩阵 $A$ 的 1，2，3 列分别换成常数项 $b$ ，依次得到
+$A_{1}=\left[\begin{array}{ccc}
+12 & 1 & 1\\
+15 & 2 & 4\\
+16 & 3 & 9
+\end{array}\right]$ ，
+$A_{2}=\left[\begin{array}{ccc}
+1 & 12 & 1\\
+1 & 15 & 4\\
+1 & 16 & 9
+\end{array}\right]$ ，
+$A_{3}=\left[\begin{array}{ccc}
+1 & 12 & 1\\
+1 & 15 & 4\\
+1 & 16 & 9
+\end{array}\right]$ 。
+
+根据克莱姆法则， $x_{1}=\frac{\vert A_{1}\vert}{\vert A\vert}$ ， $x_{2}=\frac{\vert A_{2}\vert}{\vert A\vert}$ ， $x_{3}=\frac{\vert A_{3}\vert}{\vert A\vert}$ 。
+先求 $x_{1}$ ：
+
+#+begin_src R
+  A1 <- A
+  A1[,1] <- b
+  det(A1)/det(A)
+#+end_src
+
+#+RESULTS:
+: [1] 7
+
+再求 $x_{2}$ ：
+
+#+begin_src R
+  A2 <- A
+  A2[,2] <- b
+  det(A2)/det(A)
+#+end_src
+
+#+RESULTS:
+: [1] 6
+
+最后求 $x_{3}$ ：
+
+#+begin_src R
+  A3 <- A
+  A3[,3] <- b
+  det(A3)/det(A)
+#+end_src
+
+#+RESULTS:
+: [1] -1
+
+这里求出的结果与前面通过逆矩阵计算的结果一致。
+
+最后，还可以通过命令 =solve(A,b)= 直接求得结果：
+
+#+begin_src R
+  solve(A, b)
+#+end_src
+
+#+RESULTS:
+:      [,1]
+: [1,]    7
+: [2,]    6
+: [3,]   -1
+

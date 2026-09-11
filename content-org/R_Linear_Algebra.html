@@ -3,196 +3,22 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-09-08 Tue 15:40 -->
+<!-- 2026-09-11 Fri 10:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>R 语言中的线性代数</title>
 <meta name="author" content="zbliang" />
 <meta name="generator" content="Org Mode" />
-<style type="text/css">
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { }
-</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg/css/readtheorg.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg/css/code-copy.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg/css/search.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/vendor/stickytableheaders/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg/js/search.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg/js/code-copy.js"></script>
 <script>
   window.MathJax = {
     tex: {
@@ -233,42 +59,27 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgaab5653">1. 矩阵</a>
+<li><a href="#org6297261">1. 矩阵</a>
 <ul>
-<li><a href="#orge918058">1.1. 创建矩阵</a></li>
-<li><a href="#org9f74190">1.2. 改变矩阵</a></li>
-<li><a href="#org07985e8">1.3. 矩阵运算</a></li>
-<li><a href="#org2031ecc">1.4. 特殊矩阵</a></li>
-<li><a href="#org569c062">1.5. 矩阵求逆</a></li>
-<li><a href="#orga13d91a">1.6. 特征向量和特征值</a></li>
+<li><a href="#orgef1de69">1.1. 创建矩阵</a></li>
+<li><a href="#orge111832">1.2. 改变矩阵</a></li>
+<li><a href="#org0de5879">1.3. 矩阵运算</a></li>
+<li><a href="#org72d5dd9">1.4. 方阵行列式</a></li>
+<li><a href="#orgdc846f5">1.5. 特殊矩阵</a></li>
+<li><a href="#org5d7500a">1.6. 矩阵求逆</a></li>
+<li><a href="#org4d81b62">1.7. 特征向量和特征值</a></li>
 </ul>
 </li>
-<li><a href="#orgb21df89">2. 阶梯形矩阵与线性方程组</a>
+<li><a href="#orgc98b0b5">2. 阶梯形矩阵与线性方程组</a>
 <ul>
-<li><a href="#org7c6b6e0">2.1. 阶梯形矩阵</a></li>
-<li><a href="#orga186280">2.2. 零空间、行空间、列空间</a></li>
-<li><a href="#orgbd0c009">2.3. 方程组</a></li>
+<li><a href="#orgec29d04">2.1. 阶梯形矩阵</a></li>
+<li><a href="#orgeca9a18">2.2. 零空间、行空间、列空间</a></li>
 </ul>
 </li>
+<li><a href="#orgeaf2168">3. 方程组</a></li>
 </ul>
 </div>
 </div>
-<style>
-  /* 仅在这篇文章中生效的临时样式 */
-  .question {
-      border: 2px solid #666;
-      background-color: #f5f5f5;
-      padding: 1em;
-      margin: 1em 0;
-      border-radius: 8px;
-  }
-  .solution {
-      border-left: 5px solid green;
-      padding-left: 1em;
-      margin: 1em 0;
-  }
-</style>
-
 <p>
 参考资料
 </p>
@@ -286,16 +97,23 @@
 </span><span style="color: #00bcff;">library</span>(matlib) <span style="color: #989898;"># </span><span style="color: #989898;">&#19981;&#26159;&#20869;&#32622;&#21253;&#65292;&#38656;&#23433;&#35013;</span>
 </pre>
 </div>
-<div id="outline-container-orgaab5653" class="outline-2">
-<h2 id="orgaab5653"><span class="section-number-2">1.</span> 矩阵</h2>
+<div id="outline-container-org6297261" class="outline-2">
+<h2 id="org6297261"><span class="section-number-2">1.</span> 矩阵</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orge918058" class="outline-3">
-<h3 id="orge918058"><span class="section-number-3">1.1.</span> 创建矩阵</h3>
+<div id="outline-container-orgef1de69" class="outline-3">
+<h3 id="orgef1de69"><span class="section-number-3">1.1.</span> 创建矩阵</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 利用 <code>matrix</code> 可以创建矩阵。
-例如
+例如，创建\(5\times 3\) 矩阵
+\(A=\left[\begin{array}{cc}
+1 & -6 & 11\\
+2 & -7 & 12\\
+3 & -8 & 13\\
+4 & -9 & 14\\
+5 & -10 & 15
+\end{array}\right]\) 的命令如下：
 </p>
 
 <div class="org-src-container">
@@ -315,14 +133,7 @@ A
 
 
 <p>
-就创建了\(5\times 3\) 矩阵
-\(A=\left[\begin{array}{cc}
-1 & -6 & 11\\
-2 & -7 & 12\\
-3 & -8 & 13\\
-4 & -9 & 14\\
-5 & -10 & 15
-\end{array}\right]\)。
+可以查看 \(A\) 的类型和阶数：
 </p>
 
 <div class="org-src-container">
@@ -341,9 +152,7 @@ dim(A)
 其中
 </p>
 <ul class="org-ul">
-<li><code>class(A)</code> 显示 \(A\) 的类型是 <code>matrix</code> （具体类型）和 <code>array</code> （父类型）。</li>
-</ul>
-<ul class="org-ul">
+<li><code>class(A)</code> 返回 \(A\) 的类型是 <code>matrix</code> （具体类型）和 <code>array</code> （父类型）。</li>
 <li><code>dim(A)</code> 的结果显示 \(A\) 的阶是 3 行 2 列。</li>
 </ul>
 
@@ -368,7 +177,7 @@ dim(A)
 
 
 <p>
-利用方括号可以实现引用矩阵 \(A\) 各部分。
+利用方括号可以引用矩阵 \(A\) 各部分。
 </p>
 
 <p>
@@ -439,7 +248,7 @@ class(A[3:5,1:2])
 
 
 <p>
-线性代数中的向量其实是矩阵，向量的创建有两者方法：
+线性代数中的向量其实是矩阵，创建向量有两种方法：
 </p>
 <ul class="org-ul">
 <li>把数字列表 <code>c()</code> 通过 <code>as.matrix</code> 转换为矩阵；</li>
@@ -494,8 +303,8 @@ identical(c, c1) <span style="color: #989898;"># </span><span style="color: #989
 </pre>
 </div>
 </div>
-<div id="outline-container-org9f74190" class="outline-3">
-<h3 id="org9f74190"><span class="section-number-3">1.2.</span> 改变矩阵</h3>
+<div id="outline-container-orge111832" class="outline-3">
+<h3 id="orge111832"><span class="section-number-3">1.2.</span> 改变矩阵</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 假设 \(5\times 3\) 矩阵
@@ -525,14 +334,15 @@ A
 
 
 <p>
-把 \(A\) 的第 2 行替换为 21, 22, 23 ，得到矩
+比如，希望把 \(A\) 的第 2 行替换为 21，22，23 这三个数，从而得到矩
 \(B=\left[\begin{array}{cc}
 1 & -6 & 11\\
 21 & 22 & 23\\
 3 & -8 & 13\\
 4 & -9 & 14\\
 5 & -10 & 15
-\end{array}\right]\) ：
+\end{array}\right]\) 。
+实现的方法很简单：
 </p>
 
 <div class="org-src-container">
@@ -553,7 +363,8 @@ B
 
 
 <p>
-<code>rbind()</code> 将两个列数一样的矩阵上、下拼接起来：
+此外还有一些「扩充」、「删剪」矩阵的技巧。
+命令 <code>rbind()</code> 把两个列数相同的矩阵上、下拼接起来，得到更大的矩阵：
 </p>
 
 <div class="org-src-container">
@@ -561,7 +372,7 @@ B
 </pre>
 </div>
 
-<pre class="example" id="org77b84b5">
+<pre class="example" id="orgf0e23d7">
       [,1] [,2] [,3]
  [1,]    1   -6   11
  [2,]    2   -7   12
@@ -595,7 +406,7 @@ B
 
 
 <p>
-删去 \(A\) 的第 2 行
+要删去 \(A\) 第 2 行，做法很简单：
 </p>
 
 <div class="org-src-container">
@@ -645,11 +456,11 @@ B
 </pre>
 </div>
 </div>
-<div id="outline-container-org07985e8" class="outline-3">
-<h3 id="org07985e8"><span class="section-number-3">1.3.</span> 矩阵运算</h3>
+<div id="outline-container-org0de5879" class="outline-3">
+<h3 id="org0de5879"><span class="section-number-3">1.3.</span> 矩阵运算</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
-创建矩阵
+首先创建矩阵
 \(A=\left[\begin{array}{cc}
 1 & 4\\
 2 & 5\\
@@ -760,7 +571,7 @@ C <span style="color: #00bcff;">&lt;-</span> matrix(c(3, 2, -2, 1), 2, 2)
 
 
 <p>
-要注意的是， <code>A * B</code> 表示同阶的两个矩阵 <b>逐元素相乘</b> ：
+要注意的是， <code>A * B</code> 表示同阶的两个矩阵 <b>逐元素相乘</b> （这种运算在《线性代数》课程中没有用到）：
 </p>
 
 <div class="org-src-container">
@@ -792,11 +603,43 @@ sqrt(t(a) <span style="color: #00bcff;">%*%</span> a)
 </pre>
 </div>
 </div>
-<div id="outline-container-org2031ecc" class="outline-3">
-<h3 id="org2031ecc"><span class="section-number-3">1.4.</span> 特殊矩阵</h3>
+<div id="outline-container-org72d5dd9" class="outline-3">
+<h3 id="org72d5dd9"><span class="section-number-3">1.4.</span> 方阵行列式</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
-对角矩阵用 <code>diag</code> 创建：
+对于方阵，可以通过 <code>det()</code> 计算行列式。
+创建矩阵
+\(A=\left[\begin{array}{ccc}
+1 & -6 & 11\\
+2 & -7 & 12\\
+3 & -8 & 13
+\end{array}\right]\) ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">A <span style="color: #00bcff;">&lt;-</span> matrix(c(1, 2, 3, 4, 5, -6, -7, -8, -9), 3, 3)
+</pre>
+</div>
+
+<p>
+那么它的行列式等于：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">det(A)
+</pre>
+</div>
+
+<pre class="example">
+[1] 72
+</pre>
+</div>
+</div>
+<div id="outline-container-orgdc846f5" class="outline-3">
+<h3 id="orgdc846f5"><span class="section-number-3">1.5.</span> 特殊矩阵</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+对角矩阵用 <code>diag()</code> 创建：
 </p>
 
 <div class="org-src-container">
@@ -814,7 +657,7 @@ sqrt(t(a) <span style="color: #00bcff;">%*%</span> a)
 
 
 <p>
-单位矩阵：
+创建 4 阶单位矩阵：
 </p>
 
 <div class="org-src-container">
@@ -831,9 +674,9 @@ sqrt(t(a) <span style="color: #00bcff;">%*%</span> a)
 </pre>
 </div>
 </div>
-<div id="outline-container-org569c062" class="outline-3">
-<h3 id="org569c062"><span class="section-number-3">1.5.</span> 矩阵求逆</h3>
-<div class="outline-text-3" id="text-1-5">
+<div id="outline-container-org5d7500a" class="outline-3">
+<h3 id="org5d7500a"><span class="section-number-3">1.6.</span> 矩阵求逆</h3>
+<div class="outline-text-3" id="text-1-6">
 <p>
 设
 \(A=\left[\begin{array}{cc}
@@ -849,7 +692,7 @@ sqrt(t(a) <span style="color: #00bcff;">%*%</span> a)
 </div>
 
 <p>
-<code>solve(A)</code> 可以求出方阵 \(A\) 的逆矩阵 <code>A_inv</code> ：
+<code>solve(A)</code> 可以求出方阵 \(A\) 的逆矩阵：
 </p>
 
 <div class="org-src-container">
@@ -857,6 +700,10 @@ sqrt(t(a) <span style="color: #00bcff;">%*%</span> a)
 A_inv
 </pre>
 </div>
+
+<p>
+上述代码把逆矩阵保存在变量 <code>A_inv</code> 中，并输出逆矩阵：
+</p>
 
 <pre class="example">
 [,1]        [,2]       [,3]
@@ -885,8 +732,8 @@ D
 
 
 <p>
-因为计算过程无可避免产生误差，两者的乘积 <code>D</code> 只是非常接近单位矩阵。
-使用 <code>zapsmall(D)</code> 对 <code>D</code> 进行四舍五入后， 的确等于单位矩阵：
+因为计算过程无可避免产生误差，所以两者的乘积 <code>D</code> 只是非常接近单位矩阵。
+使用 <code>zapsmall(D)</code> 对 <code>D</code> 进行四舍五入后， 看到它的确等于单位矩阵：
 </p>
 
 <div class="org-src-container">
@@ -920,13 +767,13 @@ D
 
 
 <p>
-<code>MASS</code> 是 <code>R</code> 的内置宏包，不需要安装，但需要通过 <code>library(MASS)</code> 加载。
+<code>MASS</code> 是 <code>R</code> 的内置宏包，无需安装，但使用前要通过命令 <code>library(MASS)</code> 加载。
 </p>
 </div>
 </div>
-<div id="outline-container-orga13d91a" class="outline-3">
-<h3 id="orga13d91a"><span class="section-number-3">1.6.</span> 特征向量和特征值</h3>
-<div class="outline-text-3" id="text-1-6">
+<div id="outline-container-org4d81b62" class="outline-3">
+<h3 id="org4d81b62"><span class="section-number-3">1.7.</span> 特征向量和特征值</h3>
+<div class="outline-text-3" id="text-1-7">
 <p>
 设矩阵
 \(A=\left[\begin{array}{cc}
@@ -996,20 +843,21 @@ $vectors
 
 
 <p>
-这里的特征向量已经进行了单位化。
+输出结果中的第 1 列是第 1 个特征值的特征向量，第 2 列是第 2 个的特征向量，等等。
+并且给出的特征向量已经进行了单位化。
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb21df89" class="outline-2">
-<h2 id="orgb21df89"><span class="section-number-2">2.</span> 阶梯形矩阵与线性方程组</h2>
+<div id="outline-container-orgc98b0b5" class="outline-2">
+<h2 id="orgc98b0b5"><span class="section-number-2">2.</span> 阶梯形矩阵与线性方程组</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>matlib</code> 是专门为了教学和线性代数可视化设计的包，在处理矩阵时非常实用，比如：
 </p>
 <ul class="org-ul">
 <li>求分数形式的逆矩阵 / 高斯消元： <code>Inverse(A)</code>  或 <code>gaussianElimination(A)</code></li>
-<li>求解线性方程组 $Ax = b$： <code>Solve(A, b)</code></li>
+<li>求解线性方程组 \(Ax = b\) ： <code>Solve(A, b)</code></li>
 <li>通过 <code>showEqn(A, b)</code> 打印漂亮的方程组</li>
 <li>向量与矩阵变换可视化： <code>plotEqn()</code> ， <code>vector3d()</code> 等</li>
 </ul>
@@ -1018,8 +866,8 @@ $vectors
 <code>matlib</code> 不是 <code>R</code> 语言的内置包，而是一个第三方的扩展包，需要先 <code>install.packages("matlib")</code> 安装，再 <code>library(matlib)</code> 加载。
 </p>
 </div>
-<div id="outline-container-org7c6b6e0" class="outline-3">
-<h3 id="org7c6b6e0"><span class="section-number-3">2.1.</span> 阶梯形矩阵</h3>
+<div id="outline-container-orgec29d04" class="outline-3">
+<h3 id="orgec29d04"><span class="section-number-3">2.1.</span> 阶梯形矩阵</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 任意一个矩阵通过行变换，可以化为行阶梯形（Echelon Form）或简化行阶梯形（Reduced Row Echelon Form, RREF）。
@@ -1083,7 +931,7 @@ $vectors
 </pre>
 </div>
 
-<pre class="example" id="org8206520">
+<pre class="example" id="org65c5ed1">
 
 Initial matrix:
      [,1] [,2] [,3] [,4] [,5]
@@ -1145,8 +993,8 @@ row: 2
 </pre>
 </div>
 </div>
-<div id="outline-container-orga186280" class="outline-3">
-<h3 id="orga186280"><span class="section-number-3">2.2.</span> 零空间、行空间、列空间</h3>
+<div id="outline-container-orgeca9a18" class="outline-3">
+<h3 id="orgeca9a18"><span class="section-number-3">2.2.</span> 零空间、行空间、列空间</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 假设矩阵\(A=\left[\begin{array}{ccccc}
@@ -1180,7 +1028,21 @@ B
 
 <p>
 要注意代码是 <code>Null(t(A))</code> ，不能省略转置 <code>t(A)</code> 。
+验证 \(AB=O\) ：
 </p>
+
+<div class="org-src-container">
+<pre class="src src-R">A <span style="color: #00bcff;">%*%</span> B
+</pre>
+</div>
+
+<pre class="example">
+              [,1]          [,2]
+[1,] -2.775558e-17  1.110223e-16
+[2,] -2.775558e-17  1.110223e-16
+[3,]  6.661338e-16 -4.440892e-16
+</pre>
+
 
 <p>
 另一方面，计算 \(A\) 的简化阶梯形：
@@ -1204,14 +1066,15 @@ C
 由此可知：
 </p>
 <ul class="org-ul">
-<li>\(A\) 的列空间的一组基是 <code>C[1,]</code> 和 <code>C[2,]</code> 。</li>
-<li>\(A\) 的行空间的一组基是 <code>A[,1]</code> 和 <code>A[,2]</code> 。（注意，因为行秩等于列秩，行空间和列空间的维数一定相等。）</li>
+<li>\(A\) 的列空间的一组基是 <code>A[1,]</code> 和 <code>A[2,]</code> 。</li>
+<li>\(A\) 的行空间的一组基是 <code>C[,1]</code> 和 <code>C[,2]</code> 。（注意，因为行秩等于列秩，行空间和列空间的维数一定相等。）</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbd0c009" class="outline-3">
-<h3 id="orgbd0c009"><span class="section-number-3">2.3.</span> 方程组</h3>
-<div class="outline-text-3" id="text-2-3">
+</div>
+<div id="outline-container-orgeaf2168" class="outline-2">
+<h2 id="orgeaf2168"><span class="section-number-2">3.</span> 方程组</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 考虑线性方程组
 \[\left\{ \begin{array}{l}
@@ -1322,14 +1185,159 @@ x_{4}=c_{2}
 [2,]    0    1 -3/2    1   -1
 [3,]    0    0    0    0    0
 </pre>
+
+
+<p>
+当方程组的方程个数与未知量个数相等时，还可以通过逆矩阵或克莱姆法则求解。
+例如，设方程组
+</p>
+
+<p>
+\[
+\left\{ \begin{array}{l}
+x_{1}+x_{2}+x_{3}=12\\
+x_{1}+2x_{2}+4x_{3}=15\\
+x_{1}+3x_{2}+9x_{3}=16
+\end{array}\right.
+\]
+</p>
+
+<p>
+那么系数矩阵
+\(A=\left[\begin{array}{ccc}
+1 & 1 & 1\\
+1 & 2 & 4\\
+0 & 3 & 9
+\end{array}\right]\) ，
+常数项 \(b=\left[\begin{array}{c}
+12\\
+15\\
+16
+\end{array}\right]\) ，方程组可以表示为 \(Ax=b\) 。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">A <span style="color: #00bcff;">&lt;-</span> matrix(c(1, 1, 1, 1, 2, 3, 1, 4, 9), 3, 3)
+b <span style="color: #00bcff;">&lt;-</span> matrix(c(12, 15, 16), 3, 1)
+</pre>
 </div>
+
+<p>
+方程组的解为 \(x=A^{-1}b\) ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">solve(A) <span style="color: #00bcff;">%*%</span> b
+</pre>
+</div>
+
+<pre class="example">
+     [,1]
+[1,]    7
+[2,]    6
+[3,]   -1
+</pre>
+
+
+<p>
+可见方程组的解是 \(x_{1}=7\) ，\(x_{2}=6\) ，\(x_{3}=-1\) 。
+</p>
+
+<p>
+再尝试用克莱姆法计算。
+把系数矩阵 \(A\) 的 1，2，3 列分别换成常数项 \(b\) ，依次得到
+\(A_{1}=\left[\begin{array}{ccc}
+12 & 1 & 1\\
+15 & 2 & 4\\
+16 & 3 & 9
+\end{array}\right]\) ，
+\(A_{2}=\left[\begin{array}{ccc}
+1 & 12 & 1\\
+1 & 15 & 4\\
+1 & 16 & 9
+\end{array}\right]\) ，
+\(A_{3}=\left[\begin{array}{ccc}
+1 & 12 & 1\\
+1 & 15 & 4\\
+1 & 16 & 9
+\end{array}\right]\) 。
+</p>
+
+<p>
+根据克莱姆法则， \(x_{1}=\frac{\vert A_{1}\vert}{\vert A\vert}\) ， \(x_{2}=\frac{\vert A_{2}\vert}{\vert A\vert}\) ， \(x_{3}=\frac{\vert A_{3}\vert}{\vert A\vert}\) 。
+先求 \(x_{1}\) ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">A1 <span style="color: #00bcff;">&lt;-</span> A
+A1[,1] <span style="color: #00bcff;">&lt;-</span> b
+det(A1)/det(A)
+</pre>
+</div>
+
+<pre class="example">
+[1] 7
+</pre>
+
+
+<p>
+再求 \(x_{2}\) ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">A2 <span style="color: #00bcff;">&lt;-</span> A
+A2[,2] <span style="color: #00bcff;">&lt;-</span> b
+det(A2)/det(A)
+</pre>
+</div>
+
+<pre class="example">
+[1] 6
+</pre>
+
+
+<p>
+最后求 \(x_{3}\) ：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">A3 <span style="color: #00bcff;">&lt;-</span> A
+A3[,3] <span style="color: #00bcff;">&lt;-</span> b
+det(A3)/det(A)
+</pre>
+</div>
+
+<pre class="example">
+[1] -1
+</pre>
+
+
+<p>
+这里求出的结果与前面通过逆矩阵计算的结果一致。
+</p>
+
+<p>
+最后，还可以通过命令 <code>solve(A,b)</code> 直接求得结果：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R">solve(A, b)
+</pre>
+</div>
+
+<pre class="example">
+     [,1]
+[1,]    7
+[2,]    6
+[3,]   -1
+</pre>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="date">Date: 2026-09-08</p>
 <p class="author">Author: zbliang</p>
-<p class="date">Created: 2026-09-08 Tue 15:40</p>
+<p class="date">Created: 2026-09-11 Fri 10:04</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
