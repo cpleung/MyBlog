@@ -1,0 +1,266 @@
+
+<script>
+
+/* =====================================
+   1. 目录滚动高亮（Scrollspy）
+===================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+    const toc = document.querySelector(".toc-container.wide .toc");
+
+    if (!toc) return;
+
+    // 获取目录中的所有章节链接及其对应的正文标题
+    const links = Array.from(
+        toc.querySelectorAll('.inner a[href^="#"]')
+    );
+
+    const items = links.map(function (link) {
+        let id;
+
+        try {
+            id = decodeURIComponent(link.hash.substring(1));
+        } catch (e) {
+            id = link.hash.substring(1);
+        }
+
+        return {
+            link: link,
+            heading: document.getElementById(id)
+        };
+    }).filter(function (item) {
+        return item.heading !== null;
+    });
+
+    if (items.length === 0) return;
+
+    let ticking = false;
+
+    // 更新目录的高亮状态
+    function updateActiveLink() {
+        const offset = 130;
+        let activeItem = items[0];
+
+        // 找到当前阅读位置对应的最后一个标题
+        for (const item of items) {
+            if (item.heading.getBoundingClientRect().top <= offset) {
+                activeItem = item;
+            } else {
+                break;
+            }
+        }
+
+        // 滚动到文章底部时，高亮最后一个章节
+        if (
+            window.innerHeight + window.scrollY >=
+            document.documentElement.scrollHeight - 2
+        ) {
+            activeItem = items[items.length - 1];
+        }
+
+        // 清除之前的高亮
+        items.forEach(function (item) {
+            item.link.classList.remove("active");
+            item.link.removeAttribute("aria-current");
+        });
+
+        // 高亮当前章节
+        activeItem.link.classList.add("active");
+        activeItem.link.setAttribute("aria-current", "location");
+    }
+
+    // 使用 requestAnimationFrame 减少滚动事件的重复计算
+    function onScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(function () {
+                updateActiveLink();
+                ticking = false;
+            });
+
+            ticking = true;
+        }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    // 页面初次加载时也更新一次
+    updateActiveLink();
+});
+
+/* =====================================
+   2. 长代码块自动折叠
+===================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+    // 配置参数
+    const COLLAPSE_THRESHOLD = 15; // 超过多少行才折叠
+    const VISIBLE_LINES = 8;       // 折叠时显示多少行
+
+    // 找到文章中的代码块
+    const codeBlocks = document.querySelectorAll(
+        ".post-content pre"
+    );
+
+    codeBlocks.forEach(function (pre) {
+        const code = pre.querySelector("code");
+
+        if (!code) return;
+
+        // 计算代码行数
+        const text = code.textContent.replace(/\n$/, "");
+        const lineCount = text.split("\n").length;
+
+        // 短代码不折叠
+        if (lineCount <= COLLAPSE_THRESHOLD) return;
+
+        // 创建外层容器
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-collapse";
+
+        // 将 pre 放入容器
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        // 设置折叠状态
+        wrapper.classList.add("collapsed");
+        wrapper.style.setProperty(
+            "--visible-lines",
+            VISIBLE_LINES
+        );
+
+        // 创建展开/收起按钮
+        const button = document.createElement("button");
+        button.className = "code-collapse-button";
+        button.type = "button";
+        button.textContent = "展开代码 (" + lineCount + " 行)";
+        button.setAttribute("aria-expanded", "false");
+
+        wrapper.appendChild(button);
+
+        // 点击按钮切换状态
+        button.addEventListener("click", function () {
+            const collapsed = wrapper.classList.toggle("collapsed");
+
+            if (collapsed) {
+                button.textContent = "展开代码 (" + lineCount + " 行)";
+                button.setAttribute("aria-expanded", "false");
+            } else {
+                button.textContent = "收起代码";
+                button.setAttribute("aria-expanded", "true");
+            }
+        });
+    });
+});
+
+
+/* =====================================
+   3. 图片点击放大（Lightbox）
+===================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // 创建图片放大层
+    const lightbox = document.createElement("div");
+    lightbox.className = "image-lightbox";
+    lightbox.setAttribute("role", "dialog");
+    lightbox.setAttribute("aria-modal", "true");
+    lightbox.setAttribute("aria-label", "图片预览");
+    lightbox.setAttribute("aria-hidden", "true");
+
+    // 图片
+    const largeImage = document.createElement("img");
+    largeImage.className = "image-lightbox-img";
+
+    // 关闭按钮
+    const closeButton = document.createElement("button");
+    closeButton.className = "image-lightbox-close";
+    closeButton.type = "button";
+    closeButton.textContent = "×";
+    closeButton.setAttribute("aria-label", "关闭图片预览");
+
+    lightbox.appendChild(largeImage);
+    lightbox.appendChild(closeButton);
+    document.body.appendChild(lightbox);
+
+    let previousFocus = null;
+
+    // 打开放大图片
+    function openLightbox(img) {
+        largeImage.src = img.currentSrc || img.src;
+        largeImage.alt = img.alt || "";
+
+        lightbox.classList.add("active");
+        lightbox.setAttribute("aria-hidden", "false");
+
+        previousFocus = document.activeElement;
+        closeButton.focus();
+
+        // 禁止背景页面滚动
+        document.body.style.overflow = "hidden";
+    }
+
+    // 关闭放大图片
+    function closeLightbox() {
+        lightbox.classList.remove("active");
+        lightbox.setAttribute("aria-hidden", "true");
+
+        largeImage.src = "";
+
+        // 恢复页面滚动
+        document.body.style.overflow = "";
+
+        if (previousFocus) {
+            previousFocus.focus();
+        }
+    }
+
+    // 监听文章图片点击
+    document.querySelector(".post-content")
+        ?.addEventListener("click", function (event) {
+
+		const img = event.target.closest(
+			 ".post-content img:not(.emoji):not([data-no-lightbox])"
+		 );
+
+		if (!img) return;
+
+            // 排除不需要放大的图片
+            if (
+                img.classList.contains("emoji") ||
+                img.hasAttribute("data-no-lightbox")
+            ) {
+                return;
+            }
+
+            // 排除代码块中的图片
+            if (img.closest("pre, .highlight")) return;
+
+            // 如果图片本身位于链接中，阻止原链接跳转
+            const link = img.closest("a");
+            if (link) event.preventDefault();
+
+            openLightbox(img);
+        });
+
+    // 点击关闭按钮
+    closeButton.addEventListener("click", closeLightbox);
+
+    // 点击背景关闭，但点击图片本身不关闭
+    lightbox.addEventListener("click", function (event) {
+        if (event.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    // 按 Esc 关闭
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.key === "Escape" &&
+            lightbox.classList.contains("active")
+        ) {
+            closeLightbox();
+        }
+    });
+
+});
+</script>

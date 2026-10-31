@@ -1,0 +1,162 @@
+/* =========================================
+   PaperMod 左侧悬浮目录
+   ========================================= */
+
+:root {
+    --toc-width: 230px;
+}
+
+/* 目录基本样式 */
+.toc-container {
+    margin: 0 2px 40px 2px;
+}
+
+.toc {
+    border: 1px solid var(--border);
+    background: var(--entry);
+    border-radius: var(--radius);
+    padding: 0.4em;
+    margin: 0;
+}
+
+/* 目录标题 */
+.toc summary {
+    cursor: pointer;
+    margin-inline-start: 20px;
+    padding: 12px 0;
+}
+
+.toc[open] summary {
+    font-weight: 500;
+}
+
+/* 目录内容 */
+.toc .inner {
+    margin: 0 0 0 20px;
+    padding: 0 15px 15px 20px;
+    font-size: 16px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* 目录层级 */
+.toc ul {
+    list-style-type: circle;
+}
+
+.toc li ul {
+    margin-inline-start: calc(var(--gap) * 0.5);
+    list-style-type: none;
+}
+
+.toc li {
+    list-style: none;
+    font-size: 0.95rem;
+    padding-bottom: 5px;
+}
+
+/* 鼠标悬停 */
+.toc li a:hover {
+    color: var(--secondary);
+}
+
+/* 当前阅读位置 */
+.toc .active {
+    font-size: 110%;
+    font-weight: 600;
+    color: #614a85;
+    text-decoration: underline;
+}
+
+/* 滚动条 */
+.toc .inner::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border: 7px solid var(--theme);
+    border-radius: var(--radius);
+}
+
+
+/* =========================================
+   宽屏：目录放在文章左侧
+   ========================================= */
+
+@media screen and (min-width: 1200px) {
+
+    /* 文章作为绝对定位目录的参考容器 */
+    .post-single {
+        position: relative;
+    }
+
+    /* 左侧目录容器 */
+    .toc-container.wide {
+        position: absolute;
+        top: 0;
+        left: calc(-1 * (var(--toc-width) + var(--gap)));
+        width: var(--toc-width);
+        height: 100%;
+        border-right: 1px solid var(--border);
+    }
+
+    /* 左侧悬浮目录 */
+    .toc-container.wide .toc {
+        position: sticky;
+        top: var(--gap);
+        width: 100%;
+        max-height: 83vh;
+        overflow-y: auto;
+
+        border: none;
+        background: transparent;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    .toc-container.wide .toc .inner {
+        margin: 0;
+    }
+}
+
+
+/* =========================================
+   窄屏：恢复文章顶部目录
+   ========================================= */
+
+@media screen and (max-width: 1199px) {
+
+    .toc-container.wide {
+        position: static;
+        width: auto;
+        height: auto;
+        border: none;
+    }
+
+    .toc-container.wide .toc {
+        position: static;
+        width: auto;
+    }
+}
+
+/* 当前阅读章节 */
+.toc .inner a.active {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+    border-left: 3px solid var(--primary);
+    padding-left: 8px;
+    margin-left: -11px;
+}
+
+/* 目录链接平滑过渡 */
+.toc .inner a {
+    transition: color 0.2s ease;
+}
+
+/* 正文标题滚动定位，避免标题被顶部区域遮挡 */
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+    scroll-margin-top: 100px;
+}

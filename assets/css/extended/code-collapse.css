@@ -1,0 +1,68 @@
+
+/* =====================================
+   长代码块自动折叠
+   ===================================== */
+
+/* 代码块外层容器 */
+.code-collapse {
+    position: relative;
+    margin: 1.5em 0;
+}
+
+/* 折叠状态 */
+.code-collapse.collapsed pre {
+    max-height: calc(
+        var(--visible-lines) * 1.5em + 1.5em
+    );
+    overflow: hidden;
+}
+
+/* 折叠状态下的渐隐效果 */
+.code-collapse.collapsed::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2.8em;
+    height: 3em;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        var(--code-block-bg, var(--code-bg))
+    );
+    pointer-events: none;
+}
+
+/* 展开/收起按钮 */
+.code-collapse-button {
+    display: block;
+    width: 100%;
+    padding: 0.45em 1em;
+
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+
+    background: var(--entry);
+    color: var(--secondary);
+
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-align: center;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+/* 鼠标悬停 */
+.code-collapse-button:hover {
+    color: var(--primary);
+    background: var(--tertiary);
+}
+
+/* 键盘焦点 */
+.code-collapse-button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
