@@ -1,0 +1,1501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-10-31 Sat 14:45 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Linux 安装和使用 OneDrive 客户端</title>
+<meta name="author" content="zbliang" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Linux 安装和使用 OneDrive 客户端</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org6aae880">1. 环境说明</a></li>
+<li><a href="#org4b5ceff">2. 安装 OneDrive 客户端</a>
+<ul>
+<li><a href="#orgd8d440a">2.1. 检查 Fedora 版本</a></li>
+<li><a href="#orgb721448">2.2. 检查软件包信息</a></li>
+<li><a href="#org8c09f2a">2.3. 安装</a></li>
+<li><a href="#org893fd91">2.4. 检查安装结果</a></li>
+</ul>
+</li>
+<li><a href="#org5bf3c28">3. 首次授权 Microsoft 账户</a>
+<ul>
+<li><a href="#orgdc3e350">3.1. 启动客户端</a></li>
+<li><a href="#orgf8893db">3.2. 浏览器授权</a></li>
+<li><a href="#org1ca4381">3.3. 检查授权文件</a></li>
+</ul>
+</li>
+<li><a href="#orgb8d5d85">4. 配置 OneDrive</a>
+<ul>
+<li><a href="#org374c671">4.1. 查看默认配置</a></li>
+<li><a href="#orgf1cd885">4.2. 创建配置文件</a></li>
+<li><a href="#orgc2b34e6">4.3. 编辑配置文件</a></li>
+<li><a href="#org5ce6f72">4.4. 保持整个 OneDrive 云盘同步</a></li>
+<li><a href="#orga726117">4.5. 检查目前的配置</a></li>
+</ul>
+</li>
+<li><a href="#org90a916b">5. 首次同步前的检查</a>
+<ul>
+<li><a href="#org5c48bc7">5.1. 检查云端容量</a></li>
+<li><a href="#org944ebd7">5.2. 检查本地磁盘空间</a></li>
+<li><a href="#orgf744f06">5.3. 检查本地同步目录</a></li>
+<li><a href="#orgd4e535e">5.4. 执行模拟同步</a></li>
+</ul>
+</li>
+<li><a href="#org8d136a9">6. 执行首次同步</a>
+<ul>
+<li><a href="#org4818b3c">6.1. 推荐的谨慎方式：只下载云端文件</a></li>
+<li><a href="#org038bd70">6.2. 双向同步</a></li>
+</ul>
+</li>
+<li><a href="#org7c2e4ef">7. 日常使用命令</a>
+<ul>
+<li><a href="#org192cfdd">7.1. 手动执行一次双向同步</a></li>
+<li><a href="#orgf116f2c">7.2. 手动执行一次只下载同步</a></li>
+<li><a href="#org7d3e3c6">7.3. 查看配置</a></li>
+<li><a href="#org5226a70">7.4. 查看云端容量</a></li>
+<li><a href="#org7f45624">7.5. 查看同步状态</a></li>
+<li><a href="#org80e10ad">7.6. 模拟同步</a></li>
+<li><a href="#org4b99ef2">7.7. 查看版本</a></li>
+<li><a href="#orgfbeba73">7.8. 查看帮助</a></li>
+</ul>
+</li>
+<li><a href="#org68ca839">8. 后台自动同步</a>
+<ul>
+<li><a href="#org3c87d69">8.1. 前台监控模式</a></li>
+<li><a href="#orgcb9ec0d">8.2. 使用 systemd 用户服务</a></li>
+</ul>
+</li>
+<li><a href="#orgb7a7091">9. 更换 Microsoft OneDrive 账户</a></li>
+<li><a href="#org99dc72d">10. 常见问题与注意事项</a>
+<ul>
+<li><a href="#org1c9d54c">10.1. <code>--list</code> 命令不可用</a></li>
+<li><a href="#org55e35ba">10.2. <code>--synchronize</code> 命令不可用</a></li>
+<li><a href="#org256c057">10.3. 授权成功但没有执行同步</a></li>
+<li><a href="#orgef727c0">10.4. 不要随意删除同步数据库</a></li>
+<li><a href="#org66050e5">10.5. 不要随意使用 <code>--resync</code></a></li>
+<li><a href="#orgb024d5f">10.6. 版本更新</a></li>
+</ul>
+</li>
+<li><a href="#orge4752fb">11. 常用命令速查</a></li>
+<li><a href="#orgb01c267">12. 官方参考资料</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6aae880" class="outline-2">
+<h2 id="org6aae880"><span class="section-number-2">1.</span> 环境说明</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+本文记录在 Fedora 44 上安装和使用开源 OneDrive Linux 客户端的方法。
+</p>
+
+<ul class="org-ul">
+<li>操作系统：Fedora 44</li>
+<li>客户端：abraunegg/onedrive</li>
+<li>已测试版本：2.5.11</li>
+<li>OneDrive 类型：个人 Microsoft 账户</li>
+<li>默认本地同步目录：~/OneDrive</li>
+<li>默认配置目录：~/.config/onedrive</li>
+</ul>
+
+<p>
+该客户端支持双向同步：
+</p>
+<ul class="org-ul">
+<li>云端新增或修改文件，可以下载到本地。</li>
+<li>本地新增或修改文件，可以上传到云端。</li>
+<li>本地或云端删除文件，也可能传播到另一端。</li>
+</ul>
+
+<p>
+注意：双向同步不是备份。
+如果误删文件，删除操作可能同步到另一端。
+</p>
+</div>
+</div>
+<div id="outline-container-org4b5ceff" class="outline-2">
+<h2 id="org4b5ceff"><span class="section-number-2">2.</span> 安装 OneDrive 客户端</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgd8d440a" class="outline-3">
+<h3 id="orgd8d440a"><span class="section-number-3">2.1.</span> 检查 Fedora 版本</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-bash">cat /etc/fedora-release
+</pre>
+</div>
+
+<pre class="example" id="orgc5b7296">
+Fedora release 44 (Forty Four)
+</pre>
+</div>
+</div>
+<div id="outline-container-orgb721448" class="outline-3">
+<h3 id="orgb721448"><span class="section-number-3">2.2.</span> 检查软件包信息</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-bash">dnf info onedrive
+</pre>
+</div>
+
+<pre class="example" id="orgca919f9">
+Repositories loaded.
+Available packages
+Name           : onedrive
+Epoch          : 0
+Version        : 2.5.11
+Release        : 1.fc44
+Architecture   : x86_64
+Download size  : 1.1 MiB
+Installed size : 4.1 MiB
+Source         : onedrive-2.5.11-1.fc44.src.rpm
+Repository     : updates
+Summary        : OneDrive Free Client written in D
+URL            : https://github.com/abraunegg/onedrive
+License        : GPL-3.0-only
+Description    : Free CLI client for Microsoft OneDrive written in D.
+Vendor         : Fedora Project
+
+</pre>
+
+<p>
+Fedora 44 软件仓库中可以安装 abraunegg/onedrive。
+</p>
+</div>
+</div>
+<div id="outline-container-org8c09f2a" class="outline-3">
+<h3 id="org8c09f2a"><span class="section-number-3">2.3.</span> 安装</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+先检查是否安装过 onedrive：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">rpm -q onedrive
+</pre>
+</div>
+
+<pre class="example" id="org4c6cfb4">
+package onedrive is not installed
+</pre>
+
+<p>
+安装 onedrive：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo dnf install onedrive
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org893fd91" class="outline-3">
+<h3 id="org893fd91"><span class="section-number-3">2.4.</span> 检查安装结果</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --version
+</pre>
+</div>
+
+<pre class="example" id="org5e74437">
+onedrive v2.5.11
+</pre>
+
+<p>
+查看当前版本支持的命令：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --help
+</pre>
+</div>
+
+<pre class="example" id="orge3afe9e">
+onedrive - A client for the Microsoft OneDrive Cloud Service
+
+  Usage:
+    onedrive [options] --sync
+      Do a one-time synchronisation with Microsoft OneDrive
+    onedrive [options] --monitor
+      Monitor filesystem and synchronise regularly with Microsoft OneDrive
+    onedrive [options] --display-config
+      Display the currently used configuration
+    onedrive [options] --display-sync-status
+      Query OneDrive service and report on pending changes
+    onedrive -h | --help
+      Show this help screen
+    onedrive --version
+      Show version
+
+  Options:
+	
+  --auth-files '&lt;path or required value&gt;'
+      Perform authentication via files rather than an interactive dialogue. The application reads/writes the required values from/to the specified files
+  --auth-response '&lt;path or required value&gt;'
+      Perform authentication via a supplied response URL rather than an interactive dialogue
+  --check-for-nomount
+      Check for the presence of .nosync in the syncdir root. If found, do not perform sync
+  --check-for-nosync
+      Check for the presence of .nosync in each directory. If found, skip directory from sync
+  --classify-as-big-delete '&lt;path or required value&gt;'
+      Number of children in a path that is locally removed which will be classified as a 'big data delete'
+  --cleanup-local-files
+      Clean up additional local files when using --download-only. This will remove local data
+  --confdir '&lt;path or required value&gt;'
+      Set the directory used to store the configuration files
+  --create-directory '&lt;path or required value&gt;'
+      Create a directory on OneDrive. No synchronisation will be performed
+  --create-share-link '&lt;path or required value&gt;'
+      Create a shareable link for an existing file on OneDrive
+  --debug-https
+      Debug OneDrive HTTPS communication.
+  --destination-directory '&lt;path or required value&gt;'
+      Destination directory for renamed or moved items on OneDrive. No synchronisation will be performed
+  --disable-download-validation
+      Disable download validation when downloading from OneDrive
+  --disable-notifications
+      Do not use desktop notifications in monitor mode
+  --disable-upload-validation
+      Disable upload validation when uploading to OneDrive
+  --display-admin-consent-url
+      Displays a tenant-specific Microsoft Entra ID administrator consent URL for environments where administrator approval is required before users can authenticate and use the client
+  --display-config
+      Display what options the client will use as currently configured. No synchronisation will be performed
+  --display-quota
+      Display the quota status of the client. No synchronisation will be performed
+  --display-running-config
+      Display what options the client has been configured to use on application startup
+  --display-sync-status
+      Display the sync status of the client. No synchronisation will be performed
+  --download-file '&lt;path or required value&gt;'
+      Download a single file from Microsoft OneDrive
+  --download-only
+      Replicate the OneDrive online state locally, by only downloading changes from OneDrive. Do not upload local changes to OneDrive
+  --dry-run
+      Perform a trial sync with no changes made
+  --enable-logging
+      Enable client activity to a separate log file
+  --file-fragment-size
+      Specify the file fragment size for large file uploads (in MB)
+  --force
+      Force the deletion of data when a 'big delete' is detected
+  --force-http-11
+      Force the use of HTTP 1.1 for all operations
+  --force-sync
+      Force a synchronisation of a specific folder, only when using --sync --single-directory and ignore all non-default skip_dir and skip_file rules
+  --get-file-link '&lt;path or required value&gt;'
+      Display the file link of a synced file
+  --get-sharepoint-drive-id '&lt;path or required value&gt;'
+      Query and return the Office 365 Drive ID for a given Office 365 SharePoint Shared Library
+  --help -h
+      This help information.
+  --list-shared-items
+      List OneDrive Business Shared Items
+  --local-first
+      Synchronise from the local directory source first, before downloading changes from OneDrive
+  --log-dir '&lt;path or required value&gt;'
+      Directory where logging output is saved to, needs to end with a slash
+  --logout
+      Log out the current user
+  --mirror-local-state
+      Mirror the local state to Microsoft OneDrive online
+  --modified-by '&lt;path or required value&gt;'
+      Display the last modified by details of a given path
+  --monitor -m
+      Keep monitoring for local and remote changes
+  --monitor-fullscan-frequency '&lt;path or required value&gt;'
+      Number of scheduled monitor-interval sync cycles before performing an online full-scan true-up. This does not disable the local database consistency check.
+  --monitor-interval '&lt;path or required value&gt;'
+      Number of seconds by which each sync operation is undertaken when idle under monitor mode
+  --monitor-log-frequency '&lt;path or required value&gt;'
+      Frequency of logging in monitor mode
+  --no-remote-delete
+      Do not delete local file 'deletes' from OneDrive when using --upload-only
+  --print-access-token
+      Print the access token, useful for debugging
+  --reauth
+      Reauthenticate the client with OneDrive
+  --remove-directory '&lt;path or required value&gt;'
+      Remove a directory on OneDrive. No synchronisation will be performed
+  --remove-source-files
+      Remove source file after successful transfer to OneDrive when using --upload-only
+  --remove-source-folders
+      Remove the local directory structure post successful file transfer to Microsoft OneDrive when using --upload-only --remove-source-files
+  --resync
+      Forget the last saved state, perform a full sync
+  --resync-auth
+      Approve the use of performing a --resync action
+  --share-password '&lt;path or required value&gt;'
+      Require a password to access the shared link when used with --create-share-link &lt;file&gt;
+  --single-directory '&lt;path or required value&gt;'
+      Specify a single local directory within the OneDrive root to sync
+  --skip-dir '&lt;path or required value&gt;'
+      Skip any directories that match this pattern from syncing
+  --skip-dir-strict-match
+      When matching skip_dir directories, only match explicit matches
+  --skip-dot-files
+      Skip dot files and folders from syncing
+  --skip-file '&lt;path or required value&gt;'
+      Skip any files that match this pattern from syncing
+  --skip-size '&lt;path or required value&gt;'
+      Skip new files larger than this size (in MB)
+  --skip-symlinks
+      Skip syncing of symlinks
+  --source-directory '&lt;path or required value&gt;'
+      Source directory to rename or move on OneDrive. No synchronisation will be performed
+  --space-reservation '&lt;path or required value&gt;'
+      The amount of disk space to reserve (in MB) to avoid 100% disk space utilisation
+  --sync -s
+      Perform a synchronisation with Microsoft OneDrive
+  --sync-root-files
+      Sync all files in sync_dir root when using sync_list
+  --sync-shared-files
+      Sync OneDrive Business Shared Files to the local filesystem
+  --syncdir '&lt;path or required value&gt;'
+      Specify the local directory used for synchronisation to OneDrive
+  --threads
+      Specify a value for the number of worker threads used for parallel upload and download operations
+  --upload-only
+      Replicate the locally configured sync_dir state to OneDrive, by only uploading local changes to OneDrive. Do not download changes from OneDrive
+  --verbose -v+
+      Print more details, useful for debugging (repeat for extra debugging)
+  --version
+      Print the version and exit
+  --with-editing-perms
+      Create a read-write shareable link for an existing file on OneDrive when used with --create-share-link &lt;file&gt;
+</pre>
+
+<p>
+注意：
+</p>
+<ul class="org-ul">
+<li>正确的同步选项是 <code>--sync</code> 。</li>
+<li><code>--synchronize</code> 和 <code>--list</code> 不是本次安装版本支持的选项。</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org5bf3c28" class="outline-2">
+<h2 id="org5bf3c28"><span class="section-number-2">3.</span> 首次授权 Microsoft 账户</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgdc3e350" class="outline-3">
+<h3 id="orgdc3e350"><span class="section-number-3">3.1.</span> 启动客户端</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+在 GNOME 桌面环境下打开终端，执行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf8893db" class="outline-3">
+<h3 id="orgf8893db"><span class="section-number-3">3.2.</span> 浏览器授权</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+客户端会自动打开默认浏览器，并跳转到 Microsoft 登录页面。
+</p>
+
+<p>
+操作步骤：
+</p>
+
+<ol class="org-ol">
+<li>使用 Microsoft 账户登录。</li>
+<li>确认授权请求。</li>
+<li>等待浏览器完成授权。</li>
+<li>返回终端，检查是否出现授权成功提示。</li>
+</ol>
+
+<p>
+成功时，终端会显示类似：
+</p>
+
+<pre class="example" id="orgb8cde5f">
+The application has been successfully authorised,
+but no extra command options have been specified.
+</pre>
+</div>
+</div>
+<div id="outline-container-org1ca4381" class="outline-3">
+<h3 id="org1ca4381"><span class="section-number-3">3.3.</span> 检查授权文件</h3>
+<div class="outline-text-3" id="text-3-3">
+<div class="org-src-container">
+<pre class="src src-bash">ls -lah ~/.config/onedrive
+</pre>
+</div>
+
+<p>
+授权后通常可以看到：
+</p>
+
+<ul class="org-ul">
+<li><code>refresh_token</code> ：Microsoft 账户授权令牌。</li>
+<li><code>items.sqlite3</code> ：本地同步状态数据库。</li>
+</ul>
+
+<p>
+注意：
+</p>
+<ul class="org-ul">
+<li>不要删除 <code>refresh_token</code> ，否则可能需要重新授权。</li>
+<li>不要把 <code>refresh_token</code> 的内容发送给他人。</li>
+<li>不要随意删除 <code>items.sqlite3</code> 。</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb8d5d85" class="outline-2">
+<h2 id="orgb8d5d85"><span class="section-number-2">4.</span> 配置 OneDrive</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org374c671" class="outline-3">
+<h3 id="org374c671"><span class="section-number-3">4.1.</span> 查看默认配置</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --display-config
+</pre>
+</div>
+
+<p>
+初始配置通常包括：
+</p>
+
+<ul class="org-ul">
+<li>配置目录： <code>~/.config/onedrive</code></li>
+<li>本地同步目录： <code>~/OneDrive</code></li>
+<li><code>sync_list</code> ：未配置，即不限制同步目录范围。</li>
+<li><code>monitor_interval</code> ：300 秒。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf1cd885" class="outline-3">
+<h3 id="orgf1cd885"><span class="section-number-3">4.2.</span> 创建配置文件</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+Fedora 软件包提供配置模板：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">/usr/share/doc/onedrive/config
+</pre>
+</div>
+
+<p>
+如果尚未创建配置文件，可以执行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">cp /usr/share/doc/onedrive/config ~/.config/onedrive/config
+</pre>
+</div>
+
+<p>
+注意：如果已经存在配置文件，不要直接覆盖。
+</p>
+</div>
+</div>
+<div id="outline-container-orgc2b34e6" class="outline-3">
+<h3 id="orgc2b34e6"><span class="section-number-3">4.3.</span> 编辑配置文件</h3>
+<div class="outline-text-3" id="text-4-3">
+<div class="org-src-container">
+<pre class="src src-bash">nano ~/.config/onedrive/config
+</pre>
+</div>
+
+<p>
+配置文件中的选项通常以 <code>#</code> 注释开头。
+需要修改某个选项时，取消注释并修改对应的值。
+</p>
+
+<p>
+本次采用的主要配置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-conf"><span style="color: #9f4e74;">use_recycle_bin</span> = <span style="color: #a04650;">"true"</span>
+<span style="color: #9f4e74;">bypass_data_preservation</span> = <span style="color: #a04650;">"false"</span>
+<span style="color: #9f4e74;">permanent_delete</span> = <span style="color: #a04650;">"false"</span>
+</pre>
+</div>
+
+<p>
+这些选项的含义：
+</p>
+
+<ul class="org-ul">
+<li><code>use_recycle_bin = "true"</code> ：当云端文件被删除时，将其移入本地系统的回收站，以便检查和恢复。</li>
+<li><code>bypass_data_preservation = "false"</code> ：保留客户端的数据保护机制。</li>
+<li><code>permanent_delete = "false"</code> ：不启用永久删除。</li>
+</ul>
+
+<p>
+特别注意：
+</p>
+
+<p>
+<code>use_recycle_bin</code> 不是普通的本地删除保护，也不是备份机制。
+它主要针对云端删除的文件在本地同步时的处理。
+</p>
+</div>
+</div>
+<div id="outline-container-org5ce6f72" class="outline-3">
+<h3 id="org5ce6f72"><span class="section-number-3">4.4.</span> 保持整个 OneDrive 云盘同步</h3>
+<div class="outline-text-3" id="text-4-4">
+<p>
+如果希望同步整个个人 OneDrive：
+</p>
+
+<ul class="org-ul">
+<li>不要配置 <code>sync_list</code> 文件。</li>
+<li>不要设置只同步某个目录的 <code>--single-directory</code> 。</li>
+<li>不要启用 <code>download_only</code> 或 <code>upload_only</code> 作为长期运行模式。</li>
+</ul>
+
+<p>
+默认同步目录：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-conf"><span style="color: #9f4e74;">sync_dir</span> = <span style="color: #a04650;">"~/OneDrive"</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga726117" class="outline-3">
+<h3 id="orga726117"><span class="section-number-3">4.5.</span> 检查目前的配置</h3>
+<div class="outline-text-3" id="text-4-5">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --display-config
+</pre>
+</div>
+
+<p>
+重点确认：
+</p>
+
+<ul class="org-ul">
+<li><code>sync_dir = ~/OneDrive</code></li>
+<li><code>use_recycle_bin = true</code></li>
+<li><code>bypass_data_preservation = false</code></li>
+<li><code>permanent_delete = false</code></li>
+<li><code>sync_list</code> 未配置</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org90a916b" class="outline-2">
+<h2 id="org90a916b"><span class="section-number-2">5.</span> 首次同步前的检查</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+首次同步前，建议依次完成以下检查。
+</p>
+</div>
+<div id="outline-container-org5c48bc7" class="outline-3">
+<h3 id="org5c48bc7"><span class="section-number-3">5.1.</span> 检查云端容量</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --display-quota
+</pre>
+</div>
+
+<p>
+确认云端文件总量能够放进本地磁盘。
+</p>
+</div>
+</div>
+<div id="outline-container-org944ebd7" class="outline-3">
+<h3 id="org944ebd7"><span class="section-number-3">5.2.</span> 检查本地磁盘空间</h3>
+<div class="outline-text-3" id="text-5-2">
+<div class="org-src-container">
+<pre class="src src-bash">df -h ~
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf744f06" class="outline-3">
+<h3 id="orgf744f06"><span class="section-number-3">5.3.</span> 检查本地同步目录</h3>
+<div class="outline-text-3" id="text-5-3">
+<div class="org-src-container">
+<pre class="src src-bash">ls -lah ~/OneDrive
+du -sh ~/OneDrive
+</pre>
+</div>
+
+<p>
+如果目录已经存在，要先确认其中有没有重要文件。
+</p>
+</div>
+</div>
+<div id="outline-container-orgd4e535e" class="outline-3">
+<h3 id="orgd4e535e"><span class="section-number-3">5.4.</span> 执行模拟同步</h3>
+<div class="outline-text-3" id="text-5-4">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync --dry-run
+</pre>
+</div>
+
+<p>
+该命令只模拟同步，不会真正下载、上传或删除文件。
+</p>
+
+<p>
+重点检查：
+</p>
+<ul class="org-ul">
+<li>是否成功连接 Microsoft OneDrive。</li>
+<li>是否扫描了预期的本地同步目录。</li>
+<li>是否出现意外的上传操作。</li>
+<li>是否出现意外的删除操作。</li>
+<li>是否出现文件冲突或其他错误。</li>
+</ul>
+
+<p>
+注意：
+</p>
+
+<p>
+模拟同步输出中的：
+</p>
+
+<pre class="example" id="org7a02b3b">
+No changes or items that can be applied
+</pre>
+
+<p>
+只表示本轮没有发现可以应用的变更，不能据此断定整个云盘的文件已经下载完成。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org8d136a9" class="outline-2">
+<h2 id="org8d136a9"><span class="section-number-2">6.</span> 执行首次同步</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+根据实际需要选择同步方式。
+</p>
+</div>
+<div id="outline-container-org4818b3c" class="outline-3">
+<h3 id="org4818b3c"><span class="section-number-3">6.1.</span> 推荐的谨慎方式：只下载云端文件</h3>
+<div class="outline-text-3" id="text-6-1">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync --download-only
+</pre>
+</div>
+
+<p>
+作用：
+</p>
+<ul class="org-ul">
+<li>将云端文件下载到本地。</li>
+<li>不上传本地新增或修改的文件。</li>
+<li>不会因为云端删除而自动删除本地已有文件（2.5.x 版本默认行为）。</li>
+</ul>
+
+<p>
+适合第一次下载整个云盘，先建立本地副本。
+</p>
+</div>
+</div>
+<div id="outline-container-org038bd70" class="outline-3">
+<h3 id="org038bd70"><span class="section-number-3">6.2.</span> 双向同步</h3>
+<div class="outline-text-3" id="text-6-2">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync
+</pre>
+</div>
+
+<p>
+作用：
+</p>
+<ul class="org-ul">
+<li>下载云端新增或修改的文件。</li>
+<li>上传本地新增或修改的文件。</li>
+<li>按正常同步规则处理删除和冲突。</li>
+</ul>
+
+<p>
+如果希望本地和云端保持双向同步，最终使用这种方式。
+</p>
+
+<p>
+注意：不要在不了解影响的情况下使用以下选项：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync --upload-only
+onedrive --sync --download-only --cleanup-local-files
+onedrive --resync
+</pre>
+</div>
+
+<p>
+其中：
+</p>
+<ul class="org-ul">
+<li><code>--upload-only</code> 可能把本地缺失的云端文件删除。</li>
+<li><code>--cleanup-local-files</code> 会清理本地文件。</li>
+<li><code>--resync</code> 会重新建立同步状态，可能重新识别本地文件并上传。</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org7c2e4ef" class="outline-2">
+<h2 id="org7c2e4ef"><span class="section-number-2">7.</span> 日常使用命令</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org192cfdd" class="outline-3">
+<h3 id="org192cfdd"><span class="section-number-3">7.1.</span> 手动执行一次双向同步</h3>
+<div class="outline-text-3" id="text-7-1">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync
+</pre>
+</div>
+
+<p>
+也可以简单输入
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive -s  
+</pre>
+</div>
+
+<p>
+要注意的是 <code>onedrive -s</code> 只执行一次同步，同步完成后退出程序。
+如果要持续监控本地和云端变化，并在需要时自动同步，那么应该使用后面将要介绍的 <code>onedrive --monitor</code> （简写 <code>onedrive -m</code> ）。
+</p>
+</div>
+</div>
+<div id="outline-container-orgf116f2c" class="outline-3">
+<h3 id="orgf116f2c"><span class="section-number-3">7.2.</span> 手动执行一次只下载同步</h3>
+<div class="outline-text-3" id="text-7-2">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync --download-only
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7d3e3c6" class="outline-3">
+<h3 id="org7d3e3c6"><span class="section-number-3">7.3.</span> 查看配置</h3>
+<div class="outline-text-3" id="text-7-3">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --display-config
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5226a70" class="outline-3">
+<h3 id="org5226a70"><span class="section-number-3">7.4.</span> 查看云端容量</h3>
+<div class="outline-text-3" id="text-7-4">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --display-quota
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7f45624" class="outline-3">
+<h3 id="org7f45624"><span class="section-number-3">7.5.</span> 查看同步状态</h3>
+<div class="outline-text-3" id="text-7-5">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --display-sync-status
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org80e10ad" class="outline-3">
+<h3 id="org80e10ad"><span class="section-number-3">7.6.</span> 模拟同步</h3>
+<div class="outline-text-3" id="text-7-6">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync --dry-run
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org4b99ef2" class="outline-3">
+<h3 id="org4b99ef2"><span class="section-number-3">7.7.</span> 查看版本</h3>
+<div class="outline-text-3" id="text-7-7">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --version
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgfbeba73" class="outline-3">
+<h3 id="orgfbeba73"><span class="section-number-3">7.8.</span> 查看帮助</h3>
+<div class="outline-text-3" id="text-7-8">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --help
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org68ca839" class="outline-2">
+<h2 id="org68ca839"><span class="section-number-2">8.</span> 后台自动同步</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+客户端有两种常见运行方式。
+</p>
+</div>
+<div id="outline-container-org3c87d69" class="outline-3">
+<h3 id="org3c87d69"><span class="section-number-3">8.1.</span> 前台监控模式</h3>
+<div class="outline-text-3" id="text-8-1">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --monitor
+</pre>
+</div>
+
+<p>
+也可以使用简写：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive -m
+</pre>
+</div>
+
+<p>
+客户端会持续监控本地和云端变化，并按需要执行同步。
+</p>
+
+<p>
+退出监控模式可以按：
+</p>
+
+<pre class="example" id="org5c8bbb8">
+Ctrl + C
+</pre>
+</div>
+</div>
+<div id="outline-container-orgcb9ec0d" class="outline-3">
+<h3 id="orgcb9ec0d"><span class="section-number-3">8.2.</span> 使用 systemd 用户服务</h3>
+<div class="outline-text-3" id="text-8-2">
+<p>
+在已经完成首次授权并确认手动同步正常后，可以启用后台服务。
+</p>
+
+<p>
+启动并设置登录后自动运行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">systemctl --user enable --now onedrive.service
+</pre>
+</div>
+
+<p>
+查看服务状态：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">systemctl --user status onedrive.service
+</pre>
+</div>
+
+<p>
+查看实时日志：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">journalctl --user -u onedrive.service -f
+</pre>
+</div>
+
+<p>
+停止服务：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">systemctl --user stop onedrive.service
+</pre>
+</div>
+
+<p>
+禁止登录后自动启动：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">systemctl --user disable onedrive.service
+</pre>
+</div>
+
+<p>
+停止并取消自动启动：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">systemctl --user disable --now onedrive.service
+</pre>
+</div>
+
+<p>
+注意：
+</p>
+<ul class="org-ul">
+<li>以上命令使用当前普通用户执行，不要加 sudo。</li>
+<li>启用服务前，先确认首次手动同步已经正常完成。</li>
+<li>如果 Fedora 软件包没有提供相应的用户服务单元，需要先检查服务单元是否存在。</li>
+<li>后台服务启动后，不要再同时启动另一个独立的 <code>onedrive --monitor</code> 进程。</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb7a7091" class="outline-2">
+<h2 id="orgb7a7091"><span class="section-number-2">9.</span> 更换 Microsoft OneDrive 账户</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+如果需要更换账户，可以采用两种方式。
+</p>
+
+<p>
+方式一：重新授权
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --reauth
+</pre>
+</div>
+
+<p>
+该命令清理原授权并重新打开 Microsoft 登录授权流程。
+</p>
+
+<p>
+如果正在运行后台服务，应先停止服务。
+</p>
+
+<p>
+方式二：彻底清除旧账户的本地数据
+</p>
+
+<p>
+先停止后台服务：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">systemctl --user disable --now onedrive.service
+</pre>
+</div>
+
+<p>
+检查是否还有客户端进程：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">pgrep -a onedrive
+</pre>
+</div>
+
+<p>
+如果没有输出，表示没有运行中的 onedrive 进程。
+</p>
+
+<p>
+检查旧账户配置：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">ls -lah ~/.config/onedrive
+</pre>
+</div>
+
+<p>
+检查旧账户同步目录：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">ls -lah ~/OneDrive
+</pre>
+</div>
+
+<p>
+确认不再需要这些本地文件后，执行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">rm -rf ~/.config/onedrive
+rm -rf ~/OneDrive
+</pre>
+</div>
+
+<p>
+检查是否删除成功：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">ls -ld ~/.config/onedrive ~/OneDrive
+</pre>
+</div>
+
+<p>
+如果显示 <code>No such file or directory</code> ，说明本地目录已经删除。
+</p>
+
+<p>
+注意：
+</p>
+<ul class="org-ul">
+<li><code>rm -rf</code> 不可撤销，执行前必须确认目录路径。</li>
+<li>删除本地同步目录不会删除 Microsoft 云端文件。</li>
+<li>删除配置目录会同时删除授权令牌和同步数据库。</li>
+<li>如果旧账户的本地文件仍有价值，应先备份，不要直接删除。</li>
+</ul>
+
+<p>
+完成后，重新运行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive
+</pre>
+</div>
+
+<p>
+使用新的 Microsoft 账户授权即可。
+</p>
+</div>
+</div>
+<div id="outline-container-org99dc72d" class="outline-2">
+<h2 id="org99dc72d"><span class="section-number-2">10.</span> 常见问题与注意事项</h2>
+<div class="outline-text-2" id="text-10">
+</div>
+<div id="outline-container-org1c9d54c" class="outline-3">
+<h3 id="org1c9d54c"><span class="section-number-3">10.1.</span> <code>--list</code> 命令不可用</h3>
+<div class="outline-text-3" id="text-10-1">
+<p>
+本次安装的 2.5.11 版本不支持：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --list
+</pre>
+</div>
+
+<p>
+查看当前版本支持的命令，应使用：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --help
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org55e35ba" class="outline-3">
+<h3 id="org55e35ba"><span class="section-number-3">10.2.</span> <code>--synchronize</code> 命令不可用</h3>
+<div class="outline-text-3" id="text-10-2">
+<p>
+正确命令：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org256c057" class="outline-3">
+<h3 id="org256c057"><span class="section-number-3">10.3.</span> 授权成功但没有执行同步</h3>
+<div class="outline-text-3" id="text-10-3">
+<p>
+只运行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive
+</pre>
+</div>
+
+<p>
+主要用于首次授权；授权成功后，它不会自动执行一次完整同步。
+</p>
+
+<p>
+需要执行：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --sync
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgef727c0" class="outline-3">
+<h3 id="orgef727c0"><span class="section-number-3">10.4.</span> 不要随意删除同步数据库</h3>
+<div class="outline-text-3" id="text-10-4">
+<p>
+<code>items.sqlite3</code> 保存客户端的本地同步状态。不要把它当成普通缓存随意删除。
+</p>
+</div>
+</div>
+<div id="outline-container-org66050e5" class="outline-3">
+<h3 id="org66050e5"><span class="section-number-3">10.5.</span> 不要随意使用 <code>--resync</code></h3>
+<div class="outline-text-3" id="text-10-5">
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --resync
+</pre>
+</div>
+
+<p>
+这是重新建立同步状态的操作，不是日常刷新命令。执行前应阅读官方说明，并先进行数据备份。
+</p>
+</div>
+</div>
+<div id="outline-container-orgb024d5f" class="outline-3">
+<h3 id="orgb024d5f"><span class="section-number-3">10.6.</span> 版本更新</h3>
+<div class="outline-text-3" id="text-10-6">
+<p>
+查看当前版本：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --version
+</pre>
+</div>
+
+<p>
+查看 Fedora 软件仓库中的版本：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">dnf info onedrive
+</pre>
+</div>
+
+<p>
+更新软件包：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">sudo dnf upgrade onedrive
+</pre>
+</div>
+
+<p>
+更新后重新检查：
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">onedrive --version
+onedrive --help
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orge4752fb" class="outline-2">
+<h2 id="orge4752fb"><span class="section-number-2">11.</span> 常用命令速查</h2>
+<div class="outline-text-2" id="text-11">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">操作</th>
+<th scope="col" class="org-left">命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">查看版本</td>
+<td class="org-left"><code>onedrive --version</code></td>
+</tr>
+
+<tr>
+<td class="org-left">查看帮助</td>
+<td class="org-left"><code>onedrive --help</code></td>
+</tr>
+
+<tr>
+<td class="org-left">首次授权</td>
+<td class="org-left"><code>onedrive</code></td>
+</tr>
+
+<tr>
+<td class="org-left">查看配置</td>
+<td class="org-left"><code>onedrive --display-config</code></td>
+</tr>
+
+<tr>
+<td class="org-left">查看云端容量</td>
+<td class="org-left"><code>onedrive --display-quota</code></td>
+</tr>
+
+<tr>
+<td class="org-left">查看同步状态</td>
+<td class="org-left"><code>onedrive --display-sync-status</code></td>
+</tr>
+
+<tr>
+<td class="org-left">模拟同步</td>
+<td class="org-left"><code>onedrive --sync --dry-run</code></td>
+</tr>
+
+<tr>
+<td class="org-left">单次双向同步</td>
+<td class="org-left"><code>onedrive --sync</code></td>
+</tr>
+
+<tr>
+<td class="org-left">单次只下载</td>
+<td class="org-left"><code>onedrive --sync --download-only</code></td>
+</tr>
+
+<tr>
+<td class="org-left">前台自动监控</td>
+<td class="org-left"><code>onedrive --monitor</code></td>
+</tr>
+
+<tr>
+<td class="org-left">启动后台服务</td>
+<td class="org-left"><code>systemctl --user enable --now onedrive.service</code></td>
+</tr>
+
+<tr>
+<td class="org-left">查看后台服务</td>
+<td class="org-left"><code>systemctl --user status onedrive.service</code></td>
+</tr>
+
+<tr>
+<td class="org-left">查看实时日志</td>
+<td class="org-left"><code>journalctl --user -u onedrive.service -f</code></td>
+</tr>
+
+<tr>
+<td class="org-left">停止后台服务</td>
+<td class="org-left"><code>systemctl --user stop onedrive.service</code></td>
+</tr>
+
+<tr>
+<td class="org-left">重新授权</td>
+<td class="org-left"><code>onedrive --reauth</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgb01c267" class="outline-2">
+<h2 id="orgb01c267"><span class="section-number-2">12.</span> 官方参考资料</h2>
+<div class="outline-text-2" id="text-12">
+<ul class="org-ul">
+<li>项目主页：<a href="https://github.com/abraunegg/onedrive">https://github.com/abraunegg/onedrive</a></li>
+<li>使用说明：<a href="https://github.com/abraunegg/onedrive/blob/master/docs/usage.md">https://github.com/abraunegg/onedrive/blob/master/docs/usage.md</a></li>
+<li>配置选项：<a href="https://github.com/abraunegg/onedrive/blob/master/docs/application-config-options.md">https://github.com/abraunegg/onedrive/blob/master/docs/application-config-options.md</a></li>
+</ul>
+
+<p>
+注意：本文以 Fedora 44 上实际安装的 2.5.11 版本为操作记录。
+官方文档的 master 分支可能包含更新版本的选项和行为，使用时应以本机 <code>onedrive --help</code> 和对应版本文档为准。
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: 2026-10-31</p>
+<p class="author">Author: zbliang</p>
+<p class="date">Created: 2026-10-31 Sat 14:45</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
